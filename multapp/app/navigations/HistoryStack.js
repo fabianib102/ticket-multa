@@ -1,17 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Main from "../screens/Main";
-
+import History from "../screens/History";
 const Stack = createStackNavigator();
 
-export default function MainStack(){
+export default function HistoryStack(){
     return(
 
         <Stack.Navigator>
             <Stack.Screen
-                name="main"
-                component={Main}
-                options={{title: "Inicio Stack"}}
+                name="history"
+                component={History}
+                options={{title: "Historial Stack"}}
             />
         </Stack.Navigator>
     )

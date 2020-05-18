@@ -3,7 +3,7 @@ import {Text, View} from 'react-native';
 
 export default function Main (){
     return(
-        <View style={styles.container}>
+        <View>
             <Text>Es el layout principal</Text>
         </View>
     );

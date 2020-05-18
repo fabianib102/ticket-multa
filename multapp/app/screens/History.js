@@ -3,7 +3,7 @@ import {Text, View} from 'react-native';
 
 export default function History (){
     return(
-        <View style={styles.container}>
+        <View>
             <Text>Es history de la app</Text>
         </View>
     );
