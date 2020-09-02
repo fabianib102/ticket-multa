@@ -1,7 +1,9 @@
-import React from 'react';
-import Navigation from './app/navigations/Navigation';
+import React, {useEffect} from 'react';
+import Navig from './app/navigations/Navigation';
 
+function App() {
 
-export default function App() {
-  return <Navigation/>;
+  return <Navig/>;
 }
+
+export default App;
