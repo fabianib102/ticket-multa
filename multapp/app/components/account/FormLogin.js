@@ -1,15 +1,20 @@
 import React, {useState} from "react";
-import {StyleSheet, View, Text } from 'react-native';
+import {StyleSheet, View } from 'react-native';
 import {Input, Icon, Button} from 'react-native-elements';
 import {validateEmail} from "../../utils/validation";
 import {size, isEmpty} from 'lodash';
+import * as firebase from "firebase";
+import {useNavigation} from "@react-navigation/native";
+import Loading from "../Loading";
 
 export default function FormLogin(props) {
 
     const {toastRef} = props;
-
     const [showPass, setShowPass] = useState(false);
-    const [formData, setFormData] = useState(defaultFormValue())
+    const [formData, setFormData] = useState(defaultFormValue());
+    const [loading, setLoading] = useState(false);
+
+    const navigation = useNavigation();
 
     const onSubmit = () => {
         if(isEmpty(formData.email) || isEmpty(formData.password)){
@@ -20,8 +25,21 @@ export default function FormLogin(props) {
             }else{
                 if(size(formData.password) < 6){
                     toastRef.current.show("La contraseña debe ser mas de 6 caracteres")
-                }else{toastRef.current.show("La contraseña debe ser mas de 6 caracteres")
-                    toastRef.current.show("Ok")
+                }else{
+                    setLoading(true);
+                    firebase
+                    .auth()
+                    .signInWithEmailAndPassword(formData.email, formData.password)
+                    //.createUserWithEmailAndPassword(formData.email, formData.password)
+                    .then(() => {
+                        setLoading(false);
+                        navigation.navigate("main");
+                    })
+                    .catch(err => {
+                        setLoading(false);
+                        console.log(err);
+                        toastRef.current.show("Error al ingresar al sistem, intente nuevamente.")
+                    })
                 }
             }
         }
@@ -66,6 +84,7 @@ export default function FormLogin(props) {
                 buttonStyle={styles.btnStyleForm}
                 onPress={onSubmit}
             />
+            <Loading isVisible={loading} text={"Iniciando Sesión"}/>
         </View>
     )
 
