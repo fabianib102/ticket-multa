@@ -8,39 +8,37 @@ import HistoryStack from "./HistoryStack"
 
 const Tab = createBottomTabNavigator();
 
-export default function Navigation(){
+export default function Navigation({ navigation }){
 
     return (
-
         <NavigationContainer>
             <Tab.Navigator
                 initialRouteName="main-stack"
                 tabBarOptions={{
-                    inactiveTintColor:"#646464",
-                    activeTintColor:"#00a680",
+                    inactiveTintColor:"#000",
+                    activeTintColor:"#3494d3",
                 }}
                 screenOptions={({route}) => ({
                     tabBarIcon: ({color}) => screenOptions(route, color) 
                 })} 
             >
                 <Tab.Screen 
-                    name="main-stack" 
-                    component={MainStack}
-                    options={{title: "Inicio"}}
-                />
-                <Tab.Screen 
                     name="new-multa-stack" 
                     component={NewMultaStack}
                     options={{title: "Nueva Multa"}}
+                />
+                <Tab.Screen 
+                    name="main-stack" 
+                    component={MainStack}
+                    options={{title: "Inicio"}}
                 />
                 <Tab.Screen 
                     name="history-stack" 
                     component={HistoryStack}
                     options={{title: "Historial"}}
                 />
-            </Tab.Navigator>
+        </Tab.Navigator>
         </NavigationContainer>
-
     )
 
 }

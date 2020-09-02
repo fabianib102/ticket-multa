@@ -1,10 +1,10 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 
-export default function Main (){
+export default function UserLogged(){
     return(
         <View>
-            <Text>Es el layout principal</Text>
+            <Text>Usuario logueado</Text>
         </View>
     );
 }
