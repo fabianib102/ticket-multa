@@ -1,13 +1,17 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import { Text, View, StyleSheet, TouchableNativeFeedback } from 'react-native';
 
 const Multa = props => {
-    return(
+    return (
         <View style={estilos.multa}>
-            <Text>{props.id}</Text>
-            <Text>{props.dni}</Text>
-            <Text>{props.nombre}</Text>
-            <Text>{props.extracto}</Text>
+            <TouchableNativeFeedback onPress={props.onPress}>
+                <View style={estilos.textContainer}>
+                    <Text>{props.id}</Text>
+                    <Text>{props.dni}</Text>
+                    <Text>{props.nombre}</Text>
+                    <Text>{props.extracto}</Text>
+                </View>
+            </TouchableNativeFeedback>
         </View>
     );
 }
@@ -15,9 +19,12 @@ const Multa = props => {
 const estilos = StyleSheet.create({
     multa: {
         flex: 1,
-        marginVertical: 10,
+        marginVertical: 5,
         borderWidth: 1,
         borderColor: "black",
+    },
+    textContainer: {
+        padding: 5,
     }
 })
 
