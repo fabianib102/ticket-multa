@@ -1,31 +1,20 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import { ListItem } from 'react-native-elements';
 
 const Multa = props => {
     return (
-        <View style={estilos.multa}>
-            <TouchableNativeFeedback onPress={props.onPress}>
-                <View style={estilos.textContainer}>
-                    <Text>{props.id}</Text>
-                    <Text>{props.dni}</Text>
-                    <Text>{props.nombre}</Text>
-                    <Text>{props.extracto}</Text>
-                </View>
-            </TouchableNativeFeedback>
-        </View>
+        <ListItem
+            key={props.id}
+            leftAvatar={{uri: props.imagen, rounded: false}}
+            title={props.nombre + " (DNI " + props.dni + ")"}
+            titleProps={{numberOfLines: 1}}
+            subtitle={props.extracto}
+            subtitleProps={{numberOfLines: 1}}
+            chevron={true}
+            bottomDivider={true}
+            onPress={props.onPress}
+        />
     );
 }
-
-const estilos = StyleSheet.create({
-    multa: {
-        flex: 1,
-        marginVertical: 5,
-        borderWidth: 1,
-        borderColor: "black",
-    },
-    textContainer: {
-        padding: 5,
-    }
-})
 
 export default Multa;
