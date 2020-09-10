@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, ActivityIndicator, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import * as firebase from "firebase";
