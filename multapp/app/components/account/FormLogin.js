@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {StyleSheet, View } from 'react-native';
+import {StyleSheet, View, AsyncStorage } from 'react-native';
 import {Input, Icon, Button} from 'react-native-elements';
 import {validateEmail} from "../../utils/validation";
 import {size, isEmpty} from 'lodash';
@@ -8,7 +8,6 @@ import {useNavigation} from "@react-navigation/native";
 import Loading from "../Loading";
 
 export default function FormLogin(props) {
-
     const {toastRef} = props;
     const [showPass, setShowPass] = useState(false);
     const [formData, setFormData] = useState(defaultFormValue());
@@ -17,29 +16,34 @@ export default function FormLogin(props) {
     const navigation = useNavigation();
 
     const onSubmit = () => {
-        if(isEmpty(formData.email) || isEmpty(formData.password)){
+        if (isEmpty(formData.email) || isEmpty(formData.password)) {
             toastRef.current.show("Todos los campos son obligatorios")
-        }else{
-            if(!validateEmail(formData.email)){
+        }
+        else {
+            if (!validateEmail(formData.email)) {
                 toastRef.current.show("El email no es correcto")
-            }else{
-                if(size(formData.password) < 6){
+            }
+            else {
+                if (size(formData.password) < 6) {
                     toastRef.current.show("La contraseña debe ser mas de 6 caracteres")
-                }else{
+                }
+                else {
                     setLoading(true);
-                    firebase
-                    .auth()
-                    .signInWithEmailAndPassword(formData.email, formData.password)
+                    firebase.auth().signInWithEmailAndPassword(formData.email, formData.password)
                     //.createUserWithEmailAndPassword(formData.email, formData.password)
-                    .then(() => {
-                        setLoading(false);
-                        navigation.navigate("main");
-                    })
-                    .catch(err => {
-                        setLoading(false);
-                        console.log(err);
-                        toastRef.current.show("Error al ingresar al sistem, intente nuevamente.")
-                    })
+                        .then(userRecord => {
+                            AsyncStorage.setItem("uid", userRecord.user.uid)
+                                .then(() => {
+                                    setLoading(false);
+                                navigation.navigate("main");
+                                }).catch(error => {
+                                    console.log(error);
+                                });
+                        }).catch(err => {
+                            setLoading(false);
+                            console.log(err);
+                            toastRef.current.show("Error al ingresar al sistema, intente nuevamente.")
+                        })
                 }
             }
         }
