@@ -1,10 +1,13 @@
-import React, {useState} from "react";
+import React from "react";
 import {StyleSheet, Text, View} from 'react-native';
 import {Avatar} from "react-native-elements";
 
 export default function InfoUser(props){
 
-    const {userInfo} = props;
+    const {
+        userInfo: {photoURL, displayName, email},
+    } = props;
+    //console.log(userInfo);
 
     return(
         <View style={styles.viewUserInfo}>
@@ -12,10 +15,15 @@ export default function InfoUser(props){
                 rounded
                 size="large"
                 containerStyle={styles.userInfoAvatar}
+                source={
+                    photoURL ? 
+                    {uri: photoURL}:
+                    require("../../../assets/img/avatar-default.jpg")
+                }
             />
             <View>
-                <Text style={styles.displayName}>Fabi Ibañez</Text>
-                <Text>fabianib102@gmail.com</Text>
+                <Text style={styles.displayName}>{displayName ? displayName : "Sin nombre"}</Text>
+                <Text>{email}</Text>
             </View>
         </View>
     );
