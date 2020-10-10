@@ -6,7 +6,6 @@ import Modal from "../Modal";
 import ChangePassword from "./ChangePassword";
 
 export default function AccountOption(props){
-
     const {userInfo, toastRef} = props;
     const [showModal, setShowModal] = useState(false);
     const [renderComponent, setRenderComponent] = useState(null);

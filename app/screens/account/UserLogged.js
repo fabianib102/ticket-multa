@@ -7,7 +7,7 @@ import Loading from "../../components/Loading";
 import InfoUser from "../../components/account/InfoUser";
 import AccountOption from "../../components/account/AccountOption";
 
-export default function UserLogged(){
+export default function UserLogged(props){
 
     const toastRef = useRef();
     const [userInfo, setUserInfo] = useState(null);
