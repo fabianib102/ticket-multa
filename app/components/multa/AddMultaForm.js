@@ -10,14 +10,20 @@ import {
 } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Picker } from "@react-native-community/picker";
+import { Provider } from 'react-redux';
+import store from '../../store'
+import LicenciaScreen from './LicenciaScreen'
+import ConductorScreen from './ConductorScreen'
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function AddMultaForm() {
   return (
-    <ScrollView style={styles.scrollView}>
-      <MyTabs />
-    </ScrollView>
+    <Provider store={store}>
+      <ScrollView style={styles.scrollView}>
+        <MyTabs />
+      </ScrollView>
+    </Provider>
   );
 }
 
@@ -36,101 +42,9 @@ function MyTabs() {
   );
 }
 
-function LicenciaScreen({ navigation }) {
-  const [nroLicencia, setNroLicencia] = useState("");
-  const [classValue, setSelectedClass] = useState("Seleccione Clase");
-  const [provinciaValue, setSelectedProvince] = useState("Provincia");
-  const [localidadValue, setSelectedLocalidad] = useState("Localidad");
-  const [provinceUnique, setProviceUnique] = useState(false);
-  const [detained, setDetained] = useState(false);
-  const [expirationDate, setExpiratioDate] = useState("");
 
-  const onChangeValueClass = (valueClass) => {
-    console.log("Este es el valor de la clase: ", valueClass);
-    setSelectedClass(valueClass);
-  };
 
-  const onChangeValueProvince = (valueProvince) => {
-    console.log("Este es el valor de la provincia: ", valueProvince);
-    setSelectedProvince(valueProvince);
-  };
-
-  const onChangeValueLocaly = (valueLocalidad) => {
-    console.log("Este es el valor de la localidad: ", valueLocalidad);
-    setSelectedLocalidad(valueLocalidad);
-  };
-
-  return (
-    <View style={styles.viewForm}>
-      <Input
-        placeholder="Licencia N°"
-        containerStyle={styles.input}
-        onChange={(e) => setNroLicencia(e.nativeEvent.text)}
-      />
-
-      <Picker
-        selectedValue={classValue}
-        onValueChange={(itemValue, itemIndex) => onChangeValueClass(itemValue)}
-      >
-        <Picker.Item label="Seleccione Clase" value="" />
-        <Picker.Item label="A1" value="A1" />
-        <Picker.Item label="A2" value="A2" />
-        <Picker.Item label="A3" value="A3" />
-        <Picker.Item label="B1" value="B1" />
-        <Picker.Item label="B2" value="B2" />
-        <Picker.Item label="C1" value="C1" />
-        <Picker.Item label="C2" value="C2" />
-        <Picker.Item label="C3" value="C3" />
-        {/* //TODO: Falta completar */}
-      </Picker>
-
-      <Picker
-        selectedValue={provinciaValue}
-        onValueChange={(itemValue, itemIndex) =>
-          onChangeValueProvince(itemValue)
-        }
-      >
-        <Picker.Item label="Seleccione Provincia" value="" />
-        <Picker.Item label="Chaco" value="Chaco" />
-        <Picker.Item label="Corrientes" value="Corrientes" />
-        <Picker.Item label="Misiones" value="Misiones" />
-      </Picker>
-
-      <Picker
-        selectedValue={localidadValue}
-        onValueChange={(itemValue, itemIndex) => onChangeValueLocaly(itemValue)}
-      >
-        <Picker.Item label="Localidad" value="" />
-        <Picker.Item label="Resistencia" value="Resistencia" />
-        <Picker.Item label="Barranqueras" value="Barranqueras" />
-        <Picker.Item label="Vilelas" value="Vilelas" />
-        <Picker.Item label="Fontana" value="Fontana" />
-        <Picker.Item label="Puerto Tirol" value="Puerto Tirol" />
-      </Picker>
-
-      <CheckBox
-        title="Única Provincial"
-        checked={provinceUnique}
-        onPress={() => setProviceUnique(!provinceUnique)}
-      />
-      <CheckBox
-        title="Retenida?"
-        checked={detained}
-        onPress={() => setDetained(!detained)}
-      />
-
-      <Input
-        placeholder="Vencimiento"
-        containerStyle={styles.input}
-        onChange={(e) => setExpiratioDate(e.nativeEvent.text)}
-      />
-
-      <Button title="Siguente" containerStyle={styles.btnSend} onPress={() => navigation.navigate('Conductor')}/>
-    </View>
-  );
-}
-
-function ConductorScreen({ navigation }) {
+/* function ConductorScreen({ navigation }) {
   const [surname, setSurname] = useState("");
   const [name, setName] = useState("");
 
@@ -275,7 +189,7 @@ function ConductorScreen({ navigation }) {
 
     </View>
   );
-}
+} */
 
 function VehiculoScreen({ navigation }) {
   const [brandValue, setBrandValue] = useState("");
@@ -466,7 +380,7 @@ function InfraccionScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   scrollView: {
     height: "100%",
   },
