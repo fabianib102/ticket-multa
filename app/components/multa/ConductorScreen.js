@@ -22,14 +22,14 @@ function ConductorScreen(props) {
   
     // const [typeDocument, setTypeDocument] = useState("");
     // const [documentValue, setDocumentValue] = useState("");
-    const [birthDay, setBirthDay] = useState("");
+    // const [birthDay, setBirthDay] = useState("");
     // const [provinciaValue, setSelectedProvince] = useState("");
     // const [localidadValue, setSelectedLocalidad] = useState("");
-    const [streetValue, setStreetValue] = useState("");
-    const [numberStreetValue, setNumberStreetValue] = useState("");
-    const [appartmentValue, setAppartmentValue] = useState("");
-    const [floorValue, setFloorValue] = useState("");
-    const [postalCodeValue, setPostalCodeValue] = useState("");
+    // const [streetValue, setStreetValue] = useState("");
+    // const [numberStreetValue, setNumberStreetValue] = useState("");
+    // const [appartmentValue, setAppartmentValue] = useState("");
+    // const [floorValue, setFloorValue] = useState("");
+    // const [postalCodeValue, setPostalCodeValue] = useState("");
   
     /* const onChangeValueTypeDocument = (valueType) => {
       console.log("Este es el valor del tipo de DNI: ", valueType);
@@ -119,19 +119,19 @@ function ConductorScreen(props) {
         <Input
           placeholder="Calle"
           containerStyle={styles.input}
-          onChange={(e) => setStreetValue(e.nativeEvent.text)}
+          onChange={(e) => props.onSetStreetValue(e.nativeEvent.text)}
         />
   
         <View style={styles.row}>
           <Input
             placeholder="Número"
             containerStyle={styles.inputAddress}
-            onChange={(e) => setNumberStreetValue(e.nativeEvent.text)}
+            onChange={(e) => props.onSetNumberStreetValue(e.nativeEvent.text)}
           />
           <Input
             placeholder="Departamento"
             containerStyle={styles.inputAddress}
-            onChange={(e) => setAppartmentValue(e.nativeEvent.text)}
+            onChange={(e) => props.onSetApartmentValue(e.nativeEvent.text)}
           />
         </View>
   
@@ -139,12 +139,12 @@ function ConductorScreen(props) {
           <Input
             placeholder="Piso"
             containerStyle={styles.inputAddress}
-            onChange={(e) => setFloorValue(e.nativeEvent.text)}
+            onChange={(e) => props.onSetFloorValue(e.nativeEvent.text)}
           />
           <Input
             placeholder="Cod. Postal"
             containerStyle={styles.inputAddress}
-            onChange={(e) => setPostalCodeValue(e.nativeEvent.text)}
+            onChange={(e) => props.onSetPostalCodeValue(e.nativeEvent.text)}
           />
         </View>
           
@@ -190,6 +190,41 @@ function ConductorScreen(props) {
     }
   }
 
+  const onSetStreetValue = (streetValue) => {
+    return {
+      type: "onSetStreetValue",
+      data: streetValue
+    }
+  }
+  
+  const onSetNumberStreetValue = (streetNumber) => {
+    return {
+      type: "onSetNumberStreetValue",
+      data: streetNumber
+    }
+  }
+
+  const onSetApartmentValue = (apartmentValue) => {
+    return {
+      type: "onSetApartmentValue",
+      data: apartmentValue
+    }
+  }
+
+  const onSetFloorValue = (floorValue) => {
+    return {
+      type: "onSetFloorValue",
+      data: floorValue
+    }
+  }
+
+  const onSetPostalCodeValue = (postalValue) => {
+    return {
+      type: "onSetPostalCodeValue",
+      data: postalValue
+    }
+  }
+
   const mapStateToProps = (state) => {
     console.log('%cESTADO DE CONDUCTOR SCREEN:' + JSON.stringify(state.ConductorScreen), "color:green;")
     return state
@@ -201,7 +236,12 @@ function ConductorScreen(props) {
         onChangeValueProvince: (valueProvince) => dispatch(onChangeValueProvince(valueProvince)),
         onChangeValueLocaly: (valueLocalidad) => dispatch(onChangeValueLocaly(valueLocalidad)),
         onSetDocumentValue: (valueDocumento) => dispatch(onSetDocumentValue(valueDocumento)),
-        onSetBirthDay: (valueBDay) => dispatch(onSetBirthDay(valueBDay))
+        onSetBirthDay: (valueBDay) => dispatch(onSetBirthDay(valueBDay)),
+        onSetStreetValue: (streetValue) => dispatch(onSetStreetValue(streetValue)),
+        onSetNumberStreetValue: (streetNumber) => dispatch(onSetNumberStreetValue(streetNumber)),
+        onSetApartmentValue: (apartmentValue) => dispatch(onSetApartmentValue(apartmentValue)),
+        onSetFloorValue: (floorValue) => dispatch(onSetFloorValue(floorValue)),
+        onSetPostalCodeValue: (postalValue) => dispatch(onSetPostalCodeValue(postalValue))
     }
   }
   

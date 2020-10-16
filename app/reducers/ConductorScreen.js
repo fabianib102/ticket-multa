@@ -38,6 +38,31 @@ export const ConductorScreen = (state = initialState, action) => {
                 ...state,
                 birthDay: action.data
             }
+        case 'onSetStreetValue':
+            return {
+                ...state,
+                streetValue: action.data
+            }
+        case 'onSetNumberStreetValue':
+            return {
+                ...state,
+                numberStreetValue: action.data
+            }
+        case 'onSetApartmentValue':
+            return {
+                ...state,
+                appartmentValue: action.data
+            }
+        case 'onSetFloorValue':
+            return {
+                ...state,
+                floorValue: action.data
+            }
+        case 'onSetPostalCodeValue':
+            return {
+                ...state,
+                postalCodeValue: action.data
+            }
         default:
             return state
     }
