@@ -190,8 +190,10 @@ function VehiculoScreen({ navigation }) {
         </View>
       )}
 
-      <Button title="Siguente" containerStyle={styles.btnSend} onPress={() => navigation.navigate('Infracción')}/>
-
+      <View style={styles.buttonContainer}>
+        <Button title="Anterior"  onPress={() => navigation.navigate('Conductor')}/>
+        <Button title="Siguiente"  onPress={() => navigation.navigate('Infracción')}/>
+      </View>
     </View>
   );
 }
