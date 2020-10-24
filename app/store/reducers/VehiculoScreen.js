@@ -42,7 +42,7 @@ export const VehiculoScreen = (state = initialState, action) => {
                 ...state,
                 titular: action.data
             }
-        case 'onSetTipoDocumentoVehiculo':
+        case 'onChangeTipoDocumentoVehiculo':
             return {
                 ...state,
                 tipoDocumento: action.data

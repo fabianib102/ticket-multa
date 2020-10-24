@@ -36,9 +36,9 @@ export const onSetTitular = valueTitular => {
     }
 }
 
-export const onSetTipoDocumento = valueTipoDocumento => {
+export const onChangeTipoDocumento = valueTipoDocumento => {
     return {
-      type: "onSetTipoDocumentoVehiculo",
+      type: "onChangeTipoDocumentoVehiculo",
       data: valueTipoDocumento
     }
 }
