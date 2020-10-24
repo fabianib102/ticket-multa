@@ -1,49 +1,49 @@
 const initialState = {
-    nroLicencia: "",
-    classValue: "Seleccione Clase",
-    provinciaValue: "Provincia",
-    localidadValue: "Localidad",
-    provinceUnique: false,
-    detained: false,
-    expirationDate: ""
+    numero: "",
+    clase: "Seleccione Clase",
+    provincia: "Provincia",
+    localidad: "Localidad",
+    unicaProvincial: false,
+    retenida: false,
+    vencimiento: ""
 }
 
 export const LicenciaScreen = (state=initialState, action) => {
     switch (action.type){
-        case 'onChangeValueClass':
+        case 'onSetNumero':
             return {
                 ...state,
-                classValue: action.data
+                numero: action.data
             }
-        case 'onChangeValueProvince':
+        case 'onChangeClase':
             return {
                 ...state,
-                provinciaValue: action.data
+                clase: action.data
             }
-        case 'onChangeValueLocaly':
+        case 'onChangeProvincia':
             return {
                 ...state,
-                localidadValue: action.data
+                provincia: action.data
             }
-        case 'onSetExpirationDate':
+        case 'onChangeLocalidad':
             return {
                 ...state,
-                expirationDate: action.data
+                localidad: action.data
             }
-        case 'onSetNroLicencia':
+        case 'onSetUnicaProvincial':
             return {
                 ...state,
-                nroLicencia: action.data
+                unicaProvincial: !(state.unicaProvincial)
             }
-        case 'onSetProviceUnique':
+        case 'onSetRetenida':
             return {
                 ...state,
-                provinceUnique: !(state.provinceUnique)
+                retenida: !(state.retenida)
             }
-        case 'onSetDetained':
+        case 'onSetVencimiento':
             return {
                 ...state,
-                detained: !(state.detained)
+                vencimiento: action.data
             }
         default:
             return state
