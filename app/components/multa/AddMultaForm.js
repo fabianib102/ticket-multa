@@ -402,11 +402,12 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  btnSend: {
+  buttonContainer: {
     marginTop: 25,
     flex: 1,
-    flexDirection: "row-reverse",
     padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   textArea: {
     height: 100,
