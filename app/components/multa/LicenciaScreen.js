@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { connect } from 'react-redux'
 import { styles } from './AddMultaForm'
-import { Input, Button, CheckBox } from "react-native-elements";
+import { Input, Button, CheckBox, Text } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import { onChangeClase, onChangeLocalidad, onChangeProvincia, onSetNumero, onSetRetenida, onSetUnicaProvincial, onSetVencimiento } from "../../store/actions/LicenciaScreen";
 
@@ -36,8 +36,9 @@ function LicenciaScreen(props) {
 
   return (
     <View style={styles.viewForm}>
+      <Text h4>Licencia</Text>
       <Input
-        placeholder="Número de licencia"
+        placeholder="Número"
         containerStyle={styles.input}
         onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
       />
