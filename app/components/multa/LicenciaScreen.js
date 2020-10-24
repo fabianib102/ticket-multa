@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { styles } from './AddMultaForm'
 import { Input, Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
+import { onChangeClase, onChangeLocalidad, onChangeProvincia, onSetNumero, onSetRetenida, onSetUnicaProvincial, onSetVencimiento } from "../../store/actions/LicenciaScreen";
 
 function LicenciaScreen(props) {
   // console.log(props.LicenciaScreen)
@@ -16,19 +17,19 @@ function LicenciaScreen(props) {
   // const [detained, setDetained] = useState(false);
   // const [expirationDate, setExpiratioDate] = useState("");
 
-  /* const onChangeValueClass = (valueClass) => {
+  /* const onChangeClase = (valueClass) => {
     console.log("Este es el valor de la clase: ", valueClass);
     setSelectedClass(valueClass);
   }; */
 
-  // const onChangeValueClass = props.onChangeValueClass
+  // const onChangeClase = props.onChangeClase
 
-  /* const onChangeValueProvince = (valueProvince) => {
+  /* const onChangeProvincia = (valueProvince) => {
     console.log("Este es el valor de la provincia: ", valueProvince);
     setSelectedProvince(valueProvince);
   }; */
 
-  /* const onChangeValueLocaly = (valueLocalidad) => {
+  /* const onChangeLocalidad = (valueLocalidad) => {
     console.log("Este es el valor de la localidad: ", valueLocalidad);
     setSelectedLocalidad(valueLocalidad);
   }; */
@@ -36,16 +37,16 @@ function LicenciaScreen(props) {
   return (
     <View style={styles.viewForm}>
       <Input
-        placeholder="Licencia N°"
+        placeholder="Número de licencia"
         containerStyle={styles.input}
-        onChange={(e) => props.onSetNroLicencia(e.nativeEvent.text)}
+        onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
       />
 
       <Picker
-        selectedValue={lic.classValue}
-        onValueChange={(itemValue, itemIndex) => props.onChangeValueClass(itemValue)}
+        selectedValue={lic.clase}
+        onValueChange={(itemValue, itemIndex) => props.onChangeClase(itemValue)}
       >
-        <Picker.Item label="Seleccione Clase" value="" />
+        <Picker.Item label="Clase" value="" />
         <Picker.Item label="A1" value="A1" />
         <Picker.Item label="A2" value="A2" />
         <Picker.Item label="A3" value="A3" />
@@ -54,24 +55,33 @@ function LicenciaScreen(props) {
         <Picker.Item label="C1" value="C1" />
         <Picker.Item label="C2" value="C2" />
         <Picker.Item label="C3" value="C3" />
-        {/* //TODO: Falta completar */}
+        <Picker.Item label="D1" value="D1" />
+        <Picker.Item label="D2" value="D2" />
+        <Picker.Item label="D3" value="D3" />
+        <Picker.Item label="D4" value="D4" />
+        <Picker.Item label="E1" value="E1" />
+        <Picker.Item label="E2" value="E2" />
+        <Picker.Item label="F" value="F" />
+        <Picker.Item label="G1" value="G1" />
+        <Picker.Item label="G2" value="G2" />
+        <Picker.Item label="G3" value="G3" />
       </Picker>
 
       <Picker
-        selectedValue={lic.provinciaValue}
+        selectedValue={lic.provincia}
         onValueChange={(itemValue, itemIndex) =>
-          props.onChangeValueProvince(itemValue)
+          props.onChangeProvincia(itemValue)
         }
       >
-        <Picker.Item label="Seleccione Provincia" value="" />
+        <Picker.Item label="Provincia" value="" />
         <Picker.Item label="Chaco" value="Chaco" />
         <Picker.Item label="Corrientes" value="Corrientes" />
         <Picker.Item label="Misiones" value="Misiones" />
       </Picker>
 
       <Picker
-        selectedValue={lic.localidadValue}
-        onValueChange={(itemValue, itemIndex) => props.onChangeValueLocaly(itemValue)}
+        selectedValue={lic.localidad}
+        onValueChange={(itemValue, itemIndex) => props.onChangeLocalidad(itemValue)}
       >
         <Picker.Item label="Localidad" value="" />
         <Picker.Item label="Resistencia" value="Resistencia" />
@@ -83,71 +93,24 @@ function LicenciaScreen(props) {
 
       <CheckBox
         title="Única Provincial"
-        checked={lic.provinceUnique}
-        onPress={() => props.onSetProviceUnique()}
+        checked={lic.unicaProvincial}
+        onPress={() => props.onSetUnicaProvincial()}
       />
       <CheckBox
         title="Retenida?"
-        checked={lic.detained}
-        onPress={() => props.onSetDetained()}
+        checked={lic.retenida}
+        onPress={() => props.onSetRetenida()}
       />
 
       <Input
         placeholder="Vencimiento"
         containerStyle={styles.input}
-        onChange={(e) => props.onSetExpirationDate(e.nativeEvent.text)}
+        onChange={(e) => props.onSetVencimiento(e.nativeEvent.text)}
       />
 
       <Button title="Siguiente" containerStyle={styles.btnSend} onPress={() => navigation.navigate('Conductor')}/>
     </View>
   );
-}
-
-const onChangeValueClass = (valueClass) => {
-  return {
-    type: "onChangeValueClass",
-    data: valueClass
-  }
-};
-
-const onChangeValueProvince = (valueProvince) => {
-  return {
-    type: "onChangeValueProvince",
-    data: valueProvince
-  }
-};
-
-const onChangeValueLocaly = (valueLocalidad) => {
-  return {
-    type: "onChangeValueLocaly",
-    data: valueLocalidad
-  }
-};
-
-const onSetExpirationDate = (valueExpiration) => {
-  return {
-    type: "onSetExpirationDate",
-    data: valueExpiration
-  }
-}
-
-const onSetNroLicencia = (valueLicencia) => {
-  return {
-    type: "onSetNroLicencia",
-    data: valueLicencia
-  }
-}
-
-const onSetProviceUnique = () => {
-  return {
-    type: "onSetProviceUnique"
-  }
-}
-
-const onSetDetained = () => {
-  return {
-    type: "onSetDetained"
-  }
 }
 
 const mapStateToProps = (state) => {
@@ -158,17 +121,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      onChangeValueClass: (valueClass) => dispatch(onChangeValueClass(valueClass)),
-      onChangeValueProvince: (valueProvince) => dispatch(onChangeValueProvince(valueProvince)),
-      onChangeValueLocaly: (valueLocalidad) => dispatch(onChangeValueLocaly(valueLocalidad)),
-      onSetExpirationDate: (valueExpiration) => dispatch(onSetExpirationDate(valueExpiration)),
-      onSetNroLicencia: (valueLicencia) => dispatch(onSetNroLicencia(valueLicencia)),
-      onSetProviceUnique: () => dispatch(onSetProviceUnique()),
-      onSetDetained: () => dispatch(onSetDetained())
+      onChangeClase: (valueClass) => dispatch(onChangeClase(valueClass)),
+      onChangeProvincia: (valueProvince) => dispatch(onChangeProvincia(valueProvince)),
+      onChangeLocalidad: (valueLocalidad) => dispatch(onChangeLocalidad(valueLocalidad)),
+      onSetVencimiento: (valueExpiration) => dispatch(onSetVencimiento(valueExpiration)),
+      onSetNumero: (valueLicencia) => dispatch(onSetNumero(valueLicencia)),
+      onSetUnicaProvincial: () => dispatch(onSetUnicaProvincial()),
+      onSetRetenida: () => dispatch(onSetRetenida())
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LicenciaScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(LicenciaScreen)
