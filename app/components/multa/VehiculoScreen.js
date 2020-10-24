@@ -41,7 +41,7 @@ function VehiculoScreen({ navigation }) {
 
   return (
     <View style={styles.viewForm}>
-      <Text h4>Conductor</Text>
+      <Text h4>Vehículo</Text>
       <Input
         placeholder="Dominio"
         autoCapitalize="characters"
