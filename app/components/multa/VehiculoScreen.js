@@ -4,12 +4,10 @@ import { View, } from "react-native";
 import { Input, Text, Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import { styles } from "./AddMultaForm";
+import { onChangeTipo, onSetDominio, onSetMarca, onSetModelo } from "../../store/actions/VehiculoScreen";
 
-function VehiculoScreen({ navigation }) {
-  const [brandValue, setBrandValue] = useState("");
-  const [modelValue, setModelValue] = useState("");
-  const [domainValue, setDomainValue] = useState("");
-  const [typeValue, setTypeValue] = useState("");
+function VehiculoScreen(props) {
+  const {navigation, VehiculoScreen: vs} = props;
 
   const [titularValue, setTitular] = useState(false);
 
@@ -46,23 +44,24 @@ function VehiculoScreen({ navigation }) {
         placeholder="Dominio"
         autoCapitalize="characters"
         containerStyle={styles.input}
-        onChange={(e) => setDomainValue(e.nativeEvent.text)}
+        onChange={(e) => props.onSetDominio(e.nativeEvent.text)}
       />
       <Input
         placeholder="Marca"
+        autoCapitalize="words"
         containerStyle={styles.input}
-        onChange={(e) => setBrandValue(e.nativeEvent.text)}
+        onChange={(e) => props.onSetMarca(e.nativeEvent.text)}
       />
       <Input
         placeholder="Modelo"
+        autoCapitalize="words"
         containerStyle={styles.input}
-        onChange={(e) => setModelValue(e.nativeEvent.text)}
+        onChange={(e) => props.onSetModelo(e.nativeEvent.text)}
       />
       <Picker
-          selectedValue={"ACA FALTA HACER"}
+          selectedValue={vs.tipo}
           onValueChange={(itemValue, itemIndex) =>
-            //props.onSetSexo(itemValue)
-            void(0)
+            props.onChangeTipo(itemValue)
           }
         >
           {/* https://www.dnrpa.gov.ar/fabricantes/info/CODIGO_DEL_AUTOMOTOR.pdf */}
@@ -198,4 +197,17 @@ function VehiculoScreen({ navigation }) {
   );
 }
 
-export default VehiculoScreen;
+const mapStateToProps = state => {
+    console.log('%cESTADO DE VEHICULO SCREEN:' + JSON.stringify(state.VehiculoScreen), "color:green;")
+    return state
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetDominio: valueDominio => dispatch(onSetDominio(valueDominio)),
+        onSetMarca: valueMarca => dispatch(onSetMarca(valueMarca)),
+        onSetModelo: valueModelo => dispatch(onSetModelo(valueModelo)),
+        onChangeTipo: valueTipo => dispatch(onChangeTipo(valueTipo)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(VehiculoScreen);
