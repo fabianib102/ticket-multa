@@ -109,7 +109,10 @@ function LicenciaScreen(props) {
         onChange={(e) => props.onSetVencimiento(e.nativeEvent.text)}
       />
 
-      <Button title="Siguiente" containerStyle={styles.btnSend} onPress={() => navigation.navigate('Conductor')}/>
+      <View style={styles.buttonContainer}>
+        <Button title="Anterior" disabled/>
+        <Button title="Siguiente" onPress={() => navigation.navigate('Conductor')}/>
+      </View>
     </View>
   );
 }
