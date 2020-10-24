@@ -1,6 +1,5 @@
 import { createStore } from 'redux'
-import rootReducer from './reducers/'
-import { LicenciaScreen } from './reducers/LicenciaScreen'
+import rootReducer from './store/reducers'
 
 const store = createStore(rootReducer)
 
