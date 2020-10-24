@@ -1,77 +1,43 @@
-import React, {useState} from "react";
+import React from "react";
 import { connect } from 'react-redux'
-import { View, Text, Switch } from "react-native";
+import { View } from "react-native";
 import { styles } from './AddMultaForm'
-import { Input, Button } from "react-native-elements";
+import { Input, Button, Text } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
+import { onChangeValueLocalidad, onChangeValueProvincia, onChangeValueTipoDocumento, onSetApellido, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetFechaNacimiento, onSetNombre, onSetNroDocumento, onSetNumero, onSetPiso, onSetSexo } from "../../store/actions/ConductorScreen";
 
 function ConductorScreen(props) {
-    // console.log(props.ConductorScreen)
     const { navigation, ConductorScreen: cs } = props
 
-    const [surname, setSurname] = useState("");
-    const [name, setName] = useState("");
-    //False = Femenino, True = Masculino
-    const [switchValue, setSwitchValue] = useState(false);
-    const [sexValue, setSexValue] = useState("Femenino");
-    const toggleSwitch = (value) => {
-      setSwitchValue(value);
-      setSexValue(!value ? "Masculino" : "Femenino");
-      console.log("Valor del sexo: ", sexValue);
-    };
-  
-    // const [typeDocument, setTypeDocument] = useState("");
-    // const [documentValue, setDocumentValue] = useState("");
-    // const [birthDay, setBirthDay] = useState("");
-    // const [provinciaValue, setSelectedProvince] = useState("");
-    // const [localidadValue, setSelectedLocalidad] = useState("");
-    // const [streetValue, setStreetValue] = useState("");
-    // const [numberStreetValue, setNumberStreetValue] = useState("");
-    // const [appartmentValue, setAppartmentValue] = useState("");
-    // const [floorValue, setFloorValue] = useState("");
-    // const [postalCodeValue, setPostalCodeValue] = useState("");
-  
-    /* const onChangeValueTypeDocument = (valueType) => {
-      console.log("Este es el valor del tipo de DNI: ", valueType);
-      setTypeDocument(valueType);
-    }; */
-  
-    /* const onChangeValueProvince = (valueProvince) => {
-      console.log("Este es el valor de la provincia: ", valueProvince);
-      setSelectedProvince(valueProvince);
-    }; */
-  
-    /* const onChangeValueLocaly = (valueLocalidad) => {
-      console.log("Este es el valor de la localidad: ", valueLocalidad);
-      setSelectedLocalidad(valueLocalidad);
-    }; */
-  
     return (
       <View style={styles.viewForm}>
+        <Text h4>Conductor</Text>
         <Input
           placeholder="Apellido"
           containerStyle={styles.input}
-          onChange={(e) => setSurname(e.nativeEvent.text)}
+          onChange={(e) => props.onSetApellido(e.nativeEvent.text)}
         />
         <Input
           placeholder="Nombre"
           containerStyle={styles.input}
-          onChange={(e) => setName(e.nativeEvent.text)}
+          onChange={(e) => props.onSetNombre(e.nativeEvent.text)}
         />
   
-        <View style={styles.container}>
-          <Text>{switchValue ? "Sexo: Masculino" : "Sexo: Femenino"}</Text>
-          <Switch
-            style={{ marginTop: 10 }}
-            onValueChange={toggleSwitch}
-            value={switchValue}
-          />
-        </View>
+        <Picker
+          selectedValue={cs.sexo}
+          onValueChange={(itemValue, itemIndex) =>
+            props.onSetSexo(itemValue)
+          }
+        >
+          <Picker.Item label="Sexo" value="" />
+          <Picker.Item label="Masculino" value="Masculino" />
+          <Picker.Item label="Femenino" value="Femenino" />
+        </Picker>
   
         <Picker
-          selectedValue={cs.typeDocument}
+          selectedValue={cs.tipoDocumento}
           onValueChange={(itemValue, itemIndex) =>
-            props.onChangeValueTypeDocument(itemValue)
+            props.onChangeValueTipoDocumento(itemValue)
           }
         >
           <Picker.Item label="Tipo de documento" value="" />
@@ -82,33 +48,34 @@ function ConductorScreen(props) {
         </Picker>
   
         <Input
-          placeholder="Nro Documento"
+          placeholder="Número de documento"
+          keyboardType="numeric"
           containerStyle={styles.inputAddress}
-          onChange={(e) => props.onSetDocumentValue(e.nativeEvent.text)}
+          onChange={(e) => props.onSetNroDocumento(e.nativeEvent.text)}
         />
         <Input
-          placeholder="Fecha de Nacimiento"
+          placeholder="Fecha de nacimiento"
           containerStyle={styles.input}
-          onChange={(e) => props.onSetBirthDay(e.nativeEvent.text)}
+          onChange={(e) => props.onSetFechaNacimiento(e.nativeEvent.text)}
         />
   
         <Picker
-          selectedValue={cs.provinciaValue}
+          selectedValue={cs.provincia}
           onValueChange={(itemValue, itemIndex) =>
-            props.onChangeValueProvince(itemValue)
+            props.onChangeValueProvincia(itemValue)
           }
         >
-          <Picker.Item label="Seleccione Provincia" value="" />
+          <Picker.Item label="Provincia" value="" />
           <Picker.Item label="Chaco" value="Chaco" />
           <Picker.Item label="Corrientes" value="Corrientes" />
           <Picker.Item label="Misiones" value="Misiones" />
         </Picker>
   
         <Picker
-          selectedValue={cs.localidadValue}
-          onValueChange={(itemValue, itemIndex) => props.onChangeValueLocaly(itemValue)}
+          selectedValue={cs.localidad}
+          onValueChange={(itemValue, itemIndex) => props.onChangeValueLocalidad(itemValue)}
         >
-          <Picker.Item label="Seleccione Localidad" value="" />
+          <Picker.Item label="Localidad" value="" />
           <Picker.Item label="Resistencia" value="Resistencia" />
           <Picker.Item label="Barranqueras" value="Barranqueras" />
           <Picker.Item label="Vilelas" value="Vilelas" />
@@ -119,19 +86,20 @@ function ConductorScreen(props) {
         <Input
           placeholder="Calle"
           containerStyle={styles.input}
-          onChange={(e) => props.onSetStreetValue(e.nativeEvent.text)}
+          onChange={(e) => props.onSetCalle(e.nativeEvent.text)}
         />
   
         <View style={styles.row}>
           <Input
             placeholder="Número"
+            keyboardType="numeric"
             containerStyle={styles.inputAddress}
-            onChange={(e) => props.onSetNumberStreetValue(e.nativeEvent.text)}
+            onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
           />
           <Input
             placeholder="Departamento"
             containerStyle={styles.inputAddress}
-            onChange={(e) => props.onSetApartmentValue(e.nativeEvent.text)}
+            onChange={(e) => props.onSetDepartamento(e.nativeEvent.text)}
           />
         </View>
   
@@ -139,113 +107,44 @@ function ConductorScreen(props) {
           <Input
             placeholder="Piso"
             containerStyle={styles.inputAddress}
-            onChange={(e) => props.onSetFloorValue(e.nativeEvent.text)}
+            onChange={(e) => props.onSetPiso(e.nativeEvent.text)}
           />
           <Input
-            placeholder="Cod. Postal"
+            placeholder="Código postal"
             containerStyle={styles.inputAddress}
-            onChange={(e) => props.onSetPostalCodeValue(e.nativeEvent.text)}
+            onChange={(e) => props.onSetCodigoPostal(e.nativeEvent.text)}
           />
         </View>
-          
-        <Button title="Siguente" containerStyle={styles.btnSend} onPress={() => navigation.navigate('Vehículo')}/>
-  
+
+        <View style={styles.buttonContainer}>
+          <Button title="Anterior"  onPress={() => navigation.navigate('Licencia')}/>  
+          <Button title="Siguiente"  onPress={() => navigation.navigate('Vehículo')}/>
+        </View>
       </View>
     );
-  }
+}
 
-
-  const onChangeValueTypeDocument = (valueType) => {
-    return {
-        type: "onChangeValueTypeDocument",
-        data: valueType
-    }
-  };
-
-  const onChangeValueProvince = (valueProvince) => {
-    return {
-      type: "onChangeValueProvince",
-      data: valueProvince
-    }
-  };
-
-  const onChangeValueLocaly = (valueLocalidad) => {
-    return {
-      type: "onChangeValueLocaly",
-      data: valueLocalidad
-    }
-  };
-
-  const onSetDocumentValue = (valueDocumento) => {
-    return {
-      type: "onSetDocumentValue",
-      data: valueDocumento
-    }
-  }
-
-  const onSetBirthDay = (valueBDay) => {
-    return {
-      type: "onSetBirthDay",
-      data: valueBDay
-    }
-  }
-
-  const onSetStreetValue = (streetValue) => {
-    return {
-      type: "onSetStreetValue",
-      data: streetValue
-    }
-  }
-  
-  const onSetNumberStreetValue = (streetNumber) => {
-    return {
-      type: "onSetNumberStreetValue",
-      data: streetNumber
-    }
-  }
-
-  const onSetApartmentValue = (apartmentValue) => {
-    return {
-      type: "onSetApartmentValue",
-      data: apartmentValue
-    }
-  }
-
-  const onSetFloorValue = (floorValue) => {
-    return {
-      type: "onSetFloorValue",
-      data: floorValue
-    }
-  }
-
-  const onSetPostalCodeValue = (postalValue) => {
-    return {
-      type: "onSetPostalCodeValue",
-      data: postalValue
-    }
-  }
-
-  const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
     console.log('%cESTADO DE CONDUCTOR SCREEN:' + JSON.stringify(state.ConductorScreen), "color:green;")
     return state
-  }
+}
   
-  const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        onChangeValueTypeDocument: (valueType) => dispatch(onChangeValueTypeDocument(valueType)),
-        onChangeValueProvince: (valueProvince) => dispatch(onChangeValueProvince(valueProvince)),
-        onChangeValueLocaly: (valueLocalidad) => dispatch(onChangeValueLocaly(valueLocalidad)),
-        onSetDocumentValue: (valueDocumento) => dispatch(onSetDocumentValue(valueDocumento)),
-        onSetBirthDay: (valueBDay) => dispatch(onSetBirthDay(valueBDay)),
-        onSetStreetValue: (streetValue) => dispatch(onSetStreetValue(streetValue)),
-        onSetNumberStreetValue: (streetNumber) => dispatch(onSetNumberStreetValue(streetNumber)),
-        onSetApartmentValue: (apartmentValue) => dispatch(onSetApartmentValue(apartmentValue)),
-        onSetFloorValue: (floorValue) => dispatch(onSetFloorValue(floorValue)),
-        onSetPostalCodeValue: (postalValue) => dispatch(onSetPostalCodeValue(postalValue))
+        onChangeValueTipoDocumento: (valueType) => dispatch(onChangeValueTipoDocumento(valueType)),
+        onChangeValueProvincia: (valueProvince) => dispatch(onChangeValueProvincia(valueProvince)),
+        onChangeValueLocalidad: (valueLocalidad) => dispatch(onChangeValueLocalidad(valueLocalidad)),
+        onSetApellido: (valueApellido) => dispatch(onSetApellido(valueApellido)),
+        onSetNombre: (valueNombre) => dispatch(onSetNombre(valueNombre)),
+        onSetSexo: (valueSexo) => dispatch(onSetSexo(valueSexo)),
+        onSetNroDocumento: (valueDocumento) => dispatch(onSetNroDocumento(valueDocumento)),
+        onSetFechaNacimiento: (valueBDay) => dispatch(onSetFechaNacimiento(valueBDay)),
+        onSetCalle: (streetValue) => dispatch(onSetCalle(streetValue)),
+        onSetNumero: (streetNumber) => dispatch(onSetNumero(streetNumber)),
+        onSetDepartamento: (apartmentValue) => dispatch(onSetDepartamento(apartmentValue)),
+        onSetPiso: (floorValue) => dispatch(onSetPiso(floorValue)),
+        onSetCodigoPostal: (postalValue) => dispatch(onSetCodigoPostal(postalValue))
     }
-  }
+}
   
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ConductorScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ConductorScreen)

@@ -1,67 +1,85 @@
 const initialState = {
-    typeDocument: "",
-    documentValue: "",
-    birthDay: "",
-    provinciaValue: "",
-    localidadValue: "",
-    streetValue: "",
-    numberStreetValue: "",
-    appartmentValue: "",
-    floorValue: "",
-    postalCodeValue: ""
+    apellido: "",
+    nombre: "",
+    sexo: "",
+    tipoDocumento: "",
+    nroDocumento: "",
+    fechaNacimiento: "",
+    provincia: "",
+    localidad: "",
+    calle: "",
+    numero: "",
+    departamento: "",
+    piso: "",
+    codigoPostal: ""
 }
 
 export const ConductorScreen = (state = initialState, action) => {
     switch (action.type){
-        case 'onChangeValueTypeDocument':
+        case 'onSetApellido':
             return {
                 ...state,
-                typeDocument: action.data
+                apellido: action.data
             }
-        case 'onChangeValueProvince':
+        case 'onSetNombre':
             return {
                 ...state,
-                provinciaValue: action.data
+                nombre: action.data
             }
-        case 'onChangeValueLocaly':
+        case 'onSetSexo':
             return {
                 ...state,
-                localidadValue: action.data
+                sexo: action.data
             }
-        case 'onSetDocumentValue':
+        case 'onChangeValueTipoDocumento':
             return {
                 ...state,
-                documentValue: action.data
+                tipoDocumento: action.data
             }
-        case 'onSetBirthDay':
+        case 'onChangeValueProvincia':
             return {
                 ...state,
-                birthDay: action.data
+                provincia: action.data
             }
-        case 'onSetStreetValue':
+        case 'onChangeValueLocalidad':
             return {
                 ...state,
-                streetValue: action.data
+                localidad: action.data
             }
-        case 'onSetNumberStreetValue':
+        case 'onSetNroDocumento':
             return {
                 ...state,
-                numberStreetValue: action.data
+                nroDocumento: action.data
             }
-        case 'onSetApartmentValue':
+        case 'onSetFechaNacimiento':
             return {
                 ...state,
-                appartmentValue: action.data
+                fechaNacimiento: action.data
             }
-        case 'onSetFloorValue':
+        case 'onSetCalle':
             return {
                 ...state,
-                floorValue: action.data
+                calle: action.data
             }
-        case 'onSetPostalCodeValue':
+        case 'onSetNumero':
             return {
                 ...state,
-                postalCodeValue: action.data
+                numero: action.data
+            }
+        case 'onSetDepartamento':
+            return {
+                ...state,
+                departamento: action.data
+            }
+        case 'onSetPiso':
+            return {
+                ...state,
+                piso: action.data
+            }
+        case 'onSetCodigoPostal':
+            return {
+                ...state,
+                codigoPostal: action.data
             }
         default:
             return state
