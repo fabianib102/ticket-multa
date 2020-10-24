@@ -8,6 +8,8 @@ import store from "../../store";
 import LicenciaScreen from "./LicenciaScreen";
 import ConductorScreen from "./ConductorScreen";
 import VehiculoScreen from "./VehiculoScreen";
+import firebase from '../../utils/firebase';
+import * as ImagePicker from 'expo-image-picker';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -188,6 +190,44 @@ function MyTabs() {
 } */
 
 function InfraccionScreen() {
+
+  const guardarMulta = () => {
+    console.log('INTENTO DE GUARDADO');
+    firebase.firestore().collection('prueba').add({
+      name: 'probando',
+      email: 'probando@probando.com',
+      mobile: 'alguno',
+    }).then((res) => {
+      console.log(res)
+    });
+  }
+
+  const clickCamara = async () => {
+    try{
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  /* const clickGaleria = async () => {
+    try{
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+    } catch(err) {
+      console.log(err)
+    }
+  } */
+
   return (
     <View style={styles.viewForm}>
       <View style={{ flexDirection: "row" }}>
@@ -216,7 +256,9 @@ function InfraccionScreen() {
         multiline={true}
       />
 
-      <Button title="Guardar" containerStyle={styles.btnSend} />
+      <Button title="Guardar" containerStyle={styles.btnSend} onPress={guardarMulta} />
+      <Button title="Cámara" containerStyle={styles.btnSend} onPress={clickCamara} />
+      {/* <Button title="Galería" containerStyle={styles.btnSend} onPress={clickGaleria} /> */}
     </View>
   );
 }
