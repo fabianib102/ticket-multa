@@ -180,7 +180,6 @@ function VehiculoScreen(props) {
 }
 
 const mapStateToProps = state => {
-    console.log('%cESTADO DE VEHICULO SCREEN:' + JSON.stringify(state.VehiculoScreen), "color:green;")
     return state
 }
 

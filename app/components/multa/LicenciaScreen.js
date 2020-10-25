@@ -119,8 +119,6 @@ function LicenciaScreen(props) {
 }
 
 const mapStateToProps = (state) => {
-  console.log('%cESTADO DE LICENCIA SCREEN:' + JSON.stringify(state.LicenciaScreen), "color:yellow;")
-  // console.log('%cESTADO DE CONDUCTOR SCREEN:' + JSON.stringify(state.ConductorScreen), "color:green;")
   return state
 }
 

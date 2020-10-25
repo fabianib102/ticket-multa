@@ -125,7 +125,6 @@ function ConductorScreen(props) {
 }
 
 const mapStateToProps = (state) => {
-    console.log('%cESTADO DE CONDUCTOR SCREEN:' + JSON.stringify(state.ConductorScreen), "color:green;")
     return state
 }
   
