@@ -19,49 +19,65 @@ function InfraccionScreen(props) {
         // DESPUES GUARDAR LAS FOTOS EN STORAGE EN UNA CARPETA CUYO NOMBRE ES EL ID DE LA MULTA
         // Y DESPUES GUARDAR LAS URLS DE LAS FOTOS EN LA MULTA
         setCargando(true);
-        firebase.firestore().collection("multas").add({
-            ubicacion: {
-                fecha: date.toLocaleDateString(),
-                hora: date.toLocaleTimeString(),
-                lugar: is.lugar,
-            },
-            licencia: {
-                ...ls,
-                pais: "Argentina",
-                departamento: "San Fernando",
-            },
-            conductor: {
-                ...cs,
-                pais: "Argentina",
-            },
-            vehiculo: {
-                ...vs,
-            },
-            infraccion: {
-                codigo: is.codigo,
-                articulo: is.articulo,
-                inciso: is.inciso,
-                extracto: is.extracto,
-                observaciones: is.observaciones,
-            },
-            vencimientos: {
-                fechaPrimerVencimiento: "",
-                fechaSegundoVencimiento: "",
-                montoPrimerVencimiento: is.montoPrimerVencimiento,
-                montoSegundoVencimiento: is.montoSegundoVencimiento,
-            },
-            fotos: [],
-            estado: "No resuelta",
-            razon: "",
-            idInspector: firebase.auth().currentUser.uid,
-            idSupervisor: "",
-        }).then(response => {
-            console.log(response);
-            setCargando(false);
-        }).catch(error => {
-            console.log(error);
-            setCargando(false);
-        });
+        // firebase.firestore().collection("multas").add({
+        //     ubicacion: {
+        //         fecha: date.toLocaleDateString(),
+        //         hora: date.toLocaleTimeString(),
+        //         lugar: is.lugar,
+        //     },
+        //     licencia: {
+        //         ...ls,
+        //         pais: "Argentina",
+        //         departamento: "San Fernando",
+        //     },
+        //     conductor: {
+        //         ...cs,
+        //         pais: "Argentina",
+        //     },
+        //     vehiculo: {
+        //         ...vs,
+        //     },
+        //     infraccion: {
+        //         codigo: is.codigo,
+        //         articulo: is.articulo,
+        //         inciso: is.inciso,
+        //         extracto: is.extracto,
+        //         observaciones: is.observaciones,
+        //     },
+        //     vencimientos: {
+        //         fechaPrimerVencimiento: "",
+        //         fechaSegundoVencimiento: "",
+        //         montoPrimerVencimiento: is.montoPrimerVencimiento,
+        //         montoSegundoVencimiento: is.montoSegundoVencimiento,
+        //     },
+        //     fotos: [],
+        //     estado: "No resuelta",
+        //     razon: "",
+        //     idInspector: firebase.auth().currentUser.uid,
+        //     idSupervisor: "",
+        // }).then(response => {
+            let storageRef = firebase.storage().ref().child("multas");
+            let fotosURL = [];
+            storageRef.child("a.jpg").put(is.fotos[0])
+                .then(snapshot => {
+                    storageRef.child("a.jpg").getDownloadURL()
+                        .then(url => {
+                            console.log("DOWNLOAD URL");
+                            console.log(url);
+                        }).catch(error => {
+                            console.log("ERROR EN DOWNLOADURL");
+                            console.log(error);
+                        })
+                }).catch(error => {
+                    console.log("ERROR EN PUT");
+                    console.log(error);
+                    setCargando(false);
+                });
+        //     setCargando(false);
+        // }).catch(error => {
+        //     console.log(error);
+        //     setCargando(false);
+        // });
     }
   
     const clickCamara = async () => {
@@ -154,12 +170,8 @@ function InfraccionScreen(props) {
             <View style={styles.imageList}>
                 {props.InfraccionScreen.fotos.map(dest => {
                     return (
-                        <TouchableNativeFeedback onPress={() => props.onDeleteFoto(dest)}>
-                            <Image
-                                source={{uri: dest.uri}}
-                                key={dest.uri}
-                                style={styles.imageItem} 
-                            />
+                        <TouchableNativeFeedback key={dest.uri} onPress={() => props.onDeleteFoto(dest)}>
+                            <Image source={{uri: dest.uri}} style={styles.imageItem} />
                         </TouchableNativeFeedback>
                     )
                 })}
@@ -176,7 +188,6 @@ function InfraccionScreen(props) {
 }
 
 const mapStateToProps = state => {
-    console.log('%cESTADO DE INFRACCION SCREEN:' + JSON.stringify(state.InfraccionScreen), "color:green;")
     return state
 }
 
