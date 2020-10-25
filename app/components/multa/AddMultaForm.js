@@ -81,4 +81,14 @@ export const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
   },
+  imageList: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+  imageItem: {
+    height: 50,
+    width: 100,
+    margin: 5,
+  },
 });

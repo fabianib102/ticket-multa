@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image } from "react-native";
+import { View, Image, TouchableNativeFeedback } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { Button, Input, Text } from "react-native-elements";
 import firebase from '../../utils/firebase';
@@ -7,14 +7,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
-import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetPhoto } from "../../store/actions/InfraccionScreen";
+import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto } from "../../store/actions/InfraccionScreen";
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [cargando, setCargando] = useState(false);
 
     const guardarMulta = () => {
-        console.log('INTENTO DE GUARDADO');
         const date = new Date();
         // GUARDAR PRIMERO LA MULTA
         // DESPUES GUARDAR LAS FOTOS EN STORAGE EN UNA CARPETA CUYO NOMBRE ES EL ID DE LA MULTA
@@ -64,8 +63,6 @@ function InfraccionScreen(props) {
             setCargando(false);
         });
     }
-
-    // const photoArr = []
   
     const clickCamara = async () => {
         try {
@@ -77,21 +74,12 @@ function InfraccionScreen(props) {
                 quality: 1,
             });
             if(!result.cancelled){
-                /* console.log(result)
-                photoArr.push(result)
-                console.log('SE VA A LOGGEAR PHOTOARR')
-                console.log(photoArr) */
-                console.log('INTENTO DE PUSHEO A PHOTOARR')
-                // props.InfraccionScreen.photoArr.push(result)
-                props.onSetPhoto(result)
+                props.onSetFoto(result)
             }
         } catch(err) {
             console.log(err)
         }
     }
-
-    console.log('SE VAN A LOGGEAR LAS PROPS DE INFRACCIONSCREEN')
-    console.log(props)
   
     return (
         <View style={styles.viewForm}>
@@ -163,27 +151,19 @@ function InfraccionScreen(props) {
                 onChange={e => props.onSetMontoSegundoVencimiento(e.nativeEvent.text)}
             />
 
-            {/* {props.InfraccionScreen.photoArr.map((x)=>(
-                <View>
-                    <Image source={x.uri || 'whatever you want' } style={{xx:"xx"}} />
-                </View>
-            ))} */}
-
-            <View>
-                {props.InfraccionScreen.photoArr.map(dest => {
-                    return <Image 
-                            source={{uri:dest.uri}}
-                            key={dest.uri}
-                            style={{height: 50, width: 100}} 
+            <View style={styles.imageList}>
+                {props.InfraccionScreen.fotos.map(dest => {
+                    return (
+                        <TouchableNativeFeedback onPress={() => props.onDeleteFoto(dest)}>
+                            <Image
+                                source={{uri: dest.uri}}
+                                key={dest.uri}
+                                style={styles.imageItem} 
                             />
+                        </TouchableNativeFeedback>
+                    )
                 })}
             </View>
-
-            {/* <View>
-                {props.InfraccionScreen.photoArr.map(dest => {
-                    return <Text>{dest.uri}</Text>
-                })}
-            </View> */}
 
             <Button title="Agregar foto" containerStyle={styles.btnSend} onPress={clickCamara} />
 
@@ -210,7 +190,8 @@ const mapDispatchToProps = dispatch => {
         onSetObservaciones: valueObservaciones => dispatch(onSetObservaciones(valueObservaciones)),
         onSetMontoPrimerVencimiento: valueMontoPrimerVencimiento => dispatch(onSetMontoPrimerVencimiento(valueMontoPrimerVencimiento)),
         onSetMontoSegundoVencimiento: valueMontoSegundoVencimiento => dispatch(onSetMontoSegundoVencimiento(valueMontoSegundoVencimiento)),
-        onSetPhoto: newPhoto => dispatch(onSetPhoto(newPhoto))
+        onSetFoto: newFoto => dispatch(onSetFoto(newFoto)),
+        onDeleteFoto: foto => dispatch(onDeleteFoto(foto)),
     }
 }
 

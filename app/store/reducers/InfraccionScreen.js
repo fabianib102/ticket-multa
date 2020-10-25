@@ -7,7 +7,7 @@ const initialState = {
     observaciones: "",
     montoPrimerVencimiento: "",
     montoSegundoVencimiento: "",
-    photoArr: []
+    fotos: []
 }
 
 export const InfraccionScreen = (state = initialState, action) => {
@@ -54,10 +54,15 @@ export const InfraccionScreen = (state = initialState, action) => {
                 ...state,
                 montoSegundoVencimiento: action.data,
             };
-        case "onSetPhoto":
+        case "onSetFoto":
             return {
                 ...state,
-                photoArr: state.photoArr.concat(action.data)
+                fotos: state.fotos.concat(action.data)
+            };
+        case "onDeleteFoto":
+            return {
+                ...state,
+                fotos: state.fotos.filter(foto => foto !== action.data)
             };
         default:
             return state;

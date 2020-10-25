@@ -54,9 +54,16 @@ export const onSetMontoSegundoVencimiento = valueMontoSegundoVencimiento => {
     }
 }
 
-export const onSetPhoto = newPhoto => {
+export const onSetFoto = newFoto => {
     return {
-        type: "onSetPhoto",
-        data: newPhoto,
+        type: "onSetFoto",
+        data: newFoto,
+    }
+}
+
+export const onDeleteFoto = foto => {
+    return {
+        type: "onDeleteFoto",
+        data: foto,
     }
 }
