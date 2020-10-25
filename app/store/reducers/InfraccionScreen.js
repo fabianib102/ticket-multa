@@ -11,8 +11,6 @@ const initialState = {
 }
 
 export const InfraccionScreen = (state = initialState, action) => {
-    console.log('SE VA A LOGGEAR STATE')
-    console.log(state)
     switch (action.type) {
         case "onSetLugar":
             return {
