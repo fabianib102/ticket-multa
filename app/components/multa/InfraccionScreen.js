@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { Button, Input, Text } from "react-native-elements";
@@ -6,19 +6,62 @@ import firebase from '../../utils/firebase';
 import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
+import Loading from "../Loading";
 import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones } from "../../store/actions/InfraccionScreen";
 
 function InfraccionScreen(props) {
-    const {navigation, InfraccionScreen: is} = props;
+    const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
+    const [cargando, setCargando] = useState(false);
 
     const guardarMulta = () => {
         console.log('INTENTO DE GUARDADO');
-        firebase.firestore().collection('prueba').add({
-            name: 'probando',
-            email: 'probando@probando.com',
-            mobile: 'alguno',
-        }).then((res) => {
-            console.log(res)
+        const date = new Date();
+        // GUARDAR PRIMERO LA MULTA
+        // DESPUES GUARDAR LAS FOTOS EN STORAGE EN UNA CARPETA CUYO NOMBRE ES EL ID DE LA MULTA
+        // Y DESPUES GUARDAR LAS URLS DE LAS FOTOS EN LA MULTA
+        setCargando(true);
+        firebase.firestore().collection("multas").add({
+            ubicacion: {
+                fecha: date.toLocaleDateString(),
+                hora: date.toLocaleTimeString(),
+                lugar: is.lugar,
+            },
+            licencia: {
+                ...ls,
+                pais: "Argentina",
+                departamento: "San Fernando",
+            },
+            conductor: {
+                ...cs,
+                pais: "Argentina",
+            },
+            vehiculo: {
+                ...vs,
+            },
+            infraccion: {
+                codigo: is.codigo,
+                articulo: is.articulo,
+                inciso: is.inciso,
+                extracto: is.extracto,
+                observaciones: is.observaciones,
+            },
+            vencimientos: {
+                fechaPrimerVencimiento: "",
+                fechaSegundoVencimiento: "",
+                montoPrimerVencimiento: is.montoPrimerVencimiento,
+                montoSegundoVencimiento: is.montoSegundoVencimiento,
+            },
+            fotos: [],
+            estado: "No resuelta",
+            razon: "",
+            idInspector: "OBTENER EL ID DEL INSPECTOR",
+            idSupervisor: "",
+        }).then(response => {
+            console.log(response);
+            setCargando(false);
+        }).catch(error => {
+            console.log(error);
+            setCargando(false);
         });
     }
   
@@ -39,6 +82,7 @@ function InfraccionScreen(props) {
         <View style={styles.viewForm}>
             <Text h4>Infracción</Text>
 
+            {cargando && <Loading isVisible text="Guardando multa" />}
             <Input
                 placeholder="Lugar de constatación"
                 containerStyle={styles.input}
@@ -90,11 +134,26 @@ function InfraccionScreen(props) {
                 onChange={e => props.onSetObservaciones(e.nativeEvent.text)}
             />
 
+            <Input
+                placeholder="Monto del primer vencimiento"
+                containerStyle={styles.input}
+                keyboardType="numeric"
+                onChange={e => props.onSetMontoPrimerVencimiento(e.nativeEvent.text)}
+            />
+
+            <Input
+                placeholder="Monto del segundo vencimiento"
+                containerStyle={styles.input}
+                keyboardType="numeric"
+                onChange={e => props.onSetMontoSegundoVencimiento(e.nativeEvent.text)}
+            />
+
+            <Button title="Agregar foto" containerStyle={styles.btnSend} onPress={clickCamara} />
+
             <View style={styles.buttonContainer}>
                 <Button title="Anterior" onPress={() => navigation.navigate('Vehículo')} />
                 <Button title="Guardar" onPress={guardarMulta} />
             </View>
-            <Button title="Cámara" containerStyle={styles.btnSend} onPress={clickCamara} />
         </View>
     );
 }
