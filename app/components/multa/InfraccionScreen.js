@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { Button, Input, Text } from "react-native-elements";
 import firebase from '../../utils/firebase';
@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
-import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones } from "../../store/actions/InfraccionScreen";
+import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetPhoto } from "../../store/actions/InfraccionScreen";
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
@@ -64,19 +64,34 @@ function InfraccionScreen(props) {
             setCargando(false);
         });
     }
+
+    // const photoArr = []
   
     const clickCamara = async () => {
         try {
             let result = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
+                allowsEditing: false,
+                allowsMultipleSelection: true,
                 aspect: [4, 3],
                 quality: 1,
             });
+            if(!result.cancelled){
+                /* console.log(result)
+                photoArr.push(result)
+                console.log('SE VA A LOGGEAR PHOTOARR')
+                console.log(photoArr) */
+                console.log('INTENTO DE PUSHEO A PHOTOARR')
+                // props.InfraccionScreen.photoArr.push(result)
+                props.onSetPhoto(result)
+            }
         } catch(err) {
             console.log(err)
         }
     }
+
+    console.log('SE VAN A LOGGEAR LAS PROPS DE INFRACCIONSCREEN')
+    console.log(props)
   
     return (
         <View style={styles.viewForm}>
@@ -148,6 +163,28 @@ function InfraccionScreen(props) {
                 onChange={e => props.onSetMontoSegundoVencimiento(e.nativeEvent.text)}
             />
 
+            {/* {props.InfraccionScreen.photoArr.map((x)=>(
+                <View>
+                    <Image source={x.uri || 'whatever you want' } style={{xx:"xx"}} />
+                </View>
+            ))} */}
+
+            <View>
+                {props.InfraccionScreen.photoArr.map(dest => {
+                    return <Image 
+                            source={{uri:dest.uri}}
+                            key={dest.uri}
+                            style={{height: 50, width: 100}} 
+                            />
+                })}
+            </View>
+
+            {/* <View>
+                {props.InfraccionScreen.photoArr.map(dest => {
+                    return <Text>{dest.uri}</Text>
+                })}
+            </View> */}
+
             <Button title="Agregar foto" containerStyle={styles.btnSend} onPress={clickCamara} />
 
             <View style={styles.buttonContainer}>
@@ -173,6 +210,7 @@ const mapDispatchToProps = dispatch => {
         onSetObservaciones: valueObservaciones => dispatch(onSetObservaciones(valueObservaciones)),
         onSetMontoPrimerVencimiento: valueMontoPrimerVencimiento => dispatch(onSetMontoPrimerVencimiento(valueMontoPrimerVencimiento)),
         onSetMontoSegundoVencimiento: valueMontoSegundoVencimiento => dispatch(onSetMontoSegundoVencimiento(valueMontoSegundoVencimiento)),
+        onSetPhoto: newPhoto => dispatch(onSetPhoto(newPhoto))
     }
 }
 

@@ -7,9 +7,12 @@ const initialState = {
     observaciones: "",
     montoPrimerVencimiento: "",
     montoSegundoVencimiento: "",
+    photoArr: []
 }
 
 export const InfraccionScreen = (state = initialState, action) => {
+    console.log('SE VA A LOGGEAR STATE')
+    console.log(state)
     switch (action.type) {
         case "onSetLugar":
             return {
@@ -50,6 +53,11 @@ export const InfraccionScreen = (state = initialState, action) => {
             return {
                 ...state,
                 montoSegundoVencimiento: action.data,
+            };
+        case "onSetPhoto":
+            return {
+                ...state,
+                photoArr: state.photoArr.concat(action.data)
             };
         default:
             return state;
