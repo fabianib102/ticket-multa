@@ -54,7 +54,7 @@ function InfraccionScreen(props) {
             fotos: [],
             estado: "No resuelta",
             razon: "",
-            idInspector: "OBTENER EL ID DEL INSPECTOR",
+            idInspector: firebase.auth().currentUser.uid,
             idSupervisor: "",
         }).then(response => {
             console.log(response);
