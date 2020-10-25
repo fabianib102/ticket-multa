@@ -3,7 +3,9 @@ import Navig from './app/navigations/Navigation';
 
 function App() {
 
-  return <Navig/>;
+  return (
+    <Navig/>
+  )
 }
 
 export default App;
