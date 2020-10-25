@@ -13,6 +13,40 @@ function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [cargando, setCargando] = useState(false);
 
+    const uriToBlob = (uri) => {  
+        return new Promise((resolve, reject) => {    
+            const xhr = new XMLHttpRequest();    
+            xhr.onload = () => {
+                // Devolvemos el blob
+                resolve(xhr.response);
+            };
+            xhr.onerror = () => {
+                reject(new Error('uriToBlob Falló'));
+            };
+            xhr.responseType = 'blob';    
+            xhr.open('GET', uri, true);
+            xhr.send(null);  
+        });
+    }
+
+
+    const uploadToFirebase = (blob) => {  
+        return new Promise((resolve, reject)=>{    
+            var storageRef = firebase.storage().ref();    
+            storageRef.child('multas/multa3.jpg').put(blob, {
+                contentType: 'image/jpeg'
+            })
+            .then((snapshot)=>{
+                blob.close();
+                resolve(snapshot);
+            })
+            .catch((error)=> {
+                reject(error);
+            });  
+        });
+    }
+
+
     const guardarMulta = () => {
         const date = new Date();
         // GUARDAR PRIMERO LA MULTA
@@ -56,7 +90,23 @@ function InfraccionScreen(props) {
         //     idInspector: firebase.auth().currentUser.uid,
         //     idSupervisor: "",
         // }).then(response => {
-            let storageRef = firebase.storage().ref().child("multas");
+
+
+
+
+
+            uriToBlob(props.InfraccionScreen.fotos[0].uri).then((objeto) => {
+                const blob = objeto;
+                console.log('SE VA A LOGGEAR BLOB')
+                console.log(blob)
+                uploadToFirebase(blob)
+                .catch((err) => {
+                    console.log('ALGO SE ROMPIÓ')
+                    console.log(err)
+                });
+            });
+
+            /* let storageRef = firebase.storage().ref().child("multas");
             let fotosURL = [];
             storageRef.child("a.jpg").put(is.fotos[0])
                 .then(snapshot => {
@@ -72,7 +122,10 @@ function InfraccionScreen(props) {
                     console.log("ERROR EN PUT");
                     console.log(error);
                     setCargando(false);
-                });
+                }); */
+
+
+
         //     setCargando(false);
         // }).catch(error => {
         //     console.log(error);
