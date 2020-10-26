@@ -29,108 +29,106 @@ function InfraccionScreen(props) {
         });
     }
 
-
-    const uploadToFirebase = (blob) => {  
-        return new Promise((resolve, reject)=>{    
-            var storageRef = firebase.storage().ref();    
-            storageRef.child('multas/multa3.jpg').put(blob, {
+    const uploadToFirebase = (blob, folder, fileName) => {
+        const path = "multas/" + folder + "/" + fileName + ".jpg";
+        return new Promise((resolve, reject) => {
+            var storageRef = firebase.storage().ref();
+            storageRef.child(path).put(blob, {
                 contentType: 'image/jpeg'
             })
-            .then((snapshot)=>{
+            .then(snapshot => {
+                storageRef.child(path).getDownloadURL()
+                    .then(url => {
+                        console.log("DOWNLOAD URL");
+                        console.log(url);
+                        resolve(url);
+                    }).catch(error => {
+                        console.log("ERROR EN GETDOWNLOADURL");
+                        console.log(error);
+                    })
                 blob.close();
-                resolve(snapshot);
+                // resolve(snapshot);
             })
-            .catch((error)=> {
+            .catch(error => {
+                console.log("ERROR AL SUBIR LA IMAGEN A STORAGE");
                 reject(error);
-            });  
+            });
         });
     }
 
-
     const guardarMulta = () => {
         const date = new Date();
-        // GUARDAR PRIMERO LA MULTA
-        // DESPUES GUARDAR LAS FOTOS EN STORAGE EN UNA CARPETA CUYO NOMBRE ES EL ID DE LA MULTA
-        // Y DESPUES GUARDAR LAS URLS DE LAS FOTOS EN LA MULTA
+        let fotosURL = [];
         setCargando(true);
-        // firebase.firestore().collection("multas").add({
-        //     ubicacion: {
-        //         fecha: date.toLocaleDateString(),
-        //         hora: date.toLocaleTimeString(),
-        //         lugar: is.lugar,
-        //     },
-        //     licencia: {
-        //         ...ls,
-        //         pais: "Argentina",
-        //         departamento: "San Fernando",
-        //     },
-        //     conductor: {
-        //         ...cs,
-        //         pais: "Argentina",
-        //     },
-        //     vehiculo: {
-        //         ...vs,
-        //     },
-        //     infraccion: {
-        //         codigo: is.codigo,
-        //         articulo: is.articulo,
-        //         inciso: is.inciso,
-        //         extracto: is.extracto,
-        //         observaciones: is.observaciones,
-        //     },
-        //     vencimientos: {
-        //         fechaPrimerVencimiento: "",
-        //         fechaSegundoVencimiento: "",
-        //         montoPrimerVencimiento: is.montoPrimerVencimiento,
-        //         montoSegundoVencimiento: is.montoSegundoVencimiento,
-        //     },
-        //     fotos: [],
-        //     estado: "No resuelta",
-        //     razon: "",
-        //     idInspector: firebase.auth().currentUser.uid,
-        //     idSupervisor: "",
-        // }).then(response => {
-
-
-
-
-
-            uriToBlob(props.InfraccionScreen.fotos[0].uri).then((objeto) => {
-                const blob = objeto;
-                console.log('SE VA A LOGGEAR BLOB')
-                console.log(blob)
-                uploadToFirebase(blob)
-                .catch((err) => {
-                    console.log('ALGO SE ROMPIÓ')
-                    console.log(err)
-                });
-            });
-
-            /* let storageRef = firebase.storage().ref().child("multas");
-            let fotosURL = [];
-            storageRef.child("a.jpg").put(is.fotos[0])
-                .then(snapshot => {
-                    storageRef.child("a.jpg").getDownloadURL()
-                        .then(url => {
-                            console.log("DOWNLOAD URL");
-                            console.log(url);
-                        }).catch(error => {
-                            console.log("ERROR EN DOWNLOADURL");
-                            console.log(error);
-                        })
+        firebase.firestore().collection("multas").add({
+            ubicacion: {
+                fecha: date.toLocaleDateString(),
+                hora: date.toLocaleTimeString(),
+                lugar: is.lugar,
+            },
+            licencia: {
+                ...ls,
+                pais: "Argentina",
+                departamento: "San Fernando",
+            },
+            conductor: {
+                ...cs,
+                pais: "Argentina",
+            },
+            vehiculo: {
+                ...vs,
+            },
+            infraccion: {
+                codigo: is.codigo,
+                articulo: is.articulo,
+                inciso: is.inciso,
+                extracto: is.extracto,
+                observaciones: is.observaciones,
+            },
+            vencimientos: {
+                fechaPrimerVencimiento: "",
+                fechaSegundoVencimiento: "",
+                montoPrimerVencimiento: is.montoPrimerVencimiento,
+                montoSegundoVencimiento: is.montoSegundoVencimiento,
+            },
+            fotos: [],
+            estado: "No resuelta",
+            razon: "",
+            idInspector: firebase.auth().currentUser.uid,
+            idSupervisor: "",
+        }).then(response => {
+            // ESTE URI TO BLOB HAY QUE ITERAR POR CADA FOTO
+            uriToBlob(props.InfraccionScreen.fotos[0].uri)
+                .then(objeto => {
+                    const blob = objeto;
+                    console.log('SE VA A LOGGEAR BLOB')
+                    console.log(blob)
+                    uploadToFirebase(blob, response.id, "1")
+                        .then(downloadURL => {
+                            fotosURL = [...fotosURL, downloadURL];
+                            firebase.firestore().collection("multas").doc(response.id).update({
+                                fotos: fotosURL,
+                            }).then(response => {
+                                console.log("TODO ANDUVO SIN ERRORES");
+                                // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
+                                setCargando(false);
+                            }).catch(error => {
+                                console.log("ERROR AL UPDATEAR LA MULTA");
+                                console.log(error);
+                            });
+                        }).catch((err) => {
+                            console.log('ERROR EN UPLOADTOFIREBASE')
+                            console.log(err)
+                        });
                 }).catch(error => {
-                    console.log("ERROR EN PUT");
+                    console.log("ERROR EN URITOBLOB");
                     console.log(error);
-                    setCargando(false);
-                }); */
-
-
-
-        //     setCargando(false);
-        // }).catch(error => {
-        //     console.log(error);
-        //     setCargando(false);
-        // });
+                });
+        }).catch(error => {
+            console.log("ERROR AL CARGAR LA MULTA");
+            console.log(error);
+            setCargando(false);
+        });
     }
   
     const clickCamara = async () => {
