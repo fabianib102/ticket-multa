@@ -64,10 +64,10 @@ function InfraccionScreen(props) {
 
     // agarra un array de fotos, las manipula, las sube a storage y devuelve un array con las download url
     // ESTA ES LA FUNCION QUE NO ANDA
-    const uploadMultipleFilesToFirebase = async (files, folderName) => {
+    const uploadMultipleFilesToFirebase = (files, folderName) => {
         let urls = [];
-        await Promise.all(files.map(async (foto, index) => {
-            uriToBlob(foto.uri)
+        return new Promise.all(files.map(async (foto, index) => {
+            await uriToBlob(foto.uri)
                 .then(objeto => {
                     const blob = objeto;
                     uploadToFirebase(blob, folderName, index)
@@ -82,8 +82,17 @@ function InfraccionScreen(props) {
                     console.log("ERROR EN URITOBLOB");
                     console.log(error);
                 });
-        }));
-        return urls;
+        })).then(result => {
+            console.log("RESULT");
+            // console.log(result);
+            // return result;
+            console.log(urls);
+            return urls;
+        }).catch(error => {
+            console.log("ERROR EN PROMISE.ALL");
+            console.log(error);
+        });
+        // return urls;
     }
 
     // guarda la multa en firebase cloud firestore
@@ -92,7 +101,7 @@ function InfraccionScreen(props) {
         setCargando(true);
         firebase.firestore().collection("multas").add({
             ubicacion: {
-                fecha: date.toLocaleDateString(),
+                fecha: date.getTime(),
                 hora: date.toLocaleTimeString(),
                 lugar: is.lugar,
             },
@@ -127,27 +136,52 @@ function InfraccionScreen(props) {
             idInspector: firebase.auth().currentUser.uid,
             idSupervisor: "",
         }).then(response => {
-            // ESTO HAY QUE HACER ANDAR
-            uploadMultipleFilesToFirebase(props.InfraccionScreen.fotos, response.id)
-                .then(urls => {
-                    console.log("URLS");
-                    console.log(urls);
-                    firebase.firestore().collection("multas").doc(response.id).update({
-                        fotos: urls,
-                    }).then(response => {
-                        console.log("TODO ANDUVO SIN ERRORES");
-                        // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
-                        setCargando(false);
-                    }).catch(error => {
-                        console.log("ERROR AL UPDATEAR LA MULTA");
-                        console.log(error);
-                        setCargando(false);
-                    });
+            // esto es por ahora hasta que logre hacer andar lo de subir varias fotos
+            uriToBlob(is.fotos[0].uri)
+                .then(objeto => {
+                    const blob = objeto;
+                    uploadToFirebase(blob, response.id, 0)
+                        .then(downloadURL => {
+                            firebase.firestore().collection("multas").doc(response.id).update({
+                                fotos: [downloadURL],
+                            }).then(response => {
+                                console.log("TODO ANDUVO SIN ERRORES");
+                                // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
+                                setCargando(false);
+                            }).catch(error => {
+                                console.log("ERROR AL UPDATEAR LA MULTA");
+                                console.log(error);
+                                setCargando(false);
+                            });
+                        }).catch((err) => {
+                            console.log('ERROR EN UPLOADTOFIREBASE')
+                            console.log(err)
+                        });
                 }).catch(error => {
-                    console.log("ERROR EN LA FUNCION RARA QUE INVENTE");
+                    console.log("ERROR EN URITOBLOB");
                     console.log(error);
-                    setCargando(false);
                 });
+            // ESTO HAY QUE HACER ANDAR
+            // uploadMultipleFilesToFirebase(props.InfraccionScreen.fotos, response.id)
+            //     .then(urls => {
+            //         console.log("URLS");
+            //         console.log(urls);
+            //         firebase.firestore().collection("multas").doc(response.id).update({
+            //             fotos: urls,
+            //         }).then(response => {
+            //             console.log("TODO ANDUVO SIN ERRORES");
+            //             // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
+            //             setCargando(false);
+            //         }).catch(error => {
+            //             console.log("ERROR AL UPDATEAR LA MULTA");
+            //             console.log(error);
+            //             setCargando(false);
+            //         });
+            //     }).catch(error => {
+            //         console.log("ERROR EN LA FUNCION RARA QUE INVENTE");
+            //         console.log(error);
+            //         setCargando(false);
+            //     });
         }).catch(error => {
             console.log("ERROR AL CARGAR LA MULTA");
             console.log(error);
