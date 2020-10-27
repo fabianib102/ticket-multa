@@ -8,11 +8,16 @@ import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
 import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto } from "../../store/actions/InfraccionScreen";
+import { LogBox } from "react-native";
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [cargando, setCargando] = useState(false);
 
+    // esto es para que no muestre los errores molestos esos
+    LogBox.ignoreLogs(['Setting a timer']);
+
+    // convierte una imagen en un blob
     const uriToBlob = (uri) => {  
         return new Promise((resolve, reject) => {    
             const xhr = new XMLHttpRequest();    
@@ -29,6 +34,7 @@ function InfraccionScreen(props) {
         });
     }
 
+    // sube un blob a firebase storage en la subcarpeta especificada con el nombre especificado
     const uploadToFirebase = (blob, folder, fileName) => {
         const path = "multas/" + folder + "/" + fileName + ".jpg";
         return new Promise((resolve, reject) => {
@@ -56,9 +62,33 @@ function InfraccionScreen(props) {
         });
     }
 
+    // agarra un array de fotos, las manipula, las sube a storage y devuelve un array con las download url
+    // ESTA ES LA FUNCION QUE NO ANDA
+    const uploadMultipleFilesToFirebase = async (files, folderName) => {
+        let urls = [];
+        await Promise.all(files.map(async (foto, index) => {
+            uriToBlob(foto.uri)
+                .then(objeto => {
+                    const blob = objeto;
+                    uploadToFirebase(blob, folderName, index)
+                        .then(downloadURL => {
+                            // return downloadURL;
+                            urls = [...urls, downloadURL];
+                        }).catch((err) => {
+                            console.log('ERROR EN UPLOADTOFIREBASE')
+                            console.log(err)
+                        });
+                }).catch(error => {
+                    console.log("ERROR EN URITOBLOB");
+                    console.log(error);
+                });
+        }));
+        return urls;
+    }
+
+    // guarda la multa en firebase cloud firestore
     const guardarMulta = () => {
         const date = new Date();
-        let fotosURL = [];
         setCargando(true);
         firebase.firestore().collection("multas").add({
             ubicacion: {
@@ -97,32 +127,26 @@ function InfraccionScreen(props) {
             idInspector: firebase.auth().currentUser.uid,
             idSupervisor: "",
         }).then(response => {
-            // ESTE URI TO BLOB HAY QUE ITERAR POR CADA FOTO
-            uriToBlob(props.InfraccionScreen.fotos[0].uri)
-                .then(objeto => {
-                    const blob = objeto;
-                    console.log('SE VA A LOGGEAR BLOB')
-                    console.log(blob)
-                    uploadToFirebase(blob, response.id, "1")
-                        .then(downloadURL => {
-                            fotosURL = [...fotosURL, downloadURL];
-                            firebase.firestore().collection("multas").doc(response.id).update({
-                                fotos: fotosURL,
-                            }).then(response => {
-                                console.log("TODO ANDUVO SIN ERRORES");
-                                // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
-                                setCargando(false);
-                            }).catch(error => {
-                                console.log("ERROR AL UPDATEAR LA MULTA");
-                                console.log(error);
-                            });
-                        }).catch((err) => {
-                            console.log('ERROR EN UPLOADTOFIREBASE')
-                            console.log(err)
-                        });
+            // ESTO HAY QUE HACER ANDAR
+            uploadMultipleFilesToFirebase(props.InfraccionScreen.fotos, response.id)
+                .then(urls => {
+                    console.log("URLS");
+                    console.log(urls);
+                    firebase.firestore().collection("multas").doc(response.id).update({
+                        fotos: urls,
+                    }).then(response => {
+                        console.log("TODO ANDUVO SIN ERRORES");
+                        // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
+                        setCargando(false);
+                    }).catch(error => {
+                        console.log("ERROR AL UPDATEAR LA MULTA");
+                        console.log(error);
+                        setCargando(false);
+                    });
                 }).catch(error => {
-                    console.log("ERROR EN URITOBLOB");
+                    console.log("ERROR EN LA FUNCION RARA QUE INVENTE");
                     console.log(error);
+                    setCargando(false);
                 });
         }).catch(error => {
             console.log("ERROR AL CARGAR LA MULTA");
@@ -130,7 +154,8 @@ function InfraccionScreen(props) {
             setCargando(false);
         });
     }
-  
+
+    // maneja la camara
     const clickCamara = async () => {
         try {
             let result = await ImagePicker.launchCameraAsync({
