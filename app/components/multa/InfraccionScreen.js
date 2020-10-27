@@ -8,14 +8,10 @@ import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
 import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto } from "../../store/actions/InfraccionScreen";
-import { LogBox } from "react-native";
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [cargando, setCargando] = useState(false);
-
-    // esto es para que no muestre los errores molestos esos
-    LogBox.ignoreLogs(['Setting a timer']);
 
     // convierte una imagen en un blob
     const uriToBlob = (uri) => {  
@@ -101,7 +97,7 @@ function InfraccionScreen(props) {
         setCargando(true);
         firebase.firestore().collection("multas").add({
             ubicacion: {
-                fecha: date.getTime(),
+                fecha: date.getUTCDate() + "/" + date.getUTCMonth() + 1 + "/" + date.getUTCFullYear(),
                 hora: date.toLocaleTimeString(),
                 lugar: is.lugar,
             },
