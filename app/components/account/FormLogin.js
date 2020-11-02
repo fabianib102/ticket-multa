@@ -84,6 +84,12 @@ export default function FormLogin(props) {
                 buttonStyle={styles.btnStyleForm}
                 onPress={onSubmit}
             />
+            <Button
+                title="Recuperar contraseña"
+                containerStyle={styles.btnForm}
+                buttonStyle={styles.btnStyleForm}
+                onPress={()=>navigation.navigate("recover")}
+            />
             <Loading isVisible={loading} text={"Iniciando Sesión"}/>
         </View>
     )
