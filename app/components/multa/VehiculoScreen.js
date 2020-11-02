@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { View, } from "react-native";
 import { Input, Text, Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
+import DropDownPicker from "react-native-dropdown-picker"
 import { styles } from "./AddMultaForm";
 import { onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular } from "../../store/actions/VehiculoScreen";
+
+const modelosDeAutos = require("../../../assets/car-models.json");
 
 function VehiculoScreen(props) {
     const {navigation, VehiculoScreen: vs} = props;
     const [conductorNoEsTitular, setConductorNoEsTitular] = useState(false);
+    const [marcas, setMarcas] = useState(modelosDeAutos.map(item => item.brand));
+    const [modelos, setModelos] = useState([]);
+
+    // carga los modelos de la marca elegida
+    useEffect(() => {
+        let modelos = modelosDeAutos.find(item => item.brand === vs.marca);
+        if (modelos !== undefined) {
+            setModelos(modelos.models);
+        }
+    }, [vs.marca]);
 
     return (
         <View style={styles.viewForm}>
@@ -19,55 +32,83 @@ function VehiculoScreen(props) {
                 containerStyle={styles.input}
                 onChange={(e) => props.onSetDominio(e.nativeEvent.text)}
             />
-            <Input
+
+            <DropDownPicker
+                items={marcas.map(marca => ({
+                    label: marca,
+                    value: marca
+                }))}
+                defaultValue={vs.marca}
                 placeholder="Marca"
-                autoCapitalize="words"
-                containerStyle={styles.input}
-                onChange={(e) => props.onSetMarca(e.nativeEvent.text)}
-            />
-            <Input
-                placeholder="Modelo"
-                autoCapitalize="words"
-                containerStyle={styles.input}
-                onChange={(e) => props.onSetModelo(e.nativeEvent.text)}
+                style={styles.dropDownPicker}
+                itemStyle={{justifyContent: 'flex-start'}}
+                onChangeItem={item => props.onSetMarca(item.value)}
+                searchable={true}
+                searchablePlaceholder="Buscar marca"
+                searchableError={() => <Text>No se encontró la marca buscada</Text>}
             />
 
-            <Picker
-                selectedValue={vs.tipo}
-                onValueChange={(itemValue, itemIndex) => props.onChangeTipo(itemValue)}
-            >
-                {/* https://www.dnrpa.gov.ar/fabricantes/info/CODIGO_DEL_AUTOMOTOR.pdf */}
-                {/* algunos nombres cambie porque eran cualquier cosa */}
-                {/* ej: sedan 3 puertas (que no existe) por hatchback 3 puertas (que si existe) */}
-                <Picker.Item label="Tipo" value="" />
-                <Picker.Item label="Sedán 2 puertas" value="Sedán 2 puertas" />
-                <Picker.Item label="Sedán 4 puertas" value="Sedán 4 puertas" />
-                <Picker.Item label="Hatchback 3 puertas" value="Hatchback 3 puertas" />
-                <Picker.Item label="Hatchback 5 puertas" value="Hatchback 5 puertas" />
-                <Picker.Item label="Rural 2/3 puertas" value="Rural 2/3 puertas" />
-                <Picker.Item label="Rural 4/5 puertas" value="Rural 4/5 puertas" />
-                <Picker.Item label="Coupé" value="Coupé" />
-                <Picker.Item label="Descapotable" value="Descapotable" />
-                <Picker.Item label="Limusina" value="Limusina" />
-                <Picker.Item label="Todo terreno" value="Todo terreno" />
-                <Picker.Item label="Familiar" value="Familiar" />
-                <Picker.Item label="Pick up" value="Pick up" />
-                <Picker.Item label="Furgoneta/Utilitario" value="Furgoneta/Utilitario" />
-                <Picker.Item label="Furgón" value="Furgón" />
-                <Picker.Item label="Camión" value="Camión" />
-                <Picker.Item label="Chasis sin cabina" value="Chasis sin cabina" />
-                <Picker.Item label="Chasis con cabina" value="Chasis con cabina" />
-                <Picker.Item label="Tractor de carretera" value="Tractor de carretera" />
-                <Picker.Item label="Casa rodante con motor" value="Casa rodante con motor" />
-                <Picker.Item label="Casa rodante sin motor" value="Casa rodante sin motor" />
-                <Picker.Item label="Acoplado" value="Acoplado" />
-                <Picker.Item label="Semirremolque" value="Semirremolque" />
-                <Picker.Item label="Motor remolcado" value="Motor remolcado" />
-                <Picker.Item label="Carretón" value="Carretón" />
-                <Picker.Item label="Minibus" value="Minibus" />
-                <Picker.Item label="Midibus" value="Midibus" />
-                <Picker.Item label="Ómnibus" value="Ómnibus" />
-            </Picker>
+            <DropDownPicker
+                items={modelos.map(modelo => ({
+                    label: modelo,
+                    value: modelo
+                }))}
+                defaultValue={vs.modelo}
+                placeholder="Modelo"
+                style={styles.dropDownPicker}
+                itemStyle={{justifyContent: 'flex-start'}}
+                onChangeItem={item => props.onSetModelo(item.value)}
+                searchable={true}
+                searchablePlaceholder="Buscar modelo"
+                searchableError={() => <Text>No se encontró el modelo buscado</Text>}
+            />
+
+            {/* https://www.dnrpa.gov.ar/fabricantes/info/CODIGO_DEL_AUTOMOTOR.pdf */}
+            {/* algunos nombres cambie porque eran cualquier cosa */}
+            {/* ej: sedan 3 puertas (que no existe) por hatchback 3 puertas (que si existe) */}
+            <DropDownPicker
+                items={[
+                    {label: "Sedán 2 puertas", value: "Sedán 2 puertas"},
+                    {label: "Sedán 4 puertas", value: "Sedán 4 puertas"},
+                    {label: "Hatchback 3 puertas", value: "Hatchback 3 puertas"},
+                    {label: "Hatchback 5 puertas", value: "Hatchback 5 puertas"},
+                    {label: "Rural 2/3 puertas", value: "Rural 2/3 puertas"},
+                    {label: "Rural 4/5 puertas", value: "Rural 4/5 puertas"},
+                    {label: "Coupé", value: "Coupé"},
+                    {label: "Descapotable", value: "Descapotable"},
+                    {label: "Limusina", value: "Limusina"},
+                    {label: "Todo terreno", value: "Todo terreno"},
+                    {label: "Familiar", value: "Familiar"},
+                    {label: "Pick up", value: "Pick up"},
+                    {label: "Furgoneta/Utilitario", value: "Furgoneta/Utilitario"},
+                    {label: "Furgón", value: "Furgón"},
+                    {label: "Camión", value: "Camión"},
+                    {label: "Chasis sin cabina", value: "Chasis sin cabina"},
+                    {label: "Chasis con cabina", value: "Chasis con cabina"},
+                    {label: "Tractor de carretera", value: "Tractor de carretera"},
+                    {label: "Casa rodante con motor", value: "Casa rodante con motor"},
+                    {label: "Casa rodante sin motor", value: "Casa rodante sin motor"},
+                    {label: "Acoplado", value: "Acoplado"},
+                    {label: "Semirremolque", value: "Semirremolque"},
+                    {label: "Motor remolcado", value: "Motor remolcado"},
+                    {label: "Carretón", value: "Carretón"},
+                    {label: "Minibus", value: "Minibus"},
+                    {label: "Midibus", value: "Midibus"},
+                    {label: "Ómnibus", value: "Ómnibus"}
+                ]}
+                defaultValue={vs.tipo}
+                placeholder="Tipo"
+                // containerStyle={{height: 40}}
+                style={styles.dropDownPicker}
+                itemStyle={{justifyContent: 'flex-start'}}
+                // dropDownStyle={{backgroundColor: '#fafafa'}}
+                onChangeItem={item => props.onChangeTipo(item.value)}
+                searchable={true}
+                searchablePlaceholder="Buscar tipo"
+                // searchablePlaceholderTextColor="gray"
+                // seachableStyle={{}}
+                searchableError={() => <Text>No se encontró el tipo buscado</Text>}
+            />
 
             <CheckBox
                 title="El conductor NO es el titular"

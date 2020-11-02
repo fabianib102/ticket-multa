@@ -91,4 +91,10 @@ export const styles = StyleSheet.create({
     width: 100,
     margin: 5,
   },
+  dropDownPicker: {
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    // borderColor: "rgba(0, 0, 0, 0)",
+    // borderRadius: 0,
+    // borderBottomColor: "red"
+  }
 });
