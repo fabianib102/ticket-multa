@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux'
 import { View } from "react-native";
 import { styles } from './AddMultaForm'
 import { Input, Button, Text } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import { onChangeValueLocalidad, onChangeValueProvincia, onChangeValueTipoDocumento, onSetApellido, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetFechaNacimiento, onSetNombre, onSetNroDocumento, onSetNumero, onSetPiso, onSetSexo } from "../../store/actions/ConductorScreen";
+import DropDownPicker from "react-native-dropdown-picker";
+
+const provinciasAPI = require("../../../assets/provincias.json");
+const localidadesAPI = require("../../../assets/localidades.json");
 
 function ConductorScreen(props) {
     const { navigation, ConductorScreen: cs } = props
+    const [provincias, setProvincias] = useState(provinciasAPI);
+    const [localidades, setLocalidades] = useState(localidadesAPI);
+    const [localidad, setLocalidad] = useState([]);
+
+    // carga las provincias mediante la API
+    useEffect(() => {
+        if (cs.provincia === '') return
+        var p = provincias.filter(p => p.nombre == cs.provincia)[0]
+        setLocalidad(localidades[p.id].map(l => {
+            return l.nombre;
+        }));
+    }, [cs.provincia]);
 
     return (
         <View style={styles.viewForm}>
@@ -63,29 +79,35 @@ function ConductorScreen(props) {
                 onChange={(e) => props.onSetFechaNacimiento(e.nativeEvent.text)}
             />
     
-            <Picker
-                selectedValue={cs.provincia}
-                onValueChange={(itemValue, itemIndex) =>
-                    props.onChangeValueProvincia(itemValue)
-                }
-            >
-                <Picker.Item label="Provincia" value="" />
-                <Picker.Item label="Chaco" value="Chaco" />
-                <Picker.Item label="Corrientes" value="Corrientes" />
-                <Picker.Item label="Misiones" value="Misiones" />
-            </Picker>
+            <DropDownPicker
+                items={provincias.map(provincia => ({
+                    label: provincia.nombre,
+                    value: provincia.nombre
+                }))}
+                defaultValue={cs.provincia}
+                placeholder="Provincia"
+                style={styles.dropDownPicker}
+                itemStyle={{justifyContent: 'flex-start'}}
+                onChangeItem={item => props.onChangeValueProvincia(item.value)}
+                searchable={true}
+                searchablePlaceholder="Buscar provincia"
+                searchableError={() => <Text>No se encontró la provincia buscada</Text>}
+            />
     
-            <Picker
-                selectedValue={cs.localidad}
-                onValueChange={(itemValue, itemIndex) => props.onChangeValueLocalidad(itemValue)}
-            >
-                <Picker.Item label="Localidad" value="" />
-                <Picker.Item label="Resistencia" value="Resistencia" />
-                <Picker.Item label="Barranqueras" value="Barranqueras" />
-                <Picker.Item label="Vilelas" value="Vilelas" />
-                <Picker.Item label="Fontana" value="Fontana" />
-                <Picker.Item label="Puerto Tirol" value="Puerto Tirol" />
-            </Picker>
+            <DropDownPicker
+                items={localidad.map(loc => ({
+                    label: loc,
+                    value: loc
+                }))}
+                defaultValue={cs.localidad}
+                placeholder="Localidad"
+                style={styles.dropDownPicker}
+                itemStyle={{justifyContent: 'flex-start'}}
+                onChangeItem={item => props.onChangeValueLocalidad(item.value)}
+                searchable={true}
+                searchablePlaceholder="Buscar localidad"
+                searchableError={() => <Text>No se encontró la localidad buscada</Text>}
+            />
     
             <Input
                 placeholder="Calle"

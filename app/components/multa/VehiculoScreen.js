@@ -8,13 +8,17 @@ import { styles } from "./AddMultaForm";
 import { onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular } from "../../store/actions/VehiculoScreen";
 import { setConductorNoEsTitular } from "../../store/actions/InfraccionScreen";
 
+const provinciasAPI = require("../../../assets/provincias.json");
+const localidadesAPI = require("../../../assets/localidades.json");
 const modelosDeAutos = require("../../../assets/car-models.json");
 
 function VehiculoScreen(props) {
     const {navigation, VehiculoScreen: vs, InfraccionScreen: is} = props;
-    // const [conductorNoEsTitular, setConductorNoEsTitular] = useState(false);
     const [marcas, setMarcas] = useState(modelosDeAutos.map(item => item.brand));
     const [modelos, setModelos] = useState([]);
+    const [provincias, setProvincias] = useState(provinciasAPI);
+    const [localidades, setLocalidades] = useState(localidadesAPI);
+    const [localidad, setLocalidad] = useState([]);
 
     // carga los modelos de la marca elegida
     useEffect(() => {
@@ -23,6 +27,15 @@ function VehiculoScreen(props) {
             setModelos(modelos.models);
         }
     }, [vs.marca]);
+
+    // carga las provincias mediante la API
+    useEffect(() => {
+        if (vs.provincia === '') return
+        var p = provincias.filter(p => p.nombre == vs.provincia)[0]
+        setLocalidad(localidades[p.id].map(l => {
+            return l.nombre;
+        }));
+    }, [vs.provincia]);
 
     return (
         <View style={styles.viewForm}>
@@ -181,27 +194,35 @@ function VehiculoScreen(props) {
                         />
                     </View>
 
-                    <Picker
-                        selectedValue={vs.provincia}
-                        onValueChange={(itemValue, itemIndex) => props.onSetProvincia(itemValue)}
-                    >
-                        <Picker.Item label="Provincia" value="" />
-                        <Picker.Item label="Chaco" value="Chaco" />
-                        <Picker.Item label="Corrientes" value="Corrientes" />
-                        <Picker.Item label="Misiones" value="Misiones" />
-                    </Picker>
-
-                    <Picker
-                        selectedValue={vs.localidad}
-                        onValueChange={(itemValue, itemIndex) => props.onSetLocalidad(itemValue)}
-                    >
-                        <Picker.Item label="Localidad" value="" />
-                        <Picker.Item label="Resistencia" value="Resistencia" />
-                        <Picker.Item label="Barranqueras" value="Barranqueras" />
-                        <Picker.Item label="Vilelas" value="Vilelas" />
-                        <Picker.Item label="Fontana" value="Fontana" />
-                        <Picker.Item label="Puerto Tirol" value="Puerto Tirol" />
-                    </Picker>
+                    <DropDownPicker
+                        items={provincias.map(provincia => ({
+                            label: provincia.nombre,
+                            value: provincia.nombre
+                        }))}
+                        defaultValue={vs.provincia}
+                        placeholder="Provincia"
+                        style={styles.dropDownPicker}
+                        itemStyle={{justifyContent: 'flex-start'}}
+                        onChangeItem={item => props.onSetProvincia(item.value)}
+                        searchable={true}
+                        searchablePlaceholder="Buscar provincia"
+                        searchableError={() => <Text>No se encontró la provincia buscada</Text>}
+                    />
+            
+                    <DropDownPicker
+                        items={localidad.map(loc => ({
+                            label: loc,
+                            value: loc
+                        }))}
+                        defaultValue={vs.localidad}
+                        placeholder="Localidad"
+                        style={styles.dropDownPicker}
+                        itemStyle={{justifyContent: 'flex-start'}}
+                        onChangeItem={item => props.onSetLocalidad(item.value)}
+                        searchable={true}
+                        searchablePlaceholder="Buscar localidad"
+                        searchableError={() => <Text>No se encontró la localidad buscada</Text>}
+                    />
                 </View>
             )}
 
