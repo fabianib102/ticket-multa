@@ -136,6 +136,7 @@ function InfraccionScreen(props) {
                          console.log("TODO ANDUVO SIN ERRORES");
                          // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
                          setCargando(false);
+                         navigation.navigate("main-stack");
                      }).catch(error => {
                          console.log("ERROR AL UPDATEAR LA MULTA");
                          console.log(error);
