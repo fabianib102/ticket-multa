@@ -91,7 +91,7 @@ function InfraccionScreen(props) {
         setCargando(true);
         firebase.firestore().collection("multas").add({
             ubicacion: {
-                fecha: date.getUTCDate() + "/" + date.getUTCMonth() + 1 + "/" + date.getUTCFullYear(),
+                fecha: date.getUTCDate() + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear(),
                 hora: date.toLocaleTimeString(),
                 lugar: is.lugar,
             },
