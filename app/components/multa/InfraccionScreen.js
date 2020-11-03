@@ -8,10 +8,19 @@ import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
 import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto } from "../../store/actions/InfraccionScreen";
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [cargando, setCargando] = useState(false);
+
+    // Imprimir PDF
+    async function printPDF() {
+        const html = `<h1>Multapp Ticket</h1>`;
+        const { uri } = await Print.printToFileAsync({ html });
+        Sharing.shareAsync(uri);
+      }
 
     // convierte una imagen en un blob
     const uriToBlob = (uri) => {  
@@ -258,6 +267,7 @@ function InfraccionScreen(props) {
                 <Button title="Anterior" onPress={() => navigation.navigate('Vehículo')} />
                 <Button title="Guardar" onPress={guardarMulta} />
             </View>
+            <Button title="Imprimir multa" containerStyle={styles.btnSend} onPress={() => printPDF()} />
         </View>
     );
 }
