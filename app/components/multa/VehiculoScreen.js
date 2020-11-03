@@ -182,18 +182,6 @@ function VehiculoScreen(props) {
                     </View>
 
                     <Picker
-                        selectedValue={vs.pais}
-                        onValueChange={(itemValue, itemIndex) => props.onSetPais(itemValue)}
-                    >
-                        <Picker.Item label="País" value="" />
-                        <Picker.Item label="Argentina" value="Argentina" />
-                        <Picker.Item label="Paraguay" value="Paraguay" />
-                        <Picker.Item label="Uruguay" value="Uruguay" />
-                        <Picker.Item label="Brasil" value="Brasil" />
-                        <Picker.Item label="Chile" value="Chile" />
-                    </Picker>
-
-                    <Picker
                         selectedValue={vs.provincia}
                         onValueChange={(itemValue, itemIndex) => props.onSetProvincia(itemValue)}
                     >
