@@ -72,16 +72,19 @@ function InfraccionScreen(props) {
     const uploadMultipleFilesToFirebase = (files, folderName) => {
         let urls = [];
         return new Promise((resolve, reject) => {
-            files.map(async (foto, index) => {
+            files.forEach(async (foto, index) => {
                 await uriToBlob(foto.uri)
                     .then(objeto => {
                         const blob = objeto;
                         uploadToFirebase(blob, folderName, index)
                             .then(downloadURL => {
-                                urls = [...urls, downloadURL];
-                                if (index == ((files.length) - 1)){
-                                    resolve(urls);
-                                }
+                                urls.push(downloadURL);
+                                // Hardcodeo para solucionar el tema del asincronismo en el array de fotos
+                                setInterval(function(){ 
+                                    if(urls.length == files.length){
+                                        return resolve(urls);
+                                    }
+                                }, 250);
                             }).catch((err) => {
                                 console.log('ERROR EN UPLOADTOFIREBASE')
                                 console.log(err)

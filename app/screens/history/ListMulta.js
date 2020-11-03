@@ -18,9 +18,9 @@ export default function ListMulta(props) {
   const actualDate = getActualDate();
   const arrayMulta = [];
 
-  const refresh = () => {
+  /* const refresh = () => {
     console.log('INTENTO DE REFRESH');
-  }
+  } */
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((userInfo) => {
