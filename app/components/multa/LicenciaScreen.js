@@ -106,7 +106,7 @@ function LicenciaScreen(props) {
           placeholder="Localidad"
           style={styles.dropDownPicker}
           itemStyle={{justifyContent: 'flex-start'}}
-          onChangeItem={item => props.onChangeProvincia(item.value)}
+          onChangeItem={item => props.onChangeLocalidad(item.value)}
           searchable={true}
           searchablePlaceholder="Buscar localidad"
           searchableError={() => <Text>No se encontró la localidad buscada</Text>}
