@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+        .tabla {
+            margin: auto;
+            width: 100%;
+        }
+        .sep-bar {
+            text-align: center;
+            font-weight: bold;
+        }
+      </style>
+</head>
+<body>
+    <table class="tabla">
+        <tr>
+            <th>
+                <img src="https://i.imgur.com/SUw60cR.png" alt="Multapp-Logo">
+            </th>
+            <th>
+                Multapp
+            </th>
+            <th>
+                Inspector tanto
+            </th>
+        </tr>
+        <tr>
+            <td colspan="3" class="sep-bar">Conductor</td>
+        </tr>
+        <tr>
+            <td>
+                Apellido y Nombre: ${ cs.apellido + ' ' + cs.nombre }
+            </td>
+            <td>
+                Sexo: ${ cs.sexo }
+            </td>
+            <td>
+                Tipo de documento: ${ cs.tipoDocumento }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Nro. de documento: ${ cs.nroDocumento }
+            </td>
+            <td>
+                Fecha de Nac.: ${ cs.fechaNacimiento }
+            </td>
+            <td>
+                Provincia: ${ cs.provincia }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Localidad: ${ cs.localidad }
+            </td>
+            <td>
+                Calle: ${ cs.calle }
+            </td>
+            <td>
+                Número: ${ cs.numero }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Departamento: ${ cs.departamento }
+            </td>
+            <td>
+                Piso: ${ cs.piso }
+            </td>
+            <td>
+                Código postal: ${ cs.codigoPostal }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="sep-bar">Licencia</td>
+        </tr>
+        <tr>
+            <td>
+                Número: ${ ls.numero }
+            </td>
+            <td>
+                Clase: ${ ls.clase }
+            </td>
+            <td>
+                Provincia: ${ ls.provincia }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Localidad: ${ ls.localidad }
+            </td>
+            <td>
+                Única Provincial: ${ ls.unicaProvincial ? 'Sí' : 'No' }
+            </td>
+            <td>
+                Retenida: ${ ls.retenida ? 'Sí' : 'No' }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Vencimiento: ${ ls.vencimiento }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="sep-bar">Vehículo</td>
+        </tr>
+        <tr>
+            <td>
+                Dominio: ${ vs.dominio }
+            </td>
+            <td>
+                Marca: ${ vs.marca }
+            </td>
+            <td>
+                Modelo: ${ vs.modelo }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Nombre (titular): ${ vs.titular }
+            </td>
+            <td>
+                Tipo de documento (titular): ${ vs.tipoDocumento }
+            </td>
+            <td>
+                Nro. de documento (titular): ${ vs.nroDocumento }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Calle (titular): ${ vs.calle }
+            </td>
+            <td>
+                Número (titular): ${ vs.numero }
+            </td>
+            <td>
+                Piso (titular): ${ vs.piso }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Departamento (titular): ${ vs.departamento }
+            </td>
+            <td>
+                Código Postal (titular): ${ vs.codigoPostal }
+            </td>
+            <td>
+                Provincia (titular): ${ vs.provincia }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Localidad (titular): ${ vs.localidad }
+            </td>
+            <td>
+                País (titular): ${ vs.pais }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="sep-bar">Infracción</td>
+        </tr>
+        <tr>
+            <td>
+                Lugar: ${ is.lugar }
+            </td>
+            <td>
+                Código: ${ is.codigo }
+            </td>
+            <td>
+                Artículo: ${ is.articulo }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Inciso: ${ is.inciso }
+            </td>
+            <td>
+                Extracto: ${ is.extracto }
+            </td>
+            <td>
+                Monto (primer vencimiento): ${ is.montoPrimerVencimiento }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Monto (segundo vencimiento): ${ is.montoSegundoVencimiento }
+            </td>
+            <td colspan="2">
+                Observaciones: ${ is.observaciones }
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
