@@ -11,14 +11,15 @@ export default function NewMultasStack(){
         <Stack.Navigator>
             <Stack.Screen
                 name="new-multa"
-                component={NewMulta}
+                // component={NewMulta}
+                component={AddMulta}
                 options={{title: "Nueva Multa"}}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="add-multa"
                 component={AddMulta}
                 options={{title: "Crear Nueva Multa"}}
-            />
+            /> */}
         </Stack.Navigator>
     )
 }

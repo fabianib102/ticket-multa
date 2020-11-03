@@ -126,32 +126,6 @@ function InfraccionScreen(props) {
             idInspector: firebase.auth().currentUser.uid,
             idSupervisor: "",
         }).then(response => {
-            // esto es por ahora hasta que logre hacer andar lo de subir varias fotos
-            /* uriToBlob(is.fotos[0].uri)
-                .then(objeto => {
-                    const blob = objeto;
-                    uploadToFirebase(blob, response.id, 0)
-                        .then(downloadURL => {
-                            firebase.firestore().collection("multas").doc(response.id).update({
-                                fotos: [downloadURL],
-                            }).then(response => {
-                                console.log("TODO ANDUVO SIN ERRORES");
-                                // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
-                                setCargando(false);
-                            }).catch(error => {
-                                console.log("ERROR AL UPDATEAR LA MULTA");
-                                console.log(error);
-                                setCargando(false);
-                            });
-                        }).catch((err) => {
-                            console.log('ERROR EN UPLOADTOFIREBASE')
-                            console.log(err)
-                        });
-                }).catch(error => {
-                    console.log("ERROR EN URITOBLOB");
-                    console.log(error);
-                }); */
-            // ESTO HAY QUE HACER ANDAR
              uploadMultipleFilesToFirebase(props.InfraccionScreen.fotos, response.id)
                  .then(urls => {
                      console.log("URLS");

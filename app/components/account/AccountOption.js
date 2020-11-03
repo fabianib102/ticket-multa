@@ -72,24 +72,24 @@ export default function AccountOption(props){
 
 function generateOption (selectComponent) {
     return [
-        {
-            title: "Nueva Multa",
-            iconType: "material-community",
-            iconNameLeft: "account-circle",
-            iconColorLeft: "#ccc",
-            iconNameRight: "chevron-right",
-            iconColorRight: "#ccc",
-            onPress: () => selectComponent("NewMulta")
-        },
-        {
-            title: "Ver Historial",
-            iconType: "material-community",
-            iconNameLeft: "account-circle",
-            iconColorLeft: "#ccc",
-            iconNameRight: "chevron-right",
-            iconColorRight: "#ccc",
-            onPress: () => selectComponent("History")
-        },
+        // {
+        //     title: "Nueva Multa",
+        //     iconType: "material-community",
+        //     iconNameLeft: "account-circle",
+        //     iconColorLeft: "#ccc",
+        //     iconNameRight: "chevron-right",
+        //     iconColorRight: "#ccc",
+        //     onPress: () => selectComponent("NewMulta")
+        // },
+        // {
+        //     title: "Ver Historial",
+        //     iconType: "material-community",
+        //     iconNameLeft: "account-circle",
+        //     iconColorLeft: "#ccc",
+        //     iconNameRight: "chevron-right",
+        //     iconColorRight: "#ccc",
+        //     onPress: () => selectComponent("History")
+        // },
         {
             title: "Cambiar contraseña",
             iconType: "material-community",
