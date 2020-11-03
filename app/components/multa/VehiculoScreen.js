@@ -30,6 +30,7 @@ function VehiculoScreen(props) {
                 placeholder="Dominio"
                 autoCapitalize="characters"
                 containerStyle={styles.input}
+                value={vs.dominio}
                 onChange={(e) => props.onSetDominio(e.nativeEvent.text)}
             />
 
@@ -98,15 +99,11 @@ function VehiculoScreen(props) {
                 ]}
                 defaultValue={vs.tipo}
                 placeholder="Tipo"
-                // containerStyle={{height: 40}}
                 style={styles.dropDownPicker}
                 itemStyle={{justifyContent: 'flex-start'}}
-                // dropDownStyle={{backgroundColor: '#fafafa'}}
                 onChangeItem={item => props.onChangeTipo(item.value)}
                 searchable={true}
                 searchablePlaceholder="Buscar tipo"
-                // searchablePlaceholderTextColor="gray"
-                // seachableStyle={{}}
                 searchableError={() => <Text>No se encontró el tipo buscado</Text>}
             />
 
@@ -122,6 +119,7 @@ function VehiculoScreen(props) {
                         placeholder="Nombre y apellido"
                         autoCapitalize="words"
                         containerStyle={styles.input}
+                        value={vs.titular}
                         onChange={(e) => props.onSetTitular(e.nativeEvent.text)}
                     />
 
@@ -140,12 +138,14 @@ function VehiculoScreen(props) {
                         placeholder="Número de documento"
                         keyboardType="numeric"
                         containerStyle={styles.inputAddress}
+                        value={vs.nroDocumento}
                         onChange={(e) => props.onSetNroDocumento(e.nativeEvent.text)}
                     />
                     <Input
                         placeholder="Calle"
                         autoCapitalize="words"
                         containerStyle={styles.inputAddress}
+                        value={vs.calle}
                         onChange={(e) => props.onSetCalle(e.nativeEvent.text)}
                     />
 
@@ -154,11 +154,13 @@ function VehiculoScreen(props) {
                             placeholder="Número"
                             keyboardType="numeric"
                             containerStyle={styles.inputAddress}
+                            value={vs.numero}
                             onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
                         />
                         <Input
                             placeholder="Departamento"
                             containerStyle={styles.inputAddress}
+                            value={vs.departamento}
                             onChange={(e) => props.onSetDepartamento(e.nativeEvent.text)}
                         />
                     </View>
@@ -167,11 +169,13 @@ function VehiculoScreen(props) {
                         <Input
                             placeholder="Piso"
                             containerStyle={styles.inputAddress}
+                            value={vs.piso}
                             onChange={(e) => props.onSetPiso(e.nativeEvent.text)}
                         />
                         <Input
                             placeholder="Código Postal"
                             containerStyle={styles.inputAddress}
+                            value={vs.codigoPostal}
                             onChange={(e) => props.onSetCodigoPostal(e.nativeEvent.text)}
                         />
                     </View>

@@ -92,6 +92,8 @@ export const VehiculoScreen = (state = initialState, action) => {
                 ...state,
                 pais: action.data
             }
+        case "clearForm":
+            return initialState;
         default:
             return state
     }

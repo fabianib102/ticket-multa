@@ -1,8 +1,8 @@
 const initialState = {
     numero: "",
-    clase: "Seleccione Clase",
-    provincia: "Provincia",
-    localidad: "Localidad",
+    clase: "",
+    provincia: "",
+    localidad: "",
     unicaProvincial: false,
     retenida: false,
     vencimiento: ""
@@ -45,6 +45,8 @@ export const LicenciaScreen = (state=initialState, action) => {
                 ...state,
                 vencimiento: action.data
             }
+        case "clearForm":
+            return initialState;
         default:
             return state
     }

@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
-import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto } from "../../store/actions/InfraccionScreen";
+import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto, clearForm } from "../../store/actions/InfraccionScreen";
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 // import template from './Ticket';
@@ -375,6 +375,7 @@ function InfraccionScreen(props) {
                          // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
                          setCargando(false);
                          navigation.navigate("main-stack");
+                         props.clearForm();
                      }).catch(error => {
                          console.log("ERROR AL UPDATEAR LA MULTA");
                          console.log(error);
@@ -415,9 +416,11 @@ function InfraccionScreen(props) {
             <Text h4>Infracción</Text>
 
             {cargando && <Loading isVisible text="Guardando multa" />}
+            
             <Input
                 placeholder="Lugar de constatación"
                 containerStyle={styles.input}
+                value={is.lugar}
                 onChange={e => props.onSetLugar(e.nativeEvent.text)}
             />
 
@@ -448,13 +451,14 @@ function InfraccionScreen(props) {
             <Input
                 placeholder="Inciso"
                 containerStyle={styles.input}
+                value={is.inciso}
                 onChange={e => props.onSetInciso(e.nativeEvent.text)}
-
             />
 
             <Input
                 placeholder="Extracto"
                 containerStyle={styles.input}
+                value={is.extracto}
                 onChange={e => props.onSetExtracto(e.nativeEvent.text)}
             />
 
@@ -463,6 +467,7 @@ function InfraccionScreen(props) {
                 inputContainerStyle={styles.textArea}
                 multiline={true}
                 textAlignVertical="top"
+                value={is.observaciones}
                 onChange={e => props.onSetObservaciones(e.nativeEvent.text)}
             />
 
@@ -470,6 +475,7 @@ function InfraccionScreen(props) {
                 placeholder="Monto del primer vencimiento"
                 containerStyle={styles.input}
                 keyboardType="numeric"
+                value={is.montoPrimerVencimiento}
                 onChange={e => props.onSetMontoPrimerVencimiento(e.nativeEvent.text)}
             />
 
@@ -477,6 +483,7 @@ function InfraccionScreen(props) {
                 placeholder="Monto del segundo vencimiento"
                 containerStyle={styles.input}
                 keyboardType="numeric"
+                value={is.montoSegundoVencimiento}
                 onChange={e => props.onSetMontoSegundoVencimiento(e.nativeEvent.text)}
             />
 
@@ -517,6 +524,7 @@ const mapDispatchToProps = dispatch => {
         onSetMontoSegundoVencimiento: valueMontoSegundoVencimiento => dispatch(onSetMontoSegundoVencimiento(valueMontoSegundoVencimiento)),
         onSetFoto: newFoto => dispatch(onSetFoto(newFoto)),
         onDeleteFoto: foto => dispatch(onDeleteFoto(foto)),
+        clearForm: () => dispatch(clearForm()),
     }
 }
 

@@ -62,6 +62,8 @@ export const InfraccionScreen = (state = initialState, action) => {
                 ...state,
                 fotos: state.fotos.filter(foto => foto !== action.data)
             };
+        case "clearForm":
+            return initialState;
         default:
             return state;
     }

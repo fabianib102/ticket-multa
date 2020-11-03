@@ -67,3 +67,10 @@ export const onDeleteFoto = foto => {
         data: foto,
     }
 }
+
+// esto limpia todas las screens al guardar la multa
+export const clearForm = () => {
+    return {
+        type: "clearForm",
+    }
+}

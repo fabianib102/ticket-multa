@@ -81,6 +81,8 @@ export const ConductorScreen = (state = initialState, action) => {
                 ...state,
                 codigoPostal: action.data
             }
+        case "clearForm":
+            return initialState;
         default:
             return state
     }

@@ -7,32 +7,7 @@ import { Picker } from "@react-native-community/picker";
 import { onChangeClase, onChangeLocalidad, onChangeProvincia, onSetNumero, onSetRetenida, onSetUnicaProvincial, onSetVencimiento } from "../../store/actions/LicenciaScreen";
 
 function LicenciaScreen(props) {
-  // console.log(props.LicenciaScreen)
   const {navigation, LicenciaScreen: lic} = props
-  // const [nroLicencia, setNroLicencia] = useState("");
-  // const [classValue, setSelectedClass] = useState("Seleccione Clase");
-  // const [provinciaValue, setSelectedProvince] = useState("Provincia");
-  // const [localidadValue, setSelectedLocalidad] = useState("Localidad");
-  // const [provinceUnique, setProviceUnique] = useState(false);
-  // const [detained, setDetained] = useState(false);
-  // const [expirationDate, setExpiratioDate] = useState("");
-
-  /* const onChangeClase = (valueClass) => {
-    console.log("Este es el valor de la clase: ", valueClass);
-    setSelectedClass(valueClass);
-  }; */
-
-  // const onChangeClase = props.onChangeClase
-
-  /* const onChangeProvincia = (valueProvince) => {
-    console.log("Este es el valor de la provincia: ", valueProvince);
-    setSelectedProvince(valueProvince);
-  }; */
-
-  /* const onChangeLocalidad = (valueLocalidad) => {
-    console.log("Este es el valor de la localidad: ", valueLocalidad);
-    setSelectedLocalidad(valueLocalidad);
-  }; */
 
   return (
     <View style={styles.viewForm}>
@@ -41,6 +16,7 @@ function LicenciaScreen(props) {
         placeholder="Número"
         keyboardType="numeric"
         containerStyle={styles.input}
+        value={lic.numero}
         onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
       />
 
@@ -107,6 +83,7 @@ function LicenciaScreen(props) {
       <Input
         placeholder="Vencimiento"
         containerStyle={styles.input}
+        value={lic.vencimiento}
         onChange={(e) => props.onSetVencimiento(e.nativeEvent.text)}
       />
 
@@ -119,19 +96,19 @@ function LicenciaScreen(props) {
 }
 
 const mapStateToProps = (state) => {
-  return state
+    return state
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-      onChangeClase: (valueClass) => dispatch(onChangeClase(valueClass)),
-      onChangeProvincia: (valueProvince) => dispatch(onChangeProvincia(valueProvince)),
-      onChangeLocalidad: (valueLocalidad) => dispatch(onChangeLocalidad(valueLocalidad)),
-      onSetVencimiento: (valueExpiration) => dispatch(onSetVencimiento(valueExpiration)),
-      onSetNumero: (valueLicencia) => dispatch(onSetNumero(valueLicencia)),
-      onSetUnicaProvincial: () => dispatch(onSetUnicaProvincial()),
-      onSetRetenida: () => dispatch(onSetRetenida())
-  }
+    return {
+        onChangeClase: (valueClass) => dispatch(onChangeClase(valueClass)),
+        onChangeProvincia: (valueProvince) => dispatch(onChangeProvincia(valueProvince)),
+        onChangeLocalidad: (valueLocalidad) => dispatch(onChangeLocalidad(valueLocalidad)),
+        onSetVencimiento: (valueExpiration) => dispatch(onSetVencimiento(valueExpiration)),
+        onSetNumero: (valueLicencia) => dispatch(onSetNumero(valueLicencia)),
+        onSetUnicaProvincial: () => dispatch(onSetUnicaProvincial()),
+        onSetRetenida: () => dispatch(onSetRetenida())
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LicenciaScreen)

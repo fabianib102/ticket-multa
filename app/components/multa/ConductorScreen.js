@@ -10,117 +10,126 @@ function ConductorScreen(props) {
     const { navigation, ConductorScreen: cs } = props
 
     return (
-      <View style={styles.viewForm}>
-        <Text h4>Conductor</Text>
-        <Input
-          placeholder="Apellido"
-          containerStyle={styles.input}
-          onChange={(e) => props.onSetApellido(e.nativeEvent.text)}
-        />
-        <Input
-          placeholder="Nombre"
-          containerStyle={styles.input}
-          onChange={(e) => props.onSetNombre(e.nativeEvent.text)}
-        />
-  
-        <Picker
-          selectedValue={cs.sexo}
-          onValueChange={(itemValue, itemIndex) =>
-            props.onSetSexo(itemValue)
-          }
-        >
-          <Picker.Item label="Sexo" value="" />
-          <Picker.Item label="Masculino" value="Masculino" />
-          <Picker.Item label="Femenino" value="Femenino" />
-        </Picker>
-  
-        <Picker
-          selectedValue={cs.tipoDocumento}
-          onValueChange={(itemValue, itemIndex) =>
-            props.onChangeValueTipoDocumento(itemValue)
-          }
-        >
-          <Picker.Item label="Tipo de documento" value="" />
-          <Picker.Item label="DNI" value="DNI" />
-          <Picker.Item label="Pasaporte" value="Pasaporte" />
-          <Picker.Item label="LC" value="LC" />
-          <Picker.Item label="LE" value="LE" />
-        </Picker>
-  
-        <Input
-          placeholder="Número de documento"
-          keyboardType="numeric"
-          containerStyle={styles.inputAddress}
-          onChange={(e) => props.onSetNroDocumento(e.nativeEvent.text)}
-        />
-        <Input
-          placeholder="Fecha de nacimiento"
-          containerStyle={styles.input}
-          onChange={(e) => props.onSetFechaNacimiento(e.nativeEvent.text)}
-        />
-  
-        <Picker
-          selectedValue={cs.provincia}
-          onValueChange={(itemValue, itemIndex) =>
-            props.onChangeValueProvincia(itemValue)
-          }
-        >
-          <Picker.Item label="Provincia" value="" />
-          <Picker.Item label="Chaco" value="Chaco" />
-          <Picker.Item label="Corrientes" value="Corrientes" />
-          <Picker.Item label="Misiones" value="Misiones" />
-        </Picker>
-  
-        <Picker
-          selectedValue={cs.localidad}
-          onValueChange={(itemValue, itemIndex) => props.onChangeValueLocalidad(itemValue)}
-        >
-          <Picker.Item label="Localidad" value="" />
-          <Picker.Item label="Resistencia" value="Resistencia" />
-          <Picker.Item label="Barranqueras" value="Barranqueras" />
-          <Picker.Item label="Vilelas" value="Vilelas" />
-          <Picker.Item label="Fontana" value="Fontana" />
-          <Picker.Item label="Puerto Tirol" value="Puerto Tirol" />
-        </Picker>
-  
-        <Input
-          placeholder="Calle"
-          containerStyle={styles.input}
-          onChange={(e) => props.onSetCalle(e.nativeEvent.text)}
-        />
-  
-        <View style={styles.row}>
-          <Input
-            placeholder="Número"
-            keyboardType="numeric"
-            containerStyle={styles.inputAddress}
-            onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
-          />
-          <Input
-            placeholder="Departamento"
-            containerStyle={styles.inputAddress}
-            onChange={(e) => props.onSetDepartamento(e.nativeEvent.text)}
-          />
-        </View>
-  
-        <View style={styles.row}>
-          <Input
-            placeholder="Piso"
-            containerStyle={styles.inputAddress}
-            onChange={(e) => props.onSetPiso(e.nativeEvent.text)}
-          />
-          <Input
-            placeholder="Código postal"
-            containerStyle={styles.inputAddress}
-            onChange={(e) => props.onSetCodigoPostal(e.nativeEvent.text)}
-          />
-        </View>
+        <View style={styles.viewForm}>
+            <Text h4>Conductor</Text>
+            <Input
+                placeholder="Apellido"
+                containerStyle={styles.input}
+                value={cs.apellido}
+                onChange={(e) => props.onSetApellido(e.nativeEvent.text)}
+            />
+            <Input
+                placeholder="Nombre"
+                containerStyle={styles.input}
+                value={cs.nombre}
+                onChange={(e) => props.onSetNombre(e.nativeEvent.text)}
+            />
+    
+            <Picker
+                selectedValue={cs.sexo}
+                onValueChange={(itemValue, itemIndex) =>
+                    props.onSetSexo(itemValue)
+                }
+            >
+                <Picker.Item label="Sexo" value="" />
+                <Picker.Item label="Masculino" value="Masculino" />
+                <Picker.Item label="Femenino" value="Femenino" />
+            </Picker>
+    
+            <Picker
+                selectedValue={cs.tipoDocumento}
+                onValueChange={(itemValue, itemIndex) =>
+                    props.onChangeValueTipoDocumento(itemValue)
+                }
+            >
+                <Picker.Item label="Tipo de documento" value="" />
+                <Picker.Item label="DNI" value="DNI" />
+                <Picker.Item label="Pasaporte" value="Pasaporte" />
+                <Picker.Item label="LC" value="LC" />
+                <Picker.Item label="LE" value="LE" />
+            </Picker>
+    
+            <Input
+                placeholder="Número de documento"
+                keyboardType="numeric"
+                containerStyle={styles.inputAddress}
+                value={cs.nroDocumento}
+                onChange={(e) => props.onSetNroDocumento(e.nativeEvent.text)}
+            />
+            <Input
+                placeholder="Fecha de nacimiento"
+                containerStyle={styles.input}
+                value={cs.fechaNacimiento}
+                onChange={(e) => props.onSetFechaNacimiento(e.nativeEvent.text)}
+            />
+    
+            <Picker
+                selectedValue={cs.provincia}
+                onValueChange={(itemValue, itemIndex) =>
+                    props.onChangeValueProvincia(itemValue)
+                }
+            >
+                <Picker.Item label="Provincia" value="" />
+                <Picker.Item label="Chaco" value="Chaco" />
+                <Picker.Item label="Corrientes" value="Corrientes" />
+                <Picker.Item label="Misiones" value="Misiones" />
+            </Picker>
+    
+            <Picker
+                selectedValue={cs.localidad}
+                onValueChange={(itemValue, itemIndex) => props.onChangeValueLocalidad(itemValue)}
+            >
+                <Picker.Item label="Localidad" value="" />
+                <Picker.Item label="Resistencia" value="Resistencia" />
+                <Picker.Item label="Barranqueras" value="Barranqueras" />
+                <Picker.Item label="Vilelas" value="Vilelas" />
+                <Picker.Item label="Fontana" value="Fontana" />
+                <Picker.Item label="Puerto Tirol" value="Puerto Tirol" />
+            </Picker>
+    
+            <Input
+                placeholder="Calle"
+                containerStyle={styles.input}
+                value={cs.calle}
+                onChange={(e) => props.onSetCalle(e.nativeEvent.text)}
+            />
+    
+            <View style={styles.row}>
+                <Input
+                    placeholder="Número"
+                    keyboardType="numeric"
+                    containerStyle={styles.inputAddress}
+                    value={cs.numero}
+                    onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
+                />
+                <Input
+                    placeholder="Departamento"
+                    containerStyle={styles.inputAddress}
+                    value={cs.departamento}
+                    onChange={(e) => props.onSetDepartamento(e.nativeEvent.text)}
+                />
+            </View>
+    
+            <View style={styles.row}>
+                <Input
+                    placeholder="Piso"
+                    containerStyle={styles.inputAddress}
+                    value={cs.piso}
+                    onChange={(e) => props.onSetPiso(e.nativeEvent.text)}
+                />
+                <Input
+                    placeholder="Código postal"
+                    containerStyle={styles.inputAddress}
+                    value={cs.codigoPostal}
+                    onChange={(e) => props.onSetCodigoPostal(e.nativeEvent.text)}
+                />
+            </View>
 
-        <View style={styles.buttonContainer}>
-          <Button title="Anterior"  onPress={() => navigation.navigate('Licencia')}/>  
-          <Button title="Siguiente"  onPress={() => navigation.navigate('Vehículo')}/>
+            <View style={styles.buttonContainer}>
+                <Button title="Anterior" onPress={() => navigation.navigate('Licencia')}/>  
+                <Button title="Siguiente" onPress={() => navigation.navigate('Vehículo')}/>
+            </View>
         </View>
-      </View>
     );
 }
 
