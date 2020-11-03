@@ -16,6 +16,10 @@ function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [cargando, setCargando] = useState(false);
 
+    const date = new Date();
+
+    const fecha = date.getUTCDate() + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
+    const hora = date.toLocaleTimeString();
 
     const template = `<!DOCTYPE html>
     <html lang="en">
@@ -232,6 +236,8 @@ function InfraccionScreen(props) {
                 </td>
             </tr>
         </table>
+        <br/>
+        Fecha: ${fecha} - Hora: ${hora}
     </body>
     </html>`;
 
