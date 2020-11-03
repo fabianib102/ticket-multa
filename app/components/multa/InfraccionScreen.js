@@ -49,29 +49,23 @@ function InfraccionScreen(props) {
             .tabla tbody tr {
                 border-bottom: 1px solid #dddddd;
             }
-    
             .tabla tbody tr:nth-of-type(even) {
                 background-color: #f3f3f3;
             }
-    
-            .html {
-                font-family: 'helvetica neue', helvetica, arial, sans-serif;
+            .header {
+                align-content: center;
+                font-family: 'Times New Roman', Georgia, 'Lucida Console';
+                text-align: center;
             }
           </style>
     </head>
     <body>
+        <div class="header">
+            <img src="https://i.imgur.com/SUw60cR.png" alt="Multapp-Logo">
+    
+            <h1>Multapp<h1>
+        </div>
         <table class="tabla">
-            <tr>
-                <th>
-                    <img src="https://i.imgur.com/SUw60cR.png" alt="Multapp-Logo">
-                </th>
-                <th>
-                    Multapp
-                </th>
-                <th>
-                    Inspector tanto
-                </th>
-            </tr>
             <tr>
                 <td colspan="3" class="sep-bar">Conductor</td>
             </tr>
