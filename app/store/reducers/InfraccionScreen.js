@@ -7,7 +7,8 @@ const initialState = {
     observaciones: "",
     montoPrimerVencimiento: "",
     montoSegundoVencimiento: "",
-    fotos: []
+    fotos: [],
+    conductorNoEsTitular: false,
 }
 
 export const InfraccionScreen = (state = initialState, action) => {
@@ -62,6 +63,11 @@ export const InfraccionScreen = (state = initialState, action) => {
                 ...state,
                 fotos: state.fotos.filter(foto => foto !== action.data)
             };
+        case "setConductorNoEsTitular":
+            return {
+                ...state,
+                conductorNoEsTitular: action.value,
+            }
         case "clearForm":
             return initialState;
         default:

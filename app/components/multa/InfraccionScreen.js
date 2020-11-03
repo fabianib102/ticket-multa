@@ -327,6 +327,22 @@ function InfraccionScreen(props) {
     const guardarMulta = () => {
         const date = new Date();
         setCargando(true);
+        let datosTitular = {};
+        if (!is.conductorNoEsTitular) {
+            datosTitular = {
+                titular: cs.apellido + " " + cs.nombre,
+                tipoDocumento: cs.tipoDocumento,
+                nroDocumento: cs.nroDocumento,
+                calle: cs.calle,
+                numero: cs.numero,
+                piso: cs.piso,
+                departamento: cs.departamento,
+                codigoPostal: cs.codigoPostal,
+                provincia: cs.provincia,
+                localidad: cs.localidad,
+                pais: cs.pais,
+            }
+        }
         firebase.firestore().collection("multas").add({
             ubicacion: {
                 fecha: date.getUTCDate() + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear(),
@@ -344,6 +360,8 @@ function InfraccionScreen(props) {
             },
             vehiculo: {
                 ...vs,
+                ...datosTitular,
+                pais: "Argentina",
             },
             infraccion: {
                 codigo: is.codigo,
@@ -374,8 +392,8 @@ function InfraccionScreen(props) {
                          console.log("TODO ANDUVO SIN ERRORES");
                          // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
                          setCargando(false);
-                         navigation.navigate("main-stack");
                          props.clearForm();
+                         navigation.navigate("main-stack");
                      }).catch(error => {
                          console.log("ERROR AL UPDATEAR LA MULTA");
                          console.log(error);

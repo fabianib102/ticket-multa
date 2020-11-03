@@ -74,3 +74,10 @@ export const clearForm = () => {
         type: "clearForm",
     }
 }
+
+export const setConductorNoEsTitular = value => {
+    return {
+        type: "setConductorNoEsTitular",
+        value: value,
+    }
+}

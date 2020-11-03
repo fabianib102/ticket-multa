@@ -2,6 +2,7 @@ const initialState = {
     dominio: "",
     marca: "",
     modelo: "",
+    tipo: "",
     titular: "",
     tipoDocumento: "",
     nroDocumento: "",

@@ -6,12 +6,13 @@ import { Picker } from "@react-native-community/picker";
 import DropDownPicker from "react-native-dropdown-picker"
 import { styles } from "./AddMultaForm";
 import { onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular } from "../../store/actions/VehiculoScreen";
+import { setConductorNoEsTitular } from "../../store/actions/InfraccionScreen";
 
 const modelosDeAutos = require("../../../assets/car-models.json");
 
 function VehiculoScreen(props) {
-    const {navigation, VehiculoScreen: vs} = props;
-    const [conductorNoEsTitular, setConductorNoEsTitular] = useState(false);
+    const {navigation, VehiculoScreen: vs, InfraccionScreen: is} = props;
+    // const [conductorNoEsTitular, setConductorNoEsTitular] = useState(false);
     const [marcas, setMarcas] = useState(modelosDeAutos.map(item => item.brand));
     const [modelos, setModelos] = useState([]);
 
@@ -109,11 +110,11 @@ function VehiculoScreen(props) {
 
             <CheckBox
                 title="El conductor NO es el titular"
-                checked={conductorNoEsTitular}
-                onPress={() => setConductorNoEsTitular(!conductorNoEsTitular)}
+                checked={is.conductorNoEsTitular}
+                onPress={() => props.setConductorNoEsTitular(!is.conductorNoEsTitular)}
             />
 
-            {conductorNoEsTitular && (
+            {is.conductorNoEsTitular && (
                 <View>
                     <Input
                         placeholder="Nombre y apellido"
@@ -245,6 +246,7 @@ const mapDispatchToProps = dispatch => {
         onSetLocalidad: valueLocalidad => dispatch(onSetLocalidad(valueLocalidad)),
         onSetProvincia: valueProvincia => dispatch(onSetProvincia(valueProvincia)),
         onSetPais: valuePais => dispatch(onSetPais(valuePais)),
+        setConductorNoEsTitular: value => dispatch(setConductorNoEsTitular(value)),
     }
 }
 
