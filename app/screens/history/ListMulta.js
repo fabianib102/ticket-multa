@@ -4,6 +4,7 @@ import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import MultasList from "../../components/multa/MultasList";
+import { Button } from "react-native-elements";
 
 const db = firebase.firestore(firebaseApp);
 
@@ -17,14 +18,39 @@ export default function ListMulta(props) {
   const actualDate = getActualDate();
   const arrayMulta = [];
 
+  const refresh = () => {
+    console.log('INTENTO DE REFRESH');
+  }
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged((userInfo) => {
       setUser(userInfo);
       setId(userInfo.uid);
-    });
-  }, []);
 
-  useEffect(() => {
+      db.collection("multas")
+      .where("idInspector", "==", userInfo.uid)
+      .limit(10)
+      .get()
+      .then((resp) => {
+        setTotalmultas(resp.docs.length);
+        setStartMultas(resp.docs[resp.docs.length - 1]);
+        resp.forEach((doc) => {
+          const multa = doc.data();
+          // multa.id = doc.id;
+          // arrayMulta.push(multa);
+          //console.log("la multa: .----------------", multa.ubicacion.fecha);
+          if (multa.ubicacion.fecha == actualDate) {
+            multa.id = doc.id;
+            arrayMulta.push(multa);
+          }
+        });
+        setMultas(arrayMulta);
+      });
+
+    });
+  }, [multas]);
+
+  /* useEffect(() => {
 
     db.collection("multas")
       .where("idInspector", "==", idInspector)
@@ -46,10 +72,11 @@ export default function ListMulta(props) {
         });
         setMultas(arrayMulta);
       });
-  }, []);
+  }, []); */
 
   return (
     <View>
+      {/* <Button title="Refrescar" containerStyle={styles.btnSend} onPress={refresh} /> */}
       {user ? (
         totalMultas > 0 ? (
           // <MultasList multas={multas} />
