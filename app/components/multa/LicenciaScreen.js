@@ -14,7 +14,7 @@ function LicenciaScreen(props) {
   const {navigation, LicenciaScreen: lic} = props
   const [provincias, setProvincias] = useState(provinciasAPI);
   const [localidades, setLocalidades] = useState(localidadesAPI);
-  const [localidad, setLocalidad] = useState('');
+  const [localidad, setLocalidad] = useState([]);
 
 
   // carga las provincias mediante la API
