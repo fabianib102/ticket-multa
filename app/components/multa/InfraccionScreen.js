@@ -26,14 +26,36 @@ function InfraccionScreen(props) {
         <style>
             table, th, td {
                 border: 1px solid black;
+                border-collapse: collapse;
+                margin: 25px 0;
+                font-size: 0.9em;
+                min-width: 400px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                font-family: 'Lucida Console';
+    
             }
             .tabla {
                 margin: auto;
                 width: 100%;
+    
             }
             .sep-bar {
                 text-align: center;
                 font-weight: bold;
+                background-color: #3C99DC;
+                color: #ffffff;
+                text-align: left;
+            }
+            .tabla tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+    
+            .tabla tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+    
+            .html {
+                font-family: 'helvetica neue', helvetica, arial, sans-serif;
             }
           </style>
     </head>
