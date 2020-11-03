@@ -1,13 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { connect } from 'react-redux'
 import { styles } from './AddMultaForm'
 import { Input, Button, CheckBox, Text } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import { onChangeClase, onChangeLocalidad, onChangeProvincia, onSetNumero, onSetRetenida, onSetUnicaProvincial, onSetVencimiento } from "../../store/actions/LicenciaScreen";
+import DropDownPicker from "react-native-dropdown-picker"
+
+const provinciasAPI = require("../../../assets/provincias.json");
+const localidadesAPI = require("../../../assets/localidades.json");
 
 function LicenciaScreen(props) {
   const {navigation, LicenciaScreen: lic} = props
+  const [provincias, setProvincias] = useState(provinciasAPI);
+  const [localidades, setLocalidades] = useState(localidadesAPI);
+  const [localidad, setLocalidad] = useState('');
+
+
+  // carga las provincias mediante la API
+  useEffect(() => {
+    if (lic.provincia === '')
+      return
+
+    var p = provincias.filter(p => p.nombre == lic.provincia)[0]
+    setLocalidad(
+      localidades[p.id]
+      .map(l => {
+          return l.nombre;
+      })
+    )
+  }, [lic.provincia]);
+
+
+
 
   return (
     <View style={styles.viewForm}>
@@ -45,7 +70,7 @@ function LicenciaScreen(props) {
         <Picker.Item label="G3" value="G3" />
       </Picker>
 
-      <Picker
+      {/* <Picker
         selectedValue={lic.provincia}
         onValueChange={(itemValue, itemIndex) =>
           props.onChangeProvincia(itemValue)
@@ -55,9 +80,39 @@ function LicenciaScreen(props) {
         <Picker.Item label="Chaco" value="Chaco" />
         <Picker.Item label="Corrientes" value="Corrientes" />
         <Picker.Item label="Misiones" value="Misiones" />
-      </Picker>
+      </Picker> */}
 
-      <Picker
+        <DropDownPicker
+          items={provincias.map(provincia => ({
+              label: provincia.nombre,
+              value: provincia.nombre
+          }))}
+          defaultValue={lic.provincia}
+          placeholder="Provincia"
+          style={styles.dropDownPicker}
+          itemStyle={{justifyContent: 'flex-start'}}
+          onChangeItem={item => props.onChangeProvincia(item.value)}
+          searchable={true}
+          searchablePlaceholder="Buscar provincia"
+          searchableError={() => <Text>No se encontró la provincia buscada</Text>}
+        />
+
+        <DropDownPicker
+          items={localidad.map(loc => ({
+              label: loc,
+              value: loc
+          }))}
+          defaultValue={lic.localidad}
+          placeholder="Localidad"
+          style={styles.dropDownPicker}
+          itemStyle={{justifyContent: 'flex-start'}}
+          onChangeItem={item => props.onChangeProvincia(item.value)}
+          searchable={true}
+          searchablePlaceholder="Buscar localidad"
+          searchableError={() => <Text>No se encontró la localidad buscada</Text>}
+        />
+
+      {/* <Picker
         selectedValue={lic.localidad}
         onValueChange={(itemValue, itemIndex) => props.onChangeLocalidad(itemValue)}
       >
@@ -67,7 +122,7 @@ function LicenciaScreen(props) {
         <Picker.Item label="Vilelas" value="Vilelas" />
         <Picker.Item label="Fontana" value="Fontana" />
         <Picker.Item label="Puerto Tirol" value="Puerto Tirol" />
-      </Picker>
+      </Picker> */}
 
       <CheckBox
         title="Única Provincial"
