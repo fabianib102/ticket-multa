@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, Image, TouchableNativeFeedback } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { Button, Input, Text } from "react-native-elements";
@@ -10,14 +10,15 @@ import Loading from "../Loading";
 import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto, clearForm } from "../../store/actions/InfraccionScreen";
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
+import Toast from "react-native-easy-toast";
 // import template from './Ticket';
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [cargando, setCargando] = useState(false);
+    const toastRef = useRef();
 
     const date = new Date();
-
     const fecha = date.getUTCDate() + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
     const hora = date.toLocaleTimeString();
 
@@ -382,18 +383,24 @@ function InfraccionScreen(props) {
             idInspector: firebase.auth().currentUser.uid,
             idSupervisor: "",
         }).then(response => {
-             uploadMultipleFilesToFirebase(props.InfraccionScreen.fotos, response.id)
+            if (props.InfraccionScreen.fotos.length > 0){
+                uploadMultipleFilesToFirebase(props.InfraccionScreen.fotos, response.id)
                  .then(urls => {
                      console.log("URLS");
                      console.log(urls);
                      firebase.firestore().collection("multas").doc(response.id).update({
                          fotos: urls,
                      }).then(response => {
-                         console.log("TODO ANDUVO SIN ERRORES");
-                         // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
-                         setCargando(false);
-                        //  props.clearForm();
-                         navigation.navigate("main-stack");
+                        console.log("TODO ANDUVO SIN ERRORES");
+                        // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
+                        setCargando(false);
+                        // props.clearForm();
+                        // navigation.navigate("main-stack");
+                        toastRef.current.show("Multa Guardada")
+                        setTimeout(function(){
+                            props.clearForm();
+                            navigation.navigate("main-stack");
+                        }, 1250);
                      }).catch(error => {
                          console.log("ERROR AL UPDATEAR LA MULTA");
                          console.log(error);
@@ -404,6 +411,14 @@ function InfraccionScreen(props) {
                      console.log(error);
                      setCargando(false);
                  });
+            } else {
+                setCargando(false);
+                toastRef.current.show("Multa Guardada")
+                setTimeout(function(){ 
+                    props.clearForm();
+                    navigation.navigate("main-stack");
+                }, 1250);
+            }
 }).catch(error => {
             console.log("ERROR AL CARGAR LA MULTA");
             console.log(error);
@@ -522,6 +537,7 @@ function InfraccionScreen(props) {
                 <Button title="Guardar" onPress={guardarMulta} />
             </View>
             <Button title="Imprimir multa" containerStyle={styles.btnSend} onPress={() => printPDF(template)} />
+            <Toast ref={toastRef} position="center" opacity={0.9} />
         </View>
     );
 }
