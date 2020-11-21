@@ -11,7 +11,6 @@ const provinciasAPI = require("../../../assets/provincias.json");
 const localidadesAPI = require("../../../assets/localidades.json");
 
 function LicenciaScreen(props) {
-  console.log(props)
   const {navigation, LicenciaScreen: lic} = props
   const [provincias, setProvincias] = useState(provinciasAPI);
   const [localidades, setLocalidades] = useState(localidadesAPI);

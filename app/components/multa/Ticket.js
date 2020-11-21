@@ -188,10 +188,10 @@ const templateTicket = (cs, ls, vs, is, fecha, hora) => {
                         Lugar: ${ is.lugar }
                     </td>
                     <td>
-                        Código: ${ is.codigo }
+                        ${ is.codigo }
                     </td>
                     <td>
-                        Artículo: ${ is.articulo }
+                        ${ is.articulo }
                     </td>
                 </tr>
                 <tr>
@@ -202,12 +202,12 @@ const templateTicket = (cs, ls, vs, is, fecha, hora) => {
                         Extracto: ${ is.extracto }
                     </td>
                     <td>
-                        Monto (primer vencimiento): ${ is.montoPrimerVencimiento }
+                        Monto (primer vencimiento): $${ is.montoPrimerVencimiento }
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        Monto (segundo vencimiento): ${ is.montoSegundoVencimiento }
+                        Monto (segundo vencimiento): $${ is.montoSegundoVencimiento }
                     </td>
                     <td colspan="2">
                         Observaciones: ${ is.observaciones }
