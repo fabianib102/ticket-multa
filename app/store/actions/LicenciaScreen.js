@@ -1,6 +1,6 @@
-export const onSetNumero = (valueLicencia) => {
+export const onSetNumeroLic = (valueLicencia) => {
     return {
-      type: "onSetNumero",
+      type: "onSetNumeroLic",
       data: valueLicencia
     }
 }

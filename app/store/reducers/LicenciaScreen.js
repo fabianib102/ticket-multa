@@ -1,5 +1,5 @@
 const initialState = {
-    numero: "",
+    numeroLic: "",
     clase: "",
     provincia: "",
     localidad: "",
@@ -10,10 +10,10 @@ const initialState = {
 
 export const LicenciaScreen = (state=initialState, action) => {
     switch (action.type){
-        case 'onSetNumero':
+        case 'onSetNumeroLic':
             return {
                 ...state,
-                numero: action.data
+                numeroLic: action.data
             }
         case 'onChangeClase':
             return {

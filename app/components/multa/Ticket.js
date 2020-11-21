@@ -100,7 +100,7 @@ const templateTicket = (cs, ls, vs, is, fecha, hora) => {
                 </tr>
                 <tr>
                     <td>
-                        Número: ${ ls.numero }
+                        Número: ${ ls.numeroLic }
                     </td>
                     <td>
                         Clase: ${ ls.clase }

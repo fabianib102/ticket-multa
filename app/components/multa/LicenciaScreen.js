@@ -4,13 +4,14 @@ import { connect } from 'react-redux'
 import { styles } from './AddMultaForm'
 import { Input, Button, CheckBox, Text } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
-import { onChangeClase, onChangeLocalidad, onChangeProvincia, onSetNumero, onSetRetenida, onSetUnicaProvincial, onSetVencimiento } from "../../store/actions/LicenciaScreen";
+import { onChangeClase, onChangeLocalidad, onChangeProvincia, onSetNumeroLic, onSetRetenida, onSetUnicaProvincial, onSetVencimiento } from "../../store/actions/LicenciaScreen";
 import DropDownPicker from "react-native-dropdown-picker"
 
 const provinciasAPI = require("../../../assets/provincias.json");
 const localidadesAPI = require("../../../assets/localidades.json");
 
 function LicenciaScreen(props) {
+  console.log(props)
   const {navigation, LicenciaScreen: lic} = props
   const [provincias, setProvincias] = useState(provinciasAPI);
   const [localidades, setLocalidades] = useState(localidadesAPI);
@@ -42,7 +43,7 @@ function LicenciaScreen(props) {
         keyboardType="numeric"
         containerStyle={styles.input}
         value={lic.numero}
-        onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
+        onChange={(e) => props.onSetNumeroLic(e.nativeEvent.text)}
       />
 
       <Picker
@@ -160,7 +161,7 @@ const mapDispatchToProps = (dispatch) => {
         onChangeProvincia: (valueProvince) => dispatch(onChangeProvincia(valueProvince)),
         onChangeLocalidad: (valueLocalidad) => dispatch(onChangeLocalidad(valueLocalidad)),
         onSetVencimiento: (valueExpiration) => dispatch(onSetVencimiento(valueExpiration)),
-        onSetNumero: (valueLicencia) => dispatch(onSetNumero(valueLicencia)),
+        onSetNumeroLic: (valueLicencia) => dispatch(onSetNumeroLic(valueLicencia)),
         onSetUnicaProvincial: () => dispatch(onSetUnicaProvincial()),
         onSetRetenida: () => dispatch(onSetRetenida())
     }
