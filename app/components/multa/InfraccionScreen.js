@@ -11,7 +11,7 @@ import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onS
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import Toast from "react-native-easy-toast";
-// import template from './Ticket';
+import templateTicket from './Ticket';
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
@@ -19,9 +19,12 @@ function InfraccionScreen(props) {
     const toastRef = useRef();
 
     const date = new Date();
-    const fecha = date.getUTCDate() + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
+    const fecha = parseInt(date.getUTCDate() - 1) + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
     const hora = date.toLocaleTimeString();
 
+    const template = templateTicket(cs, ls, vs, is, fecha, hora);
+
+    /* 
     const template = `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -241,7 +244,7 @@ function InfraccionScreen(props) {
         Fecha: ${fecha} - Hora: ${hora}
     </body>
     </html>`;
-
+ */
 
     // Imprimir PDF
     async function printPDF(html) {
