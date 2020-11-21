@@ -93,11 +93,21 @@ export const styles = StyleSheet.create({
   },
   dropDownPicker: {
     backgroundColor: "rgba(0, 0, 0, 0)",
+    marginTop: 10,
+    marginBottom: 10
     // borderColor: "rgba(0, 0, 0, 0)",
     // borderRadius: 0,
     // borderBottomColor: "red"
   },
   btnSend: {
     marginTop: 15
-  }
+  },
+  buttonContainerVS: {
+    marginTop: 25,
+    flex: 1,
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 50
+  },
 });

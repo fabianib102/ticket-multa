@@ -226,7 +226,7 @@ function VehiculoScreen(props) {
                 </View>
             )}
 
-            <View style={styles.buttonContainer}>
+            <View style={styles.buttonContainerVS}>
                 <Button title="Anterior" onPress={() => navigation.navigate('Conductor')} />
                 <Button title="Siguiente" onPress={() => navigation.navigate('Infracción')} />
             </View>
