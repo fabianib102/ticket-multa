@@ -96,5 +96,8 @@ export const styles = StyleSheet.create({
     // borderColor: "rgba(0, 0, 0, 0)",
     // borderRadius: 0,
     // borderBottomColor: "red"
+  },
+  btnSend: {
+    marginTop: 15
   }
 });
