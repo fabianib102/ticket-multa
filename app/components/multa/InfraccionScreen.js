@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
-import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto, clearForm } from "../../store/actions/InfraccionScreen";
+import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetLey, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto, clearForm } from "../../store/actions/InfraccionScreen";
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import Toast from "react-native-easy-toast";
@@ -146,6 +146,7 @@ function InfraccionScreen(props) {
                 pais: "Argentina",
             },
             infraccion: {
+                ley: is.ley,
                 codigo: is.codigo,
                 articulo: is.articulo,
                 inciso: is.inciso,
@@ -236,6 +237,13 @@ function InfraccionScreen(props) {
                 containerStyle={styles.input}
                 value={is.lugar}
                 onChange={e => props.onSetLugar(e.nativeEvent.text)}
+            />
+
+            <Input
+                placeholder="Ley"
+                containerStyle={styles.input}
+                value={is.ley}
+                onChange={e => props.onSetLey(e.nativeEvent.text)}
             />
 
             <View style={{ flexDirection: "row" }}>
@@ -329,6 +337,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onSetLugar: valueLugar => dispatch(onSetLugar(valueLugar)),
+        onSetLey: valueLey => dispatch(onSetLey(valueLey)),
         onSetCodigo: valueCodigo => dispatch(onSetCodigo(valueCodigo)),
         onSetArticulo: valueArticulo => dispatch(onSetArticulo(valueArticulo)),
         onSetInciso: valueInciso => dispatch(onSetInciso(valueInciso)),

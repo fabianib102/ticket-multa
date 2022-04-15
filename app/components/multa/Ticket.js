@@ -179,6 +179,9 @@ const templateTicket = (cs, ls, vs, is, fecha, hora) => {
                     <td>
                         País (titular): ${ vs.pais }
                     </td>
+                    <td>
+                        Vehiculo Retenido?: ${ vs.vehiculoRetenido? "Si" : "No" }
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="3" class="sep-bar">Infracción</td>
@@ -188,28 +191,31 @@ const templateTicket = (cs, ls, vs, is, fecha, hora) => {
                         Lugar: ${ is.lugar }
                     </td>
                     <td>
-                        ${ is.codigo }
+                        Codigo: ${ is.codigo }
                     </td>
                     <td>
-                        ${ is.articulo }
+                        Articulo: ${ is.articulo }
                     </td>
                 </tr>
                 <tr>
+                    <td>
+                        Ley: ${ is.ley }
+                    </td>
                     <td>
                         Inciso: ${ is.inciso }
                     </td>
                     <td>
                         Extracto: ${ is.extracto }
                     </td>
-                    <td>
-                        Monto (primer vencimiento): $${ is.montoPrimerVencimiento }
-                    </td>
                 </tr>
                 <tr>
                     <td>
+                        Monto (primer vencimiento): $${ is.montoPrimerVencimiento }
+                    </td>
+                    <td>
                         Monto (segundo vencimiento): $${ is.montoSegundoVencimiento }
                     </td>
-                    <td colspan="2">
+                    <td>
                         Observaciones: ${ is.observaciones }
                     </td>
                 </tr>

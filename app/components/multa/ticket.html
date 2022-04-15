@@ -178,6 +178,9 @@
             <td>
                 País (titular): ${ vs.pais }
             </td>
+            <td>
+                Vehiculo Retenido?: ${ vs.vehiculoRetenido? "Si" : "No" }
+            </td>
         </tr>
         <tr>
             <td colspan="3" class="sep-bar">Infracción</td>
@@ -195,16 +198,19 @@
         </tr>
         <tr>
             <td>
+                Ley: ${ is.ley }
+            </td>
+            <td>
                 Inciso: ${ is.inciso }
             </td>
             <td>
                 Extracto: ${ is.extracto }
             </td>
+        </tr>
+        <tr>
             <td>
                 Monto (primer vencimiento): ${ is.montoPrimerVencimiento }
             </td>
-        </tr>
-        <tr>
             <td>
                 Monto (segundo vencimiento): ${ is.montoSegundoVencimiento }
             </td>

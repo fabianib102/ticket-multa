@@ -5,7 +5,7 @@ import { Input, Text, Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import DropDownPicker from "react-native-dropdown-picker"
 import { styles } from "./AddMultaForm";
-import { onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular } from "../../store/actions/VehiculoScreen";
+import { onSetVehiculoRetenido, onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular } from "../../store/actions/VehiculoScreen";
 import { setConductorNoEsTitular } from "../../store/actions/InfraccionScreen";
 
 const provinciasAPI = require("../../../assets/provincias.json");
@@ -38,7 +38,7 @@ function VehiculoScreen(props) {
     }, [vs.provincia]);
 
     return (
-        <View style={styles.viewForm}>
+        <View style={styles.viewForm} >
             <Text h4>Vehículo</Text>
             <Input
                 placeholder="Dominio"
@@ -47,41 +47,45 @@ function VehiculoScreen(props) {
                 value={vs.dominio}
                 onChange={(e) => props.onSetDominio(e.nativeEvent.text)}
             />
+            <View style={{ zIndex: 3}} >
+                <DropDownPicker
+                    items={marcas.map(marca => ({
+                        label: marca,
+                        value: marca
+                    }))}
+                    defaultValue={vs.marca}
+                    placeholder="Marca"
+                    style={styles.dropDownPicker}
+                    itemStyle={{justifyContent: 'flex-start'}}
+                    onChangeItem={item => props.onSetMarca(item.value)}
+                    searchable={true}
+                    searchablePlaceholder="Buscar marca"
+                    searchableError={() => <Text>No se encontró la marca buscada</Text>}
+                />
+            </View>
+            <View style={{ zIndex: 2}} >
+                <DropDownPicker
+                    items={modelos.map(modelo => ({
+                        label: modelo,
+                        value: modelo
+                    }))}
+                    defaultValue={vs.modelo}
+                    placeholder="Modelo"
+                    style={styles.dropDownPicker}
+                    itemStyle={{justifyContent: 'flex-start'}}
+                    onChangeItem={item => props.onSetModelo(item.value)}
+                    searchable={true}
+                    searchablePlaceholder="Buscar modelo"
+                    searchableError={() => <Text>No se encontró el modelo buscado</Text>}
+                />
+            </View>
 
-            <DropDownPicker
-                items={marcas.map(marca => ({
-                    label: marca,
-                    value: marca
-                }))}
-                defaultValue={vs.marca}
-                placeholder="Marca"
-                style={styles.dropDownPicker}
-                itemStyle={{justifyContent: 'flex-start'}}
-                onChangeItem={item => props.onSetMarca(item.value)}
-                searchable={true}
-                searchablePlaceholder="Buscar marca"
-                searchableError={() => <Text>No se encontró la marca buscada</Text>}
-            />
-
-            <DropDownPicker
-                items={modelos.map(modelo => ({
-                    label: modelo,
-                    value: modelo
-                }))}
-                defaultValue={vs.modelo}
-                placeholder="Modelo"
-                style={styles.dropDownPicker}
-                itemStyle={{justifyContent: 'flex-start'}}
-                onChangeItem={item => props.onSetModelo(item.value)}
-                searchable={true}
-                searchablePlaceholder="Buscar modelo"
-                searchableError={() => <Text>No se encontró el modelo buscado</Text>}
-            />
 
             {/* https://www.dnrpa.gov.ar/fabricantes/info/CODIGO_DEL_AUTOMOTOR.pdf */}
             {/* algunos nombres cambie porque eran cualquier cosa */}
             {/* ej: sedan 3 puertas (que no existe) por hatchback 3 puertas (que si existe) */}
-            <DropDownPicker
+            <View style={{ zIndex: 1}} >
+                <DropDownPicker
                 items={[
                     {label: "Sedán 2 puertas", value: "Sedán 2 puertas"},
                     {label: "Sedán 4 puertas", value: "Sedán 4 puertas"},
@@ -119,6 +123,13 @@ function VehiculoScreen(props) {
                 searchable={true}
                 searchablePlaceholder="Buscar tipo"
                 searchableError={() => <Text>No se encontró el tipo buscado</Text>}
+                />
+            </View>
+
+            <CheckBox
+                    title="Vehículo retenido?"
+                    checked={vs.vehiculoRetenido}
+                    onPress={() => props.onSetVehiculoRetenido()}
             />
 
             <CheckBox
@@ -256,6 +267,7 @@ const mapDispatchToProps = dispatch => {
         onSetProvincia: valueProvincia => dispatch(onSetProvincia(valueProvincia)),
         onSetPais: valuePais => dispatch(onSetPais(valuePais)),
         setConductorNoEsTitular: value => dispatch(setConductorNoEsTitular(value)),
+        onSetVehiculoRetenido: () => dispatch(onSetVehiculoRetenido()),
     }
 }
 

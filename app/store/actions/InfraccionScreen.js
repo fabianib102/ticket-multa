@@ -5,6 +5,13 @@ export const onSetLugar = valueLugar => {
     }
 }
 
+export const onSetLey = valueLey => {
+    return {
+        type: "onSetLey",
+        data: valueLey,
+    }
+}
+
 export const onSetCodigo = valueCodigo => {
     return {
         type: "onSetCodigo",

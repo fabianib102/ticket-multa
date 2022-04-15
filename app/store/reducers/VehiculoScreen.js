@@ -14,6 +14,7 @@ const initialState = {
     provincia: "",
     localidad: "",
     pais: "",
+    vehiculoRetenido: false,
 }
 
 export const VehiculoScreen = (state = initialState, action) => {
@@ -92,6 +93,11 @@ export const VehiculoScreen = (state = initialState, action) => {
             return {
                 ...state,
                 pais: action.data
+            }
+        case 'onSetVehiculoRetenido':
+            return {
+                ...state,
+                vehiculoRetenido: !(state.vehiculoRetenido)
             }
         case "clearForm":
             return initialState;

@@ -1,5 +1,6 @@
 const initialState = {
     lugar: "",
+    ley: "",
     codigo: "",
     articulo: "",
     inciso: "",
@@ -22,6 +23,11 @@ export const InfraccionScreen = (state = initialState, action) => {
             return {
                 ...state,
                 codigo: action.data,
+        };
+        case "onSetLey":
+            return {
+                ...state,
+                ley: action.data,
             };
         case "onSetArticulo":
             return {

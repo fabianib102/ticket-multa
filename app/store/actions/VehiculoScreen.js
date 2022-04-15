@@ -105,3 +105,9 @@ export const onSetPais = valuePais => {
       data: valuePais
     }
 }
+
+export const onSetVehiculoRetenido = () => {
+  return {
+    type: "onSetVehiculoRetenido"
+  }
+}

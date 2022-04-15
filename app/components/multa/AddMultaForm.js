@@ -94,7 +94,6 @@ export const styles = StyleSheet.create({
   dropDownPicker: {
     backgroundColor: "rgba(0, 0, 0, 0)",
     marginTop: 10,
-    marginBottom: 10
     // borderColor: "rgba(0, 0, 0, 0)",
     // borderRadius: 0,
     // borderBottomColor: "red"
