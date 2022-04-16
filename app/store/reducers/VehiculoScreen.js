@@ -39,11 +39,19 @@ export const VehiculoScreen = (state = initialState, action) => {
                 vehiculos.push({
                     label: v.data().marca,
                     value: v.data().marca,
-                    modelos: v.data().modelos.map(m => ({
-                        label: m,
-                        value: m
-                    }))
-                })
+                    modelos: [
+                        ...v.data().modelos.map(m => ({
+                            label: m,
+                            value: m
+                        })),
+                        { label: 'Otro', value: 'Otro' }
+                    ]
+                });
+            });
+            vehiculos.push({
+                label: 'Otro',
+                value: 'Otro',
+                modelos: [{ label: 'Otro', value: 'Otro' }]
             });
             return {
                 ...state,
