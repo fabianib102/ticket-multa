@@ -1,3 +1,30 @@
+import firebase from '../../utils/firebase';
+
+export const onGetVehiculosRequest = () => ({
+  type: 'onGetVehiculosRequest'
+});
+
+export const onGetVehiculosResponse = response => ({
+  type: 'onGetVehiculosResponse',
+  response
+});
+
+export const onGetVehiculosError = error => ({
+  type: 'onGetVehiculosError',
+  error
+});
+
+export const getVehiculos = () => async dispatch => {
+  try {
+    dispatch(onGetVehiculosRequest());
+    const res = await firebase.firestore().collection('vehiculos').get();
+    dispatch(onGetVehiculosResponse(res));
+  } catch (err) {
+    console.log(err);
+    dispatch(onGetVehiculosError(err));
+  }
+}
+
 export const onSetDominio = valueDominio => {
     return {
       type: "onSetDominio",
