@@ -2,6 +2,8 @@ const initialState = {
     loadingVehiculos: false,
     error: null,
     vehiculos: [],
+    otraMarca: '',
+    otroModelo: '',
     data: {
         dominio: "",
         marca: "",
@@ -71,6 +73,11 @@ export const VehiculoScreen = (state = initialState, action) => {
                     marca: action.data
                 }
             }
+        case 'onSetOtraMarca':
+            return {
+                ...state,
+                otraMarca: action.data
+            };
         case 'onSetModelo':
             return {
                 ...state,
@@ -79,6 +86,11 @@ export const VehiculoScreen = (state = initialState, action) => {
                     modelo: action.data
                 }
             }
+        case 'onSetOtroModelo':
+            return {
+                ...state,
+                otroModelo: action.data
+            };
         case 'onChangeTipo':
             return {
                 ...state,

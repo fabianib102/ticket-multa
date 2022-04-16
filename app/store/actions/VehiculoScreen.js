@@ -39,11 +39,25 @@ export const onSetMarca = valueMarca => {
     }
 }
 
+export const onSetOtraMarca = data => {
+  return {
+    type: "onSetOtraMarca",
+    data
+  }
+}
+
 export const onSetModelo = valueModelo => {
     return {
       type: "onSetModelo",
       data: valueModelo
     }
+}
+
+export const onSetOtroModelo = data => {
+  return {
+    type: "onSetOtroModelo",
+    data
+  }
 }
 
 export const onChangeTipo = valueTipo => {
