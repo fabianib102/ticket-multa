@@ -5,7 +5,7 @@ import { Input, Text, Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import DropDownPicker from "react-native-dropdown-picker"
 import { styles } from "./AddMultaForm";
-import { onSetVehiculoRetenido, onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular, getVehiculos } from "../../store/actions/VehiculoScreen";
+import { onSetVehiculoRetenido, onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular, getVehiculos, onSetOtraMarca, onSetOtroModelo } from "../../store/actions/VehiculoScreen";
 import { setConductorNoEsTitular } from "../../store/actions/InfraccionScreen";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -39,9 +39,15 @@ function VehiculoScreen(props) {
     }, [vs.data.provincia]);
 
     const onMarcaChange = newValue => {
-        props.onSetMarca(newValue.value);
-        props.onSetModelo('');
-        setModelos(newValue.modelos);
+        dispatch(onSetMarca(newValue.value));
+        dispatch(onSetModelo(''));
+        dispatch(onSetOtraMarca(''));
+        setModelos(newValue.modelos ?? []);
+    };
+
+    const onModeloChange = newValue => {
+        dispatch(onSetModelo(newValue.value));
+        dispatch(onSetOtroModelo(''));
     };
 
     return (
@@ -52,9 +58,9 @@ function VehiculoScreen(props) {
                 autoCapitalize="characters"
                 containerStyle={styles.input}
                 value={vs.data.dominio}
-                onChange={(e) => props.onSetDominio(e.nativeEvent.text)}
+                onChange={e => dispatch(onSetDominio(e.nativeEvent.text))}
             />
-            <View style={{ zIndex: 3 }} >
+            <View style={{ zIndex: 3 }}>
                 <DropDownPicker
                     loading={loadingVehiculos}
                     disabled={loadingVehiculos}
@@ -69,28 +75,46 @@ function VehiculoScreen(props) {
                     searchableError={() => <Text>No se encontró la marca buscada</Text>}
                 />
             </View>
-            <View style={{ zIndex: 2 }} >
+            {vs.data.marca === 'Otro' && (
+                <Input
+                    placeholder="Ingrese la marca"
+                    autoCapitalize="words"
+                    containerStyle={styles.input}
+                    value={vs.otraMarca}
+                    onChange={e => dispatch(onSetOtraMarca(e.nativeEvent.text))}
+                />
+            )}
+            <View style={{ zIndex: 2 }}>
                 <DropDownPicker
                     items={modelos}
                     defaultValue={vs.data.modelo}
                     placeholder="Modelo"
                     style={styles.dropDownPicker}
                     itemStyle={{ justifyContent: 'flex-start' }}
-                    onChangeItem={item => props.onSetModelo(item.value)}
+                    onChangeItem={onModeloChange}
                     searchable
                     searchablePlaceholder="Buscar modelo"
                     searchableError={() => <Text>No se encontró el modelo buscado</Text>}
                 />
             </View>
+            {vs.data.modelo === 'Otro' && (
+                <Input
+                    placeholder="Ingrese el modelo"
+                    autoCapitalize="words"
+                    containerStyle={styles.input}
+                    value={vs.otroModelo}
+                    onChange={e => dispatch(onSetOtroModelo(e.nativeEvent.text))}
+                />
+            )}
 
-            <View style={{ zIndex: 1 }} >
+            <View style={{ zIndex: 1 }}>
                 <DropDownPicker
                     items={carTypes}
                     defaultValue={vs.data.tipo}
                     placeholder="Tipo"
                     style={styles.dropDownPicker}
                     itemStyle={{justifyContent: 'flex-start'}}
-                    onChangeItem={item => props.onChangeTipo(item.value)}
+                    onChangeItem={item => dispatch(onChangeTipo(item.value))}
                     searchable={true}
                     searchablePlaceholder="Buscar tipo"
                     searchableError={() => <Text>No se encontró el tipo buscado</Text>}
@@ -100,13 +124,13 @@ function VehiculoScreen(props) {
             <CheckBox
                 title="Vehículo retenido?"
                 checked={vs.data.vehiculoRetenido}
-                onPress={() => props.onSetVehiculoRetenido()}
+                onPress={() => dispatch(onSetVehiculoRetenido())}
             />
 
             <CheckBox
                 title="El conductor NO es el titular"
                 checked={is.conductorNoEsTitular}
-                onPress={() => props.setConductorNoEsTitular(!is.conductorNoEsTitular)}
+                onPress={() => dispatch(setConductorNoEsTitular(!is.conductorNoEsTitular))}
             />
 
             {is.conductorNoEsTitular && (
@@ -116,12 +140,12 @@ function VehiculoScreen(props) {
                         autoCapitalize="words"
                         containerStyle={styles.input}
                         value={vs.data.titular}
-                        onChange={(e) => props.onSetTitular(e.nativeEvent.text)}
+                        onChange={e => dispatch(onSetTitular(e.nativeEvent.text))}
                     />
 
                     <Picker
                         selectedValue={vs.data.tipoDocumento}
-                        onValueChange={itemValue => props.onChangeTipoDocumento(itemValue)}
+                        onValueChange={itemValue => dispatch(onChangeTipoDocumento(itemValue))}
                     >
                         <Picker.Item label="Tipo de documento" value="" />
                         <Picker.Item label="DNI" value="DNI" />
@@ -135,14 +159,14 @@ function VehiculoScreen(props) {
                         keyboardType="numeric"
                         containerStyle={styles.inputAddress}
                         value={vs.data.nroDocumento}
-                        onChange={(e) => props.onSetNroDocumento(e.nativeEvent.text)}
+                        onChange={e => dispatch(onSetNroDocumento(e.nativeEvent.text))}
                     />
                     <Input
                         placeholder="Calle"
                         autoCapitalize="words"
                         containerStyle={styles.inputAddress}
                         value={vs.data.calle}
-                        onChange={(e) => props.onSetCalle(e.nativeEvent.text)}
+                        onChange={e => dispatch(onSetCalle(e.nativeEvent.text))}
                     />
 
                     <View style={styles.row}>
@@ -151,13 +175,13 @@ function VehiculoScreen(props) {
                             keyboardType="numeric"
                             containerStyle={styles.inputAddress}
                             value={vs.data.numero}
-                            onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
+                            onChange={e => dispatch(onSetNumero(e.nativeEvent.text))}
                         />
                         <Input
                             placeholder="Departamento"
                             containerStyle={styles.inputAddress}
                             value={vs.data.departamento}
-                            onChange={(e) => props.onSetDepartamento(e.nativeEvent.text)}
+                            onChange={e => dispatch(onSetDepartamento(e.nativeEvent.text))}
                         />
                     </View>
 
@@ -166,13 +190,13 @@ function VehiculoScreen(props) {
                             placeholder="Piso"
                             containerStyle={styles.inputAddress}
                             value={vs.data.piso}
-                            onChange={(e) => props.onSetPiso(e.nativeEvent.text)}
+                            onChange={e => dispatch(onSetPiso(e.nativeEvent.text))}
                         />
                         <Input
                             placeholder="Código Postal"
                             containerStyle={styles.inputAddress}
                             value={vs.data.codigoPostal}
-                            onChange={(e) => props.onSetCodigoPostal(e.nativeEvent.text)}
+                            onChange={e => dispatch(onSetCodigoPostal(e.nativeEvent.text))}
                         />
                     </View>
 
@@ -185,7 +209,7 @@ function VehiculoScreen(props) {
                         placeholder="Provincia"
                         style={styles.dropDownPicker}
                         itemStyle={{justifyContent: 'flex-start'}}
-                        onChangeItem={item => props.onSetProvincia(item.value)}
+                        onChangeItem={item => dispatch(onSetProvincia(item.value))}
                         searchable={true}
                         searchablePlaceholder="Buscar provincia"
                         searchableError={() => <Text>No se encontró la provincia buscada</Text>}
@@ -200,7 +224,7 @@ function VehiculoScreen(props) {
                         placeholder="Localidad"
                         style={styles.dropDownPicker}
                         itemStyle={{justifyContent: 'flex-start'}}
-                        onChangeItem={item => props.onSetLocalidad(item.value)}
+                        onChangeItem={item => dispatch(onSetLocalidad(item.value))}
                         searchable={true}
                         searchablePlaceholder="Buscar localidad"
                         searchableError={() => <Text>No se encontró la localidad buscada</Text>}
@@ -220,26 +244,4 @@ const mapStateToProps = state => {
     return state
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onSetDominio: valueDominio => dispatch(onSetDominio(valueDominio)),
-        onSetMarca: valueMarca => dispatch(onSetMarca(valueMarca)),
-        onSetModelo: valueModelo => dispatch(onSetModelo(valueModelo)),
-        onChangeTipo: valueTipo => dispatch(onChangeTipo(valueTipo)),
-        onSetTitular: valueTitular => dispatch(onSetTitular(valueTitular)),
-        onChangeTipoDocumento: valueTipoDocumento => dispatch(onChangeTipoDocumento(valueTipoDocumento)),
-        onSetNroDocumento: valueNroDocumento => dispatch(onSetNroDocumento(valueNroDocumento)),
-        onSetCalle: valueCalle => dispatch(onSetCalle(valueCalle)),
-        onSetNumero: valueNumero => dispatch(onSetNumero(valueNumero)),
-        onSetPiso: valuePiso => dispatch(onSetPiso(valuePiso)),
-        onSetDepartamento: valueDepartamento => dispatch(onSetDepartamento(valueDepartamento)),
-        onSetCodigoPostal: valueCodigoPostal => dispatch(onSetCodigoPostal(valueCodigoPostal)),
-        onSetLocalidad: valueLocalidad => dispatch(onSetLocalidad(valueLocalidad)),
-        onSetProvincia: valueProvincia => dispatch(onSetProvincia(valueProvincia)),
-        onSetPais: valuePais => dispatch(onSetPais(valuePais)),
-        setConductorNoEsTitular: value => dispatch(setConductorNoEsTitular(value)),
-        onSetVehiculoRetenido: () => dispatch(onSetVehiculoRetenido()),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(VehiculoScreen);
+export default connect(mapStateToProps)(VehiculoScreen);
