@@ -22,7 +22,7 @@ function InfraccionScreen(props) {
     const fecha = parseInt(date.getUTCDate() - 1) + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
     const hora = date.toLocaleTimeString();
 
-    const template = templateTicket(cs, ls, vs, is, fecha, hora);
+    const template = templateTicket(cs, ls, vs.data, is, fecha, hora);
 
     // Imprimir PDF
     async function printPDF(html) {
@@ -141,7 +141,7 @@ function InfraccionScreen(props) {
                 pais: "Argentina",
             },
             vehiculo: {
-                ...vs,
+                ...vs.data,
                 ...datosTitular,
                 pais: "Argentina",
             },
