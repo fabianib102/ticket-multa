@@ -193,13 +193,10 @@ function InfraccionScreen(props) {
                         console.log("TODO ANDUVO SIN ERRORES");
                         // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
                         setCargando(false);
-                        // props.clearForm();
-                        // navigation.navigate("main-stack");
-                        toastRef.current.show("Multa Guardada")
-                        setTimeout(function(){
+                        toastRef.current.show("Multa Guardada", 1250, () => {
                             props.clearForm();
                             navigation.navigate("main-stack");
-                        }, 1250);
+                        });
                      }).catch(error => {
                          console.log("ERROR AL UPDATEAR LA MULTA");
                          console.log(error);
@@ -212,11 +209,10 @@ function InfraccionScreen(props) {
                  });
             } else {
                 setCargando(false);
-                toastRef.current.show("Multa Guardada")
-                setTimeout(function(){ 
+                toastRef.current.show("Multa Guardada", 1250, () => {
                     props.clearForm();
                     navigation.navigate("main-stack");
-                }, 1250);
+                });
             }
 }).catch(error => {
             console.log("ERROR AL CARGAR LA MULTA");
