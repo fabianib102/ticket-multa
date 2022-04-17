@@ -125,6 +125,23 @@ function InfraccionScreen(props) {
                 pais: cs.pais,
             }
         }
+        if (vs.otraMarca) {
+            firebase.firestore().collection('vehiculos').add({
+                marca: vs.otraMarca,
+                modelos: [vs.otroModelo]
+            });
+        }
+        if (!vs.otraMarca && vs.otroModelo) {
+            firebase.firestore().collection('vehiculos').where('marca', '==', vs.data.marca).get()
+                .then(snapshot => {
+                    snapshot.forEach(s => {
+                        firebase.firestore().collection('vehiculos').doc(s.id).update({
+                            marca: s.data().marca,
+                            modelos: [...s.data().modelos, vs.otroModelo]
+                        });
+                    });
+                });
+        }
         firebase.firestore().collection("multas").add({
             ubicacion: {
                 fecha: date.getUTCDate() + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear(),
