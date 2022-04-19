@@ -82,38 +82,34 @@ function LicenciaScreen(props) {
         <Picker.Item label="Misiones" value="Misiones" />
       </Picker> */}
 
-        <View style={{ zIndex: 2}}>
-          <DropDownPicker
-          items={provincias.map(provincia => ({
-              label: provincia.nombre,
-              value: provincia.nombre
+        <DropDownPicker
+        items={provincias.map(provincia => ({
+            label: provincia.nombre,
+            value: provincia.nombre
+        }))}
+        defaultValue={lic.provincia}
+        placeholder="Provincia"
+        style={styles.dropDownPicker}
+        itemStyle={{justifyContent: 'flex-start'}}
+        onChangeItem={item => props.onChangeProvincia(item.value)}
+        searchable={true}
+        searchablePlaceholder="Buscar provincia"
+        searchableError={() => <Text>No se encontró la provincia buscada</Text>}
+        />
+        <DropDownPicker
+          items={localidad.map(loc => ({
+              label: loc,
+              value: loc
           }))}
-          defaultValue={lic.provincia}
-          placeholder="Provincia"
+          defaultValue={lic.localidad}
+          placeholder="Localidad"
           style={styles.dropDownPicker}
           itemStyle={{justifyContent: 'flex-start'}}
-          onChangeItem={item => props.onChangeProvincia(item.value)}
+          onChangeItem={item => props.onChangeLocalidad(item.value)}
           searchable={true}
-          searchablePlaceholder="Buscar provincia"
-          searchableError={() => <Text>No se encontró la provincia buscada</Text>}
-          />
-        </View>
-        <View style={{ zIndex: 1}}>
-          <DropDownPicker
-            items={localidad.map(loc => ({
-                label: loc,
-                value: loc
-            }))}
-            defaultValue={lic.localidad}
-            placeholder="Localidad"
-            style={styles.dropDownPicker}
-            itemStyle={{justifyContent: 'flex-start'}}
-            onChangeItem={item => props.onChangeLocalidad(item.value)}
-            searchable={true}
-            searchablePlaceholder="Buscar localidad"
-            searchableError={() => <Text>No se encontró la localidad buscada</Text>}
-          />
-        </View>
+          searchablePlaceholder="Buscar localidad"
+          searchableError={() => <Text>No se encontró la localidad buscada</Text>}
+        />
 
 
       {/* <Picker

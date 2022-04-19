@@ -78,40 +78,36 @@ function ConductorScreen(props) {
                 value={cs.fechaNacimiento}
                 onChange={(e) => props.onSetFechaNacimiento(e.nativeEvent.text)}
             />
-            <View style={{ zIndex: 2}}>
-                <DropDownPicker
-                    items={provincias.map(provincia => ({
-                        label: provincia.nombre,
-                        value: provincia.nombre
-                    }))}
-                    defaultValue={cs.provincia}
-                    placeholder="Provincia"
-                    style={styles.dropDownPicker}
-                    itemStyle={{justifyContent: 'flex-start'}}
-                    onChangeItem={item => props.onChangeValueProvincia(item.value)}
-                    searchable={true}
-                    searchablePlaceholder="Buscar provincia"
-                    searchableError={() => <Text>No se encontró la provincia buscada</Text>}
-                />
-            </View>
+            <DropDownPicker
+                items={provincias.map(provincia => ({
+                    label: provincia.nombre,
+                    value: provincia.nombre
+                }))}
+                defaultValue={cs.provincia}
+                placeholder="Provincia"
+                style={styles.dropDownPicker}
+                itemStyle={{justifyContent: 'flex-start'}}
+                onChangeItem={item => props.onChangeValueProvincia(item.value)}
+                searchable={true}
+                searchablePlaceholder="Buscar provincia"
+                searchableError={() => <Text>No se encontró la provincia buscada</Text>}
+            />
     
-            <View style={{ zIndex: 1}}>
-                <DropDownPicker
-                    items={localidad.map(loc => ({
-                        label: loc,
-                        value: loc
-                    }))}
-                    defaultValue={cs.localidad}
-                    placeholder="Localidad"
-                    style={styles.dropDownPicker}
-                    itemStyle={{justifyContent: 'flex-start'}}
-                    onChangeItem={item => props.onChangeValueLocalidad(item.value)}
-                    searchable={true}
-                    searchablePlaceholder="Buscar localidad"
-                    searchableError={() => <Text>No se encontró la localidad buscada</Text>}
-                />
-            </View>
-    
+            <DropDownPicker
+                items={localidad.map(loc => ({
+                    label: loc,
+                    value: loc
+                }))}
+                defaultValue={cs.localidad}
+                placeholder="Localidad"
+                style={styles.dropDownPicker}
+                itemStyle={{justifyContent: 'flex-start'}}
+                onChangeItem={item => props.onChangeValueLocalidad(item.value)}
+                searchable={true}
+                searchablePlaceholder="Buscar localidad"
+                searchableError={() => <Text>No se encontró la localidad buscada</Text>}
+            />
+
             <Input
                 placeholder="Calle"
                 containerStyle={styles.input}

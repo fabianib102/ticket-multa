@@ -60,21 +60,19 @@ function VehiculoScreen(props) {
                 value={vs.data.dominio}
                 onChange={e => dispatch(onSetDominio(e.nativeEvent.text))}
             />
-            <View style={{ zIndex: 3 }}>
-                <DropDownPicker
-                    loading={loadingVehiculos}
-                    disabled={loadingVehiculos}
-                    items={vehiculos}
-                    defaultValue={vs.data.marca}
-                    placeholder="Marca"
-                    style={styles.dropDownPicker}
-                    itemStyle={{ justifyContent: 'flex-start' }}
-                    onChangeItem={onMarcaChange}
-                    searchable
-                    searchablePlaceholder="Buscar marca"
-                    searchableError={() => <Text>No se encontró la marca buscada</Text>}
-                />
-            </View>
+            <DropDownPicker
+                loading={loadingVehiculos}
+                disabled={loadingVehiculos}
+                items={vehiculos}
+                defaultValue={vs.data.marca}
+                placeholder="Marca"
+                style={styles.dropDownPicker}
+                itemStyle={{ justifyContent: 'flex-start' }}
+                onChangeItem={onMarcaChange}
+                searchable
+                searchablePlaceholder="Buscar marca"
+                searchableError={() => <Text>No se encontró la marca buscada</Text>}
+            />
             {vs.data.marca === 'Otro' && (
                 <Input
                     placeholder="Ingrese la marca"
@@ -84,19 +82,17 @@ function VehiculoScreen(props) {
                     onChange={e => dispatch(onSetOtraMarca(e.nativeEvent.text))}
                 />
             )}
-            <View style={{ zIndex: 2 }}>
-                <DropDownPicker
-                    items={modelos}
-                    defaultValue={vs.data.modelo}
-                    placeholder="Modelo"
-                    style={styles.dropDownPicker}
-                    itemStyle={{ justifyContent: 'flex-start' }}
-                    onChangeItem={onModeloChange}
-                    searchable
-                    searchablePlaceholder="Buscar modelo"
-                    searchableError={() => <Text>No se encontró el modelo buscado</Text>}
-                />
-            </View>
+            <DropDownPicker
+                items={modelos}
+                defaultValue={vs.data.modelo}
+                placeholder="Modelo"
+                style={styles.dropDownPicker}
+                itemStyle={{ justifyContent: 'flex-start' }}
+                onChangeItem={onModeloChange}
+                searchable
+                searchablePlaceholder="Buscar modelo"
+                searchableError={() => <Text>No se encontró el modelo buscado</Text>}
+            />
             {vs.data.modelo === 'Otro' && (
                 <Input
                     placeholder="Ingrese el modelo"
@@ -107,19 +103,17 @@ function VehiculoScreen(props) {
                 />
             )}
 
-            <View style={{ zIndex: 1 }}>
-                <DropDownPicker
-                    items={carTypes}
-                    defaultValue={vs.data.tipo}
-                    placeholder="Tipo"
-                    style={styles.dropDownPicker}
-                    itemStyle={{justifyContent: 'flex-start'}}
-                    onChangeItem={item => dispatch(onChangeTipo(item.value))}
-                    searchable={true}
-                    searchablePlaceholder="Buscar tipo"
-                    searchableError={() => <Text>No se encontró el tipo buscado</Text>}
-                />
-            </View>
+            <DropDownPicker
+                items={carTypes}
+                defaultValue={vs.data.tipo}
+                placeholder="Tipo"
+                style={styles.dropDownPicker}
+                itemStyle={{justifyContent: 'flex-start'}}
+                onChangeItem={item => dispatch(onChangeTipo(item.value))}
+                searchable={true}
+                searchablePlaceholder="Buscar tipo"
+                searchableError={() => <Text>No se encontró el tipo buscado</Text>}
+            />
 
             <CheckBox
                 title="Vehículo retenido?"
