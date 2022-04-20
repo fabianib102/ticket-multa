@@ -5,40 +5,47 @@ import { Icon } from 'react-native-elements';
 import NewMultaStack from "./NewMultasStack";
 import MainStack from "./MainStack";
 import HistoryStack from "./HistoryStack"
+import { useDispatch } from 'react-redux';
+import { clearForm } from '../store/actions/InfraccionScreen';
 
 const Tab = createBottomTabNavigator();
 
 export default function Navigation({ navigation }){
+    const dispatch = useDispatch();
 
     return (
-        <NavigationContainer>
-            <Tab.Navigator
-                initialRouteName="main-stack"
-                tabBarOptions={{
-                    inactiveTintColor:"#000",
-                    activeTintColor:"#3494d3",
-                }}
-                screenOptions={({route}) => ({
-                    tabBarIcon: ({color}) => screenOptions(route, color) 
-                })} 
-            >
-                <Tab.Screen 
-                    name="new-multa-stack" 
-                    component={NewMultaStack}
-                    options={{title: "Nueva Multa"}}
-                />
-                <Tab.Screen 
-                    name="main-stack" 
-                    component={MainStack}
-                    options={{title: "Inicio"}}
-                />
-                <Tab.Screen 
-                    name="history-stack" 
-                    component={HistoryStack}
-                    options={{title: "Historial"}}
-                />
-        </Tab.Navigator>
-        </NavigationContainer>
+
+            <NavigationContainer>
+                <Tab.Navigator
+                    initialRouteName="main-stack"
+                    tabBarOptions={{
+                        inactiveTintColor:"#000",
+                        activeTintColor:"#3494d3",
+                    }}
+                    screenOptions={({route}) => ({
+                        tabBarIcon: ({color}) => screenOptions(route, color) 
+                    })} 
+                >
+                    <Tab.Screen 
+                        name="new-multa-stack" 
+                        component={NewMultaStack}
+                        options={{title: "Nueva Multa"}}
+                        listeners={{
+                            blur: () => dispatch(clearForm())
+                        }}
+                    />
+                    <Tab.Screen 
+                        name="main-stack" 
+                        component={MainStack}
+                        options={{title: "Inicio"}}
+                    />
+                    <Tab.Screen 
+                        name="history-stack" 
+                        component={HistoryStack}
+                        options={{title: "Historial"}}
+                    />
+                </Tab.Navigator>
+            </NavigationContainer>
     )
 
 }

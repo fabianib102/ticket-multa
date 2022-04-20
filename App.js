@@ -1,6 +1,8 @@
 import React from 'react';
 import { LogBox } from 'react-native';
+import { Provider } from 'react-redux';
 import Navig from './app/navigations/Navigation';
+import store from './app/storeFile';
 
 function App() {
     console.disableYellowBox = true;
@@ -13,7 +15,9 @@ function App() {
     ]);
     
     return (
-        <Navig/>
+        <Provider store={store}>
+            <Navig/>
+        </Provider>
     )
 }
 

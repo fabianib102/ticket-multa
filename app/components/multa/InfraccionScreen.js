@@ -194,7 +194,6 @@ function InfraccionScreen(props) {
                         // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
                         setCargando(false);
                         toastRef.current.show("Multa Guardada", 1250, () => {
-                            props.clearForm();
                             navigation.navigate("main-stack");
                         });
                      }).catch(error => {
@@ -210,7 +209,6 @@ function InfraccionScreen(props) {
             } else {
                 setCargando(false);
                 toastRef.current.show("Multa Guardada", 1250, () => {
-                    props.clearForm();
                     navigation.navigate("main-stack");
                 });
             }

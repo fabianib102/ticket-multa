@@ -2,8 +2,6 @@ import React from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { Provider } from "react-redux";
-import store from "../../store";
 import LicenciaScreen from "./LicenciaScreen";
 import ConductorScreen from "./ConductorScreen";
 import VehiculoScreen from "./VehiculoScreen";
@@ -13,11 +11,9 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function AddMultaForm() {
   return (
-    <Provider store={store}>
-      <ScrollView style={styles.scrollView}>
-        <MyTabs />
-      </ScrollView>
-    </Provider>
+    <ScrollView style={styles.scrollView}>
+      <MyTabs />
+    </ScrollView>
   );
 }
 

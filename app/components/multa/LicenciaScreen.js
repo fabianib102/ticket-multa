@@ -6,29 +6,38 @@ import { Input, Button, CheckBox, Text } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import { onChangeClase, onChangeLocalidad, onChangeProvincia, onSetNumeroLic, onSetRetenida, onSetUnicaProvincial, onSetVencimiento } from "../../store/actions/LicenciaScreen";
 import DropDownPicker from "react-native-dropdown-picker"
+import { useDispatch } from "react-redux";
 
 const provinciasAPI = require("../../../assets/provincias.json");
 const localidadesAPI = require("../../../assets/localidades.json");
 
 function LicenciaScreen(props) {
+  const dispatch = useDispatch();
   const {navigation, LicenciaScreen: lic} = props
   const [provincias, setProvincias] = useState(provinciasAPI);
   const [localidades, setLocalidades] = useState(localidadesAPI);
   const [localidad, setLocalidad] = useState([]);
+  const [mounted, setMounted] = useState(true);
 
+  useEffect(() => {
+    return () => setMounted(false);
+  });
 
   // carga las provincias mediante la API
   useEffect(() => {
     if (lic.provincia === '')
       return
 
-    var p = provincias.filter(p => p.nombre == lic.provincia)[0]
-    setLocalidad(
-      localidades[p.id]
-      .map(l => {
-          return l.nombre;
-      })
-    )
+      console.log('en el effect', lic.provincia)
+    if (mounted) {
+      var p = provincias.filter(p => p.nombre == lic.provincia)[0]
+      setLocalidad(
+        localidades[p.id]
+        .map(l => {
+            return l.nombre;
+        })
+      )
+    }
   }, [lic.provincia]);
 
 
@@ -84,11 +93,11 @@ function LicenciaScreen(props) {
 
         <View style={{ zIndex: 2}}>
           <DropDownPicker
-          items={provincias.map(provincia => ({
+          items={(provincias || []).map(provincia => ({
               label: provincia.nombre,
               value: provincia.nombre
           }))}
-          defaultValue={lic.provincia}
+          defaultValue={lic.provincia || ''}
           placeholder="Provincia"
           style={styles.dropDownPicker}
           itemStyle={{justifyContent: 'flex-start'}}
@@ -100,11 +109,11 @@ function LicenciaScreen(props) {
         </View>
         <View style={{ zIndex: 1}}>
           <DropDownPicker
-            items={localidad.map(loc => ({
+            items={(localidad || []).map(loc => ({
                 label: loc,
                 value: loc
             }))}
-            defaultValue={lic.localidad}
+            defaultValue={lic.localidad || ''}
             placeholder="Localidad"
             style={styles.dropDownPicker}
             itemStyle={{justifyContent: 'flex-start'}}
