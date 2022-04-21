@@ -112,7 +112,7 @@ function VehiculoScreen(props) {
                 value={vs.data.dominio}
                 onChange={e => dispatch(onSetDominio(e.nativeEvent.text))}
             />
-\                <DropDownPicker
+                <DropDownPicker
                     loading={loadingVehiculos}
                     disabled={loadingVehiculos}
                     items={vehiculos}
