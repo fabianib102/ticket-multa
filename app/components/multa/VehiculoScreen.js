@@ -97,7 +97,7 @@ function VehiculoScreen(props) {
     };
 
     console.log("================================================ PRE BUILD")
-    console.log("=========LENGGGGGG", vehiculos.length)
+    console.log("=========SELECTED MARCA", vs.data.marca)
     console.log("=========LENGGGGGG", vehiculos)
 
     return (
@@ -112,8 +112,7 @@ function VehiculoScreen(props) {
                 value={vs.data.dominio}
                 onChange={e => dispatch(onSetDominio(e.nativeEvent.text))}
             />
-            <View style={{ zIndex: 3 }}>
-                <DropDownPicker
+\                <DropDownPicker
                     loading={loadingVehiculos}
                     disabled={loadingVehiculos}
                     items={vehiculos}
@@ -126,7 +125,6 @@ function VehiculoScreen(props) {
                     searchablePlaceholder="Buscar marca"
                     searchableError={() => <Text>No se encontró la marca buscada</Text>}
                 />
-            </View>
             {vs.data.marca === 'Otro' && (
                 <Input
                     placeholder="Ingrese la marca"
@@ -136,7 +134,6 @@ function VehiculoScreen(props) {
                     onChange={e => props.onSetOtraMarca(e.nativeEvent.text)}
                 />
             )}
-            <View style={{ zIndex: 2 }}>
                 <DropDownPicker
                     items={modelos}
                     defaultValue={vs.data.modelo}
@@ -148,7 +145,6 @@ function VehiculoScreen(props) {
                     searchablePlaceholder="Buscar modelo"
                     searchableError={() => <Text>No se encontró el modelo buscado</Text>}
                 />
-            </View>
             {vs.data.modelo === 'Otro' && (
                 <Input
                     placeholder="Ingrese el modelo"
@@ -159,7 +155,6 @@ function VehiculoScreen(props) {
                 />
             )}
 
-            <View style={{ zIndex: 1 }}>
                 <DropDownPicker
                     items={carTypes}
                     defaultValue={vs.data.tipo}
@@ -171,7 +166,6 @@ function VehiculoScreen(props) {
                     searchablePlaceholder="Buscar tipo"
                     searchableError={() => <Text>No se encontró el tipo buscado</Text>}
                 />
-            </View>
 
             <CheckBox
                 title="Vehículo retenido?"
