@@ -11,23 +11,69 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import carTypes from "../../../assets/carTypes";
 
+import { firebaseApp } from "../../utils/firebase";
+import firebase from "firebase/app";
+
+
+
 const provinciasAPI = require("../../../assets/provincias.json");
 const localidadesAPI = require("../../../assets/localidades.json");
 
 function VehiculoScreen(props) {
     const dispatch = useDispatch();
-    const loadingVehiculos = useSelector(state => state.VehiculoScreen.loadingVehiculos);
-    const vehiculos = useSelector(state => state.VehiculoScreen.vehiculos);
+    // const loadingVehiculos = useSelector(state => state.VehiculoScreen.loadingVehiculos);
+    // const vehiculos = useSelector(state => state.VehiculoScreen.vehiculos);
 
     const {navigation, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [modelos, setModelos] = useState([]);
     const [provincias, setProvincias] = useState(provinciasAPI);
     const [localidades, setLocalidades] = useState(localidadesAPI);
     const [localidad, setLocalidad] = useState([]);
+    const [vehiculos, setVehiculos] = useState([]);
+    const [loadingVehiculos, setLoadingVehiculos] = useState(false);
+
+    const db = firebase.firestore(firebaseApp);
+
 
     useEffect(() => {
-        dispatch(getVehiculos());
-    }, []);
+
+        let mounted = true;
+
+        console.log("=========useEffect v", vehiculos)
+        if (vehiculos.length == 0 ) {
+            db.collection("vehiculos")
+                .get()
+                .then((resp) => {
+                    if (mounted) {
+                        const ve = [];
+                        resp.forEach(v => {
+                            ve.push({
+                                label: v.data().marca,
+                                value: v.data().marca,
+                                modelos: [
+                                    ...v.data().modelos.map(m => ({
+                                        label: m,
+                                        value: m
+                                    })),
+                                    { label: 'Otro', value: 'Otro' }
+                                ]
+                            });
+                        });
+                        ve.push({
+                            label: 'Otro',
+                            value: 'Otro',
+                            modelos: [{ label: 'Otro', value: 'Otro' }]
+                        });
+                        setVehiculos(ve);
+                        console.log("=========useEffect v", vehiculos)
+                    } else { null }
+                })
+            return () => (mounted = false)
+        } else {null}
+    }, [vehiculos])
+
+
+        // dispatch(getVehiculos());
 
     // carga las provincias mediante la API
     useEffect(() => {
@@ -39,19 +85,25 @@ function VehiculoScreen(props) {
     }, [vs.data.provincia]);
 
     const onMarcaChange = newValue => {
-        dispatch(onSetMarca(newValue.value));
-        dispatch(onSetModelo(''));
-        dispatch(onSetOtraMarca(''));
+        onSetMarca(newValue.value);
+        onSetModelo('');
+        onSetOtraMarca('');
         setModelos(newValue.modelos ?? []);
     };
 
     const onModeloChange = newValue => {
-        dispatch(onSetModelo(newValue.value));
-        dispatch(onSetOtroModelo(''));
+        onSetModelo(newValue.value);
+        onSetOtroModelo('');
     };
+
+    console.log("================================================ PRE BUILD")
+    console.log("=========LENGGGGGG", vehiculos.length)
+    console.log("=========LENGGGGGG", vehiculos)
 
     return (
         <View style={styles.viewForm}>
+        {(vehiculos.length != 0) && ( 
+            <>
             <Text h4>Vehículo</Text>
             <Input
                 placeholder="Dominio"
@@ -60,60 +112,66 @@ function VehiculoScreen(props) {
                 value={vs.data.dominio}
                 onChange={e => dispatch(onSetDominio(e.nativeEvent.text))}
             />
-            <DropDownPicker
-                loading={loadingVehiculos}
-                disabled={loadingVehiculos}
-                items={vehiculos}
-                defaultValue={vs.data.marca}
-                placeholder="Marca"
-                style={styles.dropDownPicker}
-                itemStyle={{ justifyContent: 'flex-start' }}
-                onChangeItem={onMarcaChange}
-                searchable
-                searchablePlaceholder="Buscar marca"
-                searchableError={() => <Text>No se encontró la marca buscada</Text>}
-            />
+            <View style={{ zIndex: 3 }}>
+                <DropDownPicker
+                    loading={loadingVehiculos}
+                    disabled={loadingVehiculos}
+                    items={vehiculos}
+                    defaultValue={vs.data.marca}
+                    placeholder="Marca"
+                    style={styles.dropDownPicker}
+                    itemStyle={{ justifyContent: 'flex-start' }}
+                    onChangeItem={onMarcaChange}
+                    searchable
+                    searchablePlaceholder="Buscar marca"
+                    searchableError={() => <Text>No se encontró la marca buscada</Text>}
+                />
+            </View>
             {vs.data.marca === 'Otro' && (
                 <Input
                     placeholder="Ingrese la marca"
                     autoCapitalize="words"
                     containerStyle={styles.input}
                     value={vs.otraMarca}
-                    onChange={e => dispatch(onSetOtraMarca(e.nativeEvent.text))}
+                    onChange={e => props.onSetOtraMarca(e.nativeEvent.text)}
                 />
             )}
-            <DropDownPicker
-                items={modelos}
-                defaultValue={vs.data.modelo}
-                placeholder="Modelo"
-                style={styles.dropDownPicker}
-                itemStyle={{ justifyContent: 'flex-start' }}
-                onChangeItem={onModeloChange}
-                searchable
-                searchablePlaceholder="Buscar modelo"
-                searchableError={() => <Text>No se encontró el modelo buscado</Text>}
-            />
+            <View style={{ zIndex: 2 }}>
+                <DropDownPicker
+                    items={modelos}
+                    defaultValue={vs.data.modelo}
+                    placeholder="Modelo"
+                    style={styles.dropDownPicker}
+                    itemStyle={{ justifyContent: 'flex-start' }}
+                    onChangeItem={onModeloChange}
+                    searchable
+                    searchablePlaceholder="Buscar modelo"
+                    searchableError={() => <Text>No se encontró el modelo buscado</Text>}
+                />
+            </View>
             {vs.data.modelo === 'Otro' && (
                 <Input
                     placeholder="Ingrese el modelo"
                     autoCapitalize="words"
                     containerStyle={styles.input}
                     value={vs.otroModelo}
-                    onChange={e => dispatch(onSetOtroModelo(e.nativeEvent.text))}
+                    onChange={e => props.onSetOtroModelo(e.nativeEvent.text)}
                 />
             )}
 
-            <DropDownPicker
-                items={carTypes}
-                defaultValue={vs.data.tipo}
-                placeholder="Tipo"
-                style={styles.dropDownPicker}
-                itemStyle={{justifyContent: 'flex-start'}}
-                onChangeItem={item => dispatch(onChangeTipo(item.value))}
-                searchable={true}
-                searchablePlaceholder="Buscar tipo"
-                searchableError={() => <Text>No se encontró el tipo buscado</Text>}
-            />
+            <View style={{ zIndex: 1 }}>
+                <DropDownPicker
+                    items={carTypes}
+                    defaultValue={vs.data.tipo}
+                    placeholder="Tipo"
+                    style={styles.dropDownPicker}
+                    itemStyle={{justifyContent: 'flex-start'}}
+                    onChangeItem={item => props.onChangeTipo(item.value)}
+                    searchable={true}
+                    searchablePlaceholder="Buscar tipo"
+                    searchableError={() => <Text>No se encontró el tipo buscado</Text>}
+                />
+            </View>
 
             <CheckBox
                 title="Vehículo retenido?"
@@ -230,12 +288,26 @@ function VehiculoScreen(props) {
                 <Button title="Anterior" onPress={() => navigation.navigate('Conductor')} />
                 <Button title="Siguiente" onPress={() => navigation.navigate('Infracción')} />
             </View>
+        </>
+        )
+        }
         </View>
-    );
+    )
+    
 }
 
 const mapStateToProps = state => {
     return state
 }
 
-export default connect(mapStateToProps)(VehiculoScreen);
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetMarca: newValue => dispatch(onSetMarca(newValue)),
+        onSetModelo: newValue => dispatch(onSetModelo(newValue)),
+        onSetOtraMarca: newValue => dispatch(onSetOtraMarca(newValue)),
+        onSetOtroModelo: newValue => dispatch(onSetOtroModelo(newValue)),
+        onChangeTipo: newValue => dispatch(onChangeTipo(newValue))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VehiculoScreen);
