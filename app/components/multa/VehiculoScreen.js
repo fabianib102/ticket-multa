@@ -39,7 +39,7 @@ function VehiculoScreen(props) {
 
         let mounted = true;
 
-        console.log("=========useEffect v", vehiculos)
+        console.log("========= PRE useEffect v", vehiculos.length)
         if (vehiculos.length == 0 ) {
             db.collection("vehiculos")
                 .get()
@@ -65,7 +65,7 @@ function VehiculoScreen(props) {
                             modelos: [{ label: 'Otro', value: 'Otro' }]
                         });
                         setVehiculos(ve);
-                        console.log("=========useEffect v", vehiculos)
+                        console.log("=========useEffect v", vehiculos.length)
                     } else { null }
                 })
             return () => (mounted = false)
@@ -85,20 +85,21 @@ function VehiculoScreen(props) {
     }, [vs.data.provincia]);
 
     const onMarcaChange = newValue => {
-        onSetMarca(newValue.value);
-        onSetModelo('');
-        onSetOtraMarca('');
+        props.onSetMarca(newValue.value);
+        props.onSetModelo('');
+        props.onSetOtraMarca('');
         setModelos(newValue.modelos ?? []);
     };
 
     const onModeloChange = newValue => {
-        onSetModelo(newValue.value);
-        onSetOtroModelo('');
+        props.onSetModelo(newValue.value);
+        props.onSetOtroModelo('');
     };
 
     console.log("================================================ PRE BUILD")
-    console.log("=========SELECTED MARCA", vs.data.marca)
-    console.log("=========LENGGGGGG", vehiculos)
+    console.log("=========Vehiculo Props", vs)
+    console.log("=========LENGGGGGG Vehiculos", vehiculos.length)
+    console.log("=========LENGGGGGG carTypes", carTypes.length)
 
     return (
         <View style={styles.viewForm}>
@@ -116,7 +117,7 @@ function VehiculoScreen(props) {
                     loading={loadingVehiculos}
                     disabled={loadingVehiculos}
                     items={vehiculos}
-                    defaultValue={vs.data.marca}
+                    value={vs.data.marca}
                     placeholder="Marca"
                     style={styles.dropDownPicker}
                     itemStyle={{ justifyContent: 'flex-start' }}
@@ -136,7 +137,6 @@ function VehiculoScreen(props) {
             )}
                 <DropDownPicker
                     items={modelos}
-                    defaultValue={vs.data.modelo}
                     placeholder="Modelo"
                     style={styles.dropDownPicker}
                     itemStyle={{ justifyContent: 'flex-start' }}
@@ -155,9 +155,9 @@ function VehiculoScreen(props) {
                 />
             )}
 
+            {(carTypes.length != 0) && (
                 <DropDownPicker
                     items={carTypes}
-                    defaultValue={vs.data.tipo}
                     placeholder="Tipo"
                     style={styles.dropDownPicker}
                     itemStyle={{justifyContent: 'flex-start'}}
@@ -166,6 +166,7 @@ function VehiculoScreen(props) {
                     searchablePlaceholder="Buscar tipo"
                     searchableError={() => <Text>No se encontró el tipo buscado</Text>}
                 />
+            )}
 
             <CheckBox
                 title="Vehículo retenido?"
