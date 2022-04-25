@@ -19,22 +19,31 @@ function LicenciaScreen(props) {
 
   // carga las provincias mediante la API
   useEffect(() => {
-    if (lic.provincia === '')
+    if (lic.provincia === '') {
+      setLocalidad('')
       return
+    }
 
     var p = provincias.filter(p => p.nombre == lic.provincia)[0]
+    console.log("LOCA LIDADES: ", localidades)
     setLocalidad(
       localidades[p.id]
       .map(l => {
           return l.nombre;
       })
     )
+
+
   }, [lic.provincia]);
 
 
 
+  console.log("LICENCIA SCREEN =====> provincias", provincias.length)
+  console.log("LICENCIA SCREEN =====> localidades", localidades[0])
+  console.log("LICENCIA SCREEN =====> localidad", localidad.length)
 
   return (
+    
     <View style={styles.viewForm}>
       <Text h4>Licencia</Text>
       <Input
@@ -82,12 +91,14 @@ function LicenciaScreen(props) {
         <Picker.Item label="Misiones" value="Misiones" />
       </Picker> */}
 
+      { (provincias.length != 0) && 
+        (
+        <>
         <DropDownPicker
         items={provincias.map(provincia => ({
             label: provincia.nombre,
             value: provincia.nombre
         }))}
-        defaultValue={lic.provincia}
         placeholder="Provincia"
         style={styles.dropDownPicker}
         itemStyle={{justifyContent: 'flex-start'}}
@@ -96,12 +107,12 @@ function LicenciaScreen(props) {
         searchablePlaceholder="Buscar provincia"
         searchableError={() => <Text>No se encontró la provincia buscada</Text>}
         />
-        <DropDownPicker
+        { (localidad.length != 0) && 
+        (<DropDownPicker
           items={localidad.map(loc => ({
               label: loc,
               value: loc
           }))}
-          defaultValue={lic.localidad}
           placeholder="Localidad"
           style={styles.dropDownPicker}
           itemStyle={{justifyContent: 'flex-start'}}
@@ -109,8 +120,9 @@ function LicenciaScreen(props) {
           searchable={true}
           searchablePlaceholder="Buscar localidad"
           searchableError={() => <Text>No se encontró la localidad buscada</Text>}
-        />
-
+        />)}
+        </>
+        )}
 
       {/* <Picker
         selectedValue={lic.localidad}
