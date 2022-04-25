@@ -25,7 +25,6 @@ function LicenciaScreen(props) {
     }
 
     var p = provincias.filter(p => p.nombre == lic.provincia)[0]
-    console.log("LOCA LIDADES: ", localidades)
     setLocalidad(
       localidades[p.id]
       .map(l => {
@@ -35,12 +34,6 @@ function LicenciaScreen(props) {
 
 
   }, [lic.provincia]);
-
-
-
-  console.log("LICENCIA SCREEN =====> provincias", provincias.length)
-  console.log("LICENCIA SCREEN =====> localidades", localidades[0])
-  console.log("LICENCIA SCREEN =====> localidad", localidad.length)
 
   return (
     

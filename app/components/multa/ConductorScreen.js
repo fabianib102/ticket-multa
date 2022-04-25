@@ -18,7 +18,11 @@ function ConductorScreen(props) {
 
     // carga las provincias mediante la API
     useEffect(() => {
-        if (cs.provincia === '') return
+        if (cs.provincia === '') {
+            setProvincias(provinciasAPI)
+            setLocalidad('')
+            return
+        }
         var p = provincias.filter(p => p.nombre == cs.provincia)[0]
         setLocalidad(localidades[p.id].map(l => {
             return l.nombre;
@@ -78,35 +82,35 @@ function ConductorScreen(props) {
                 value={cs.fechaNacimiento}
                 onChange={(e) => props.onSetFechaNacimiento(e.nativeEvent.text)}
             />
-            <DropDownPicker
-                items={provincias.map(provincia => ({
-                    label: provincia.nombre,
-                    value: provincia.nombre
-                }))}
-                defaultValue={cs.provincia}
-                placeholder="Provincia"
-                style={styles.dropDownPicker}
-                itemStyle={{justifyContent: 'flex-start'}}
-                onChangeItem={item => props.onChangeValueProvincia(item.value)}
-                searchable={true}
-                searchablePlaceholder="Buscar provincia"
-                searchableError={() => <Text>No se encontró la provincia buscada</Text>}
-            />
+            { (provincias.length != 0) && 
+                (<DropDownPicker
+                    items={provincias.map(provincia => ({
+                        label: provincia.nombre,
+                        value: provincia.nombre
+                    }))}
+                    placeholder="Provincia"
+                    style={styles.dropDownPicker}
+                    itemStyle={{justifyContent: 'flex-start'}}
+                    onChangeItem={item => props.onChangeValueProvincia(item.value)}
+                    searchable={true}
+                    searchablePlaceholder="Buscar provincia"
+                    searchableError={() => <Text>No se encontró la provincia buscada</Text>}
+                />)}
     
-            <DropDownPicker
-                items={localidad.map(loc => ({
-                    label: loc,
-                    value: loc
-                }))}
-                defaultValue={cs.localidad}
-                placeholder="Localidad"
-                style={styles.dropDownPicker}
-                itemStyle={{justifyContent: 'flex-start'}}
-                onChangeItem={item => props.onChangeValueLocalidad(item.value)}
-                searchable={true}
-                searchablePlaceholder="Buscar localidad"
-                searchableError={() => <Text>No se encontró la localidad buscada</Text>}
-            />
+            { (localidad.length != 0) &&     
+                (<DropDownPicker
+                    items={localidad.map(loc => ({
+                        label: loc,
+                        value: loc
+                    }))}
+                    placeholder="Localidad"
+                    style={styles.dropDownPicker}
+                    itemStyle={{justifyContent: 'flex-start'}}
+                    onChangeItem={item => props.onChangeValueLocalidad(item.value)}
+                    searchable={true}
+                    searchablePlaceholder="Buscar localidad"
+                    searchableError={() => <Text>No se encontró la localidad buscada</Text>}
+                />)}
 
             <Input
                 placeholder="Calle"
