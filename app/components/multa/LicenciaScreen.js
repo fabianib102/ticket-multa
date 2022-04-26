@@ -1,42 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { connect } from 'react-redux'
-import { styles } from './AddMultaForm'
+import { connect } from "react-redux";
+import { styles } from "./AddMultaForm";
 import { Input, Button, CheckBox, Text } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
-import { onChangeClase, onChangeLocalidad, onChangeProvincia, onSetNumeroLic, onSetRetenida, onSetUnicaProvincial, onSetVencimiento } from "../../store/actions/LicenciaScreen";
-import DropDownPicker from "react-native-dropdown-picker"
+import {
+  onChangeClase,
+  onChangeLocalidad,
+  onChangeProvincia,
+  onSetNumeroLic,
+  onSetRetenida,
+  onSetUnicaProvincial,
+  onSetVencimiento,
+} from "../../store/actions/LicenciaScreen";
+import DropDownPicker from "react-native-dropdown-picker";
+import DatePicker from "react-native-datepicker";
 
 const provinciasAPI = require("../../../assets/provincias.json");
 const localidadesAPI = require("../../../assets/localidades.json");
 
 function LicenciaScreen(props) {
-  const {navigation, LicenciaScreen: lic} = props
+  const { navigation, LicenciaScreen: lic } = props;
   const [provincias, setProvincias] = useState(provinciasAPI);
   const [localidades, setLocalidades] = useState(localidadesAPI);
   const [localidad, setLocalidad] = useState([]);
-
+  const [dateOut, setDateOut] = useState(new Date());
 
   // carga las provincias mediante la API
   useEffect(() => {
-    if (lic.provincia === '') {
-      setLocalidad('')
-      return
+    if (lic.provincia === "") {
+      setLocalidad("");
+      return;
     }
 
-    var p = provincias.filter(p => p.nombre == lic.provincia)[0]
+    var p = provincias.filter((p) => p.nombre == lic.provincia)[0];
     setLocalidad(
-      localidades[p.id]
-      .map(l => {
-          return l.nombre;
+      localidades[p.id].map((l) => {
+        return l.nombre;
       })
-    )
-
-
+    );
   }, [lic.provincia]);
 
   return (
-    
     <View style={styles.viewForm}>
       <Text h4>Licencia</Text>
       <Input
@@ -84,38 +89,42 @@ function LicenciaScreen(props) {
         <Picker.Item label="Misiones" value="Misiones" />
       </Picker> */}
 
-      { (provincias.length != 0) && 
-        (
+      {provincias.length != 0 && (
         <>
-        <DropDownPicker
-        items={provincias.map(provincia => ({
-            label: provincia.nombre,
-            value: provincia.nombre
-        }))}
-        placeholder="Provincia"
-        style={styles.dropDownPicker}
-        itemStyle={{justifyContent: 'flex-start'}}
-        onChangeItem={item => props.onChangeProvincia(item.value)}
-        searchable={true}
-        searchablePlaceholder="Buscar provincia"
-        searchableError={() => <Text>No se encontró la provincia buscada</Text>}
-        />
-        { (localidad.length != 0) && 
-        (<DropDownPicker
-          items={localidad.map(loc => ({
-              label: loc,
-              value: loc
-          }))}
-          placeholder="Localidad"
-          style={styles.dropDownPicker}
-          itemStyle={{justifyContent: 'flex-start'}}
-          onChangeItem={item => props.onChangeLocalidad(item.value)}
-          searchable={true}
-          searchablePlaceholder="Buscar localidad"
-          searchableError={() => <Text>No se encontró la localidad buscada</Text>}
-        />)}
+          <DropDownPicker
+            items={provincias.map((provincia) => ({
+              label: provincia.nombre,
+              value: provincia.nombre,
+            }))}
+            placeholder="Provincia"
+            style={styles.dropDownPicker}
+            itemStyle={{ justifyContent: "flex-start" }}
+            onChangeItem={(item) => props.onChangeProvincia(item.value)}
+            searchable={true}
+            searchablePlaceholder="Buscar provincia"
+            searchableError={() => (
+              <Text>No se encontró la provincia buscada</Text>
+            )}
+          />
+          {localidad.length != 0 && (
+            <DropDownPicker
+              items={localidad.map((loc) => ({
+                label: loc,
+                value: loc,
+              }))}
+              placeholder="Localidad"
+              style={styles.dropDownPicker}
+              itemStyle={{ justifyContent: "flex-start" }}
+              onChangeItem={(item) => props.onChangeLocalidad(item.value)}
+              searchable={true}
+              searchablePlaceholder="Buscar localidad"
+              searchableError={() => (
+                <Text>No se encontró la localidad buscada</Text>
+              )}
+            />
+          )}
         </>
-        )}
+      )}
 
       {/* <Picker
         selectedValue={lic.localidad}
@@ -140,35 +149,54 @@ function LicenciaScreen(props) {
         onPress={() => props.onSetRetenida()}
       />
 
-      <Input
+      {/* <Input
         placeholder="Vencimiento"
         containerStyle={styles.input}
         value={lic.vencimiento}
         onChange={(e) => props.onSetVencimiento(e.nativeEvent.text)}
-      />
+      /> */}
+
+      <View>
+        <Text h5>Vencimiento</Text>
+        <DatePicker
+          style={{textAlignVertical: "center",textAlign: "center",}}
+          date={dateOut}
+          format="DD/MM/YYYY"
+          onDateChange={(date) => {
+            setDateOut(date);
+            props.onSetVencimiento(date);
+          }}
+        />
+      </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Anterior" disabled/>
-        <Button title="Siguiente" onPress={() => navigation.navigate('Conductor')}/>
+        <Button title="Anterior" disabled />
+        <Button
+          title="Siguiente"
+          onPress={() => navigation.navigate("Conductor")}
+        />
       </View>
     </View>
   );
 }
 
 const mapStateToProps = (state) => {
-    return state
-}
+  return state;
+};
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        onChangeClase: (valueClass) => dispatch(onChangeClase(valueClass)),
-        onChangeProvincia: (valueProvince) => dispatch(onChangeProvincia(valueProvince)),
-        onChangeLocalidad: (valueLocalidad) => dispatch(onChangeLocalidad(valueLocalidad)),
-        onSetVencimiento: (valueExpiration) => dispatch(onSetVencimiento(valueExpiration)),
-        onSetNumeroLic: (valueLicencia) => dispatch(onSetNumeroLic(valueLicencia)),
-        onSetUnicaProvincial: () => dispatch(onSetUnicaProvincial()),
-        onSetRetenida: () => dispatch(onSetRetenida())
-    }
-}
+  return {
+    onChangeClase: (valueClass) => dispatch(onChangeClase(valueClass)),
+    onChangeProvincia: (valueProvince) =>
+      dispatch(onChangeProvincia(valueProvince)),
+    onChangeLocalidad: (valueLocalidad) =>
+      dispatch(onChangeLocalidad(valueLocalidad)),
+    onSetVencimiento: (valueExpiration) =>
+      dispatch(onSetVencimiento(valueExpiration)),
+    onSetNumeroLic: (valueLicencia) => dispatch(onSetNumeroLic(valueLicencia)),
+    onSetUnicaProvincial: () => dispatch(onSetUnicaProvincial()),
+    onSetRetenida: () => dispatch(onSetRetenida()),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LicenciaScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(LicenciaScreen);
