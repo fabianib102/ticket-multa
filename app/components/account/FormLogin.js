@@ -38,7 +38,11 @@ export default function FormLogin(props) {
                     .catch(err => {
                         setLoading(false);
                         console.log(err);
-                        toastRef.current.show("Error al ingresar al sistem, intente nuevamente.")
+                        if (err.code === "auth/user-disabled") {
+                            toastRef.current.show("Usted se encuentra deshabilitado en el sistema, \n contacte a su administrador.");
+                        } else {
+                            toastRef.current.show("Error al ingresar al sistema, intente nuevamente.");
+                        }   
                     })
                 }
             }
