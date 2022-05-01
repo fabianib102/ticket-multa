@@ -53,12 +53,12 @@ export const InfraccionScreen = (state = initialState, action) => {
         case 'onSetUnidadesFijasMin':
             return {
                 ...state,
-                otroExtracto: action.data
+                unidadesFijasMin: action.data
             };
         case 'onSetUnidadesFijasMax':
             return {
                 ...state,
-                otroExtracto: action.data
+                unidadesFijasMax: action.data
             };
         case "onSetObservaciones":
             return {
