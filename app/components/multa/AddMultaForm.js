@@ -80,6 +80,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     padding: 0,
     margin: 0,
+    marginBottom: 10
   },
   imageList: {
     flexDirection: "row",
