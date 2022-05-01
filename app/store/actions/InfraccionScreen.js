@@ -70,20 +70,6 @@ export const onSetObservaciones = valueObservaciones => {
     }
 }
 
-export const onSetMontoPrimerVencimiento = valueMontoPrimerVencimiento => {
-    return {
-        type: "onSetMontoPrimerVencimiento",
-        data: valueMontoPrimerVencimiento,
-    }
-}
-
-export const onSetMontoSegundoVencimiento = valueMontoSegundoVencimiento => {
-    return {
-        type: "onSetMontoSegundoVencimiento",
-        data: valueMontoSegundoVencimiento,
-    }
-}
-
 export const onSetFoto = newFoto => {
     return {
         type: "onSetFoto",

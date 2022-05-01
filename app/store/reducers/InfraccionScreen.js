@@ -9,8 +9,6 @@ const initialState = {
     unidadesFijasMin: "",
     unidadesFijasMax: "",
     observaciones: "",
-    montoPrimerVencimiento: "",
-    montoSegundoVencimiento: "",
     fotos: [],
     conductorNoEsTitular: false,
 }
@@ -66,16 +64,6 @@ export const InfraccionScreen = (state = initialState, action) => {
             return {
                 ...state,
                 observaciones: action.data,
-            };
-        case "onSetMontoPrimerVencimiento":
-            return {
-                ...state,
-                montoPrimerVencimiento: action.data,
-            };
-        case "onSetMontoSegundoVencimiento":
-            return {
-                ...state,
-                montoSegundoVencimiento: action.data,
             };
         case "onSetFoto":
             return {

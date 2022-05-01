@@ -404,22 +404,6 @@ function InfraccionScreen(props) {
                 onChange={e => props.onSetObservaciones(e.nativeEvent.text)}
             />
 
-            <Input
-                placeholder="Monto del primer vencimiento"
-                containerStyle={styles.input}
-                keyboardType="numeric"
-                value={is.montoPrimerVencimiento}
-                onChange={e => props.onSetMontoPrimerVencimiento(e.nativeEvent.text)}
-            />
-
-            <Input
-                placeholder="Monto del segundo vencimiento"
-                containerStyle={styles.input}
-                keyboardType="numeric"
-                value={is.montoSegundoVencimiento}
-                onChange={e => props.onSetMontoSegundoVencimiento(e.nativeEvent.text)}
-            />
-
             <View style={styles.imageList}>
                 {props.InfraccionScreen.fotos.map(dest => {
                     return (
@@ -457,8 +441,6 @@ const mapDispatchToProps = dispatch => {
         onSetUnidadesFijasMin: value => dispatch(onSetUnidadesFijasMin(value)),
         onSetUnidadesFijasMax: value => dispatch(onSetUnidadesFijasMax(value)),
         onSetObservaciones: valueObservaciones => dispatch(onSetObservaciones(valueObservaciones)),
-        onSetMontoPrimerVencimiento: valueMontoPrimerVencimiento => dispatch(onSetMontoPrimerVencimiento(valueMontoPrimerVencimiento)),
-        onSetMontoSegundoVencimiento: valueMontoSegundoVencimiento => dispatch(onSetMontoSegundoVencimiento(valueMontoSegundoVencimiento)),
         onSetFoto: newFoto => dispatch(onSetFoto(newFoto)),
         onDeleteFoto: foto => dispatch(onDeleteFoto(foto)),
         clearForm: () => dispatch(clearForm()),
