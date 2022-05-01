@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, Image, TouchableNativeFeedback } from "react-native";
-import { Picker } from "@react-native-community/picker";
 import { Button, Input, Text } from "react-native-elements";
 import firebase from '../../utils/firebase';
 import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
-import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetLey, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto, clearForm, onSetOtroExtracto, onSetUnidadesFijasMin, onSetUnidadesFijasMax } from "../../store/actions/InfraccionScreen";
+import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetLey, onSetObservaciones, onSetFoto, onDeleteFoto, clearForm, onSetOtroExtracto, onSetUnidadesFijasMin, onSetUnidadesFijasMax } from "../../store/actions/InfraccionScreen";
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import Toast from "react-native-easy-toast";
