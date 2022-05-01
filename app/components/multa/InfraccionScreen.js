@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Image, TouchableNativeFeedback } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { Button, Input, Text } from "react-native-elements";
@@ -7,15 +7,19 @@ import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
 import { connect } from "react-redux";
 import Loading from "../Loading";
-import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetLey, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto, clearForm } from "../../store/actions/InfraccionScreen";
+import { onSetArticulo, onSetCodigo, onSetExtracto, onSetInciso, onSetLugar, onSetLey, onSetMontoPrimerVencimiento, onSetMontoSegundoVencimiento, onSetObservaciones, onSetFoto, onDeleteFoto, clearForm, onSetOtroExtracto, onSetUnidadesFijasMin, onSetUnidadesFijasMax } from "../../store/actions/InfraccionScreen";
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import Toast from "react-native-easy-toast";
 import templateTicket from './Ticket';
+import { firebaseApp } from "../../utils/firebase";
+import DropDownPicker from "react-native-dropdown-picker";
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
     const [cargando, setCargando] = useState(false);
+    const [loadingInfracciones, setLoadingInfracciones] = useState([]);
+    const [infracciones, setInfracciones] = useState([]);
     const toastRef = useRef();
 
     const date = new Date();
@@ -23,6 +27,51 @@ function InfraccionScreen(props) {
     const hora = date.toLocaleTimeString();
 
     const template = templateTicket(cs, ls, vs.data, is, fecha, hora);
+    const db = firebase.firestore(firebaseApp);
+
+    useEffect(() => {
+        let mounted = true;
+        if (infracciones.length == 0 ) {
+            setLoadingInfracciones(true);
+            db.collection("infracciones")
+                .get()
+                .then(resp => {
+                    if (mounted) {
+                        const newInfracciones = [];
+                        resp.forEach(i => {
+                            newInfracciones.push({
+                                label: i.data().extracto,
+                                value: i.data().extracto,
+                                articulo: i.data().articulo,
+                                codigo: i.data().codigo,
+                                inciso: i.data().inciso,
+                                ley: i.data().ley,
+                                unidadesFijasMax: i.data().unidadesFijasMax,
+                                unidadesFijasMin: i.data().unidadesFijasMin
+                            });
+                        });
+                        newInfracciones.push({
+                            label: 'Otro',
+                            value: 'Otro'
+                        });
+                        setInfracciones(newInfracciones);
+                    }
+                })
+                .finally(() => setLoadingInfracciones(false));
+            return () => (mounted = false)
+        }
+    }, [infracciones])
+
+    const onInfraccionChange = newValue => {
+        props.onSetExtracto(newValue.value);
+        props.onSetOtroExtracto('');
+        props.onSetArticulo(newValue.articulo || '');
+        props.onSetCodigo(newValue.codigo || '');
+        props.onSetInciso(newValue.inciso || '');
+        props.onSetLey(newValue.ley || '');
+        props.onSetUnidadesFijasMax(newValue.unidadesFijasMax || '');
+        props.onSetUnidadesFijasMin(newValue.unidadesFijasMin || '');
+    };
 
     // Imprimir PDF
     async function printPDF(html) {
@@ -32,8 +81,8 @@ function InfraccionScreen(props) {
 
     // convierte una imagen en un blob
     const uriToBlob = (uri) => {  
-        return new Promise((resolve, reject) => {    
-            const xhr = new XMLHttpRequest();    
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
             xhr.onload = () => {
                 // Devolvemos el blob
                 resolve(xhr.response);
@@ -41,7 +90,7 @@ function InfraccionScreen(props) {
             xhr.onerror = () => {
                 reject(new Error('uriToBlob Falló'));
             };
-            xhr.responseType = 'blob';    
+            xhr.responseType = 'blob';
             xhr.open('GET', uri, true);
             xhr.send(null);  
         });
@@ -252,55 +301,95 @@ function InfraccionScreen(props) {
                 onChange={e => props.onSetLugar(e.nativeEvent.text)}
             />
 
-            <Input
-                placeholder="Ley"
-                containerStyle={styles.input}
-                value={is.ley}
-                onChange={e => props.onSetLey(e.nativeEvent.text)}
-            />
-
-            <View style={{ flexDirection: "row" }}>
-                <Picker
-                    style={{ width: "50%" }}
-                    selectedValue={is.codigo}
-                    onValueChange={(itemValue, itemIndex) => props.onSetCodigo(itemValue)}
-                >
-                    <Picker.Item label="Código" value="" />
-                    <Picker.Item label="Código 1" value="Código 1" />
-                    <Picker.Item label="Código 2" value="Código 2" />
-                    <Picker.Item label="Código 3" value="Código 3" />
-                </Picker>
-
-                <Picker
-                    style={{ width: "50%" }}
-                    selectedValue={is.articulo}
-                    onValueChange={(itemValue, itemIndex) => props.onSetArticulo(itemValue)}
-                >
-                    <Picker.Item label="Artículo" value="" />
-                    <Picker.Item label="Artículo 1" value="Artículo 1" />
-                    <Picker.Item label="Artículo 2" value="Artículo 2" />
-                    <Picker.Item label="Artículo 3" value="Artículo 3" />
-                </Picker>
-            </View>
-    
-            <Input
-                placeholder="Inciso"
-                containerStyle={styles.input}
-                value={is.inciso}
-                onChange={e => props.onSetInciso(e.nativeEvent.text)}
-            />
-
-            <Input
-                placeholder="Extracto"
-                containerStyle={styles.input}
+            <DropDownPicker
+                loading={loadingInfracciones}
+                disabled={loadingInfracciones}
+                items={infracciones}
                 value={is.extracto}
-                onChange={e => props.onSetExtracto(e.nativeEvent.text)}
+                placeholder="Infracción"
+                style={styles.dropDownPicker}
+                itemStyle={{ justifyContent: 'flex-start' }}
+                onChangeItem={onInfraccionChange}
+                searchable
+                searchablePlaceholder="Buscar infracción"
+                searchableError={() => <Text>No se encontró la infracción buscada</Text>}
             />
+            {is.extracto === 'Otro' && (
+                <>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ width: '50%' }}>
+                            <Input
+                                placeholder="Ley"
+                                keyboardType="numeric"
+                                containerStyle={styles.input}
+                                value={is.ley}
+                                onChange={e => props.onSetLey(e.nativeEvent.text)}
+                            />
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Input
+                                placeholder="Código"
+                                keyboardType="numeric"
+                                containerStyle={styles.input}
+                                value={is.codigo}
+                                onChange={e => props.onSetCodigo(e.nativeEvent.text)}
+                            />
+                        </View>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ width: '50%' }}>
+                            <Input
+                                placeholder="Artículo"
+                                keyboardType="numeric"
+                                containerStyle={styles.input}
+                                value={is.articulo}
+                                onChange={e => props.onSetArticulo(e.nativeEvent.text)}
+                            />
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Input
+                                placeholder="Inciso"
+                                containerStyle={styles.input}
+                                value={is.inciso}
+                                onChange={e => props.onSetInciso(e.nativeEvent.text)}
+                            />
+                        </View>
+                    </View>
+                    <Input
+                        placeholder="Extracto"
+                        inputContainerStyle={styles.textArea}
+                        autoCapitalize="characters"
+                        multiline
+                        textAlignVertical="top"
+                        value={is.otroExtracto}
+                        onChange={e => props.onSetOtroExtracto(e.nativeEvent.text)}
+                    />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ width: '50%' }}>
+                            <Input
+                                placeholder="Mínimo UF"
+                                keyboardType="numeric"
+                                containerStyle={styles.input}
+                                value={is.unidadesFijasMin}
+                                onChange={e => props.onSetUnidadesFijasMin(e.nativeEvent.text)}
+                            />
+                        </View>
+                        <View style={{ width: '50%' }}>
+                            <Input
+                                placeholder="Máximo UF"
+                                containerStyle={styles.input}
+                                value={is.unidadesFijasMax}
+                                onChange={e => props.onSetUnidadesFijasMax(e.nativeEvent.text)}
+                            />
+                        </View>
+                    </View>
+                </>
+            )}
 
             <Input
                 placeholder="Observaciones"
                 inputContainerStyle={styles.textArea}
-                multiline={true}
+                multiline
                 textAlignVertical="top"
                 value={is.observaciones}
                 onChange={e => props.onSetObservaciones(e.nativeEvent.text)}
@@ -355,6 +444,9 @@ const mapDispatchToProps = dispatch => {
         onSetArticulo: valueArticulo => dispatch(onSetArticulo(valueArticulo)),
         onSetInciso: valueInciso => dispatch(onSetInciso(valueInciso)),
         onSetExtracto: valueExtracto => dispatch(onSetExtracto(valueExtracto)),
+        onSetOtroExtracto: value => dispatch(onSetOtroExtracto(value)),
+        onSetUnidadesFijasMin: value => dispatch(onSetUnidadesFijasMin(value)),
+        onSetUnidadesFijasMax: value => dispatch(onSetUnidadesFijasMax(value)),
         onSetObservaciones: valueObservaciones => dispatch(onSetObservaciones(valueObservaciones)),
         onSetMontoPrimerVencimiento: valueMontoPrimerVencimiento => dispatch(onSetMontoPrimerVencimiento(valueMontoPrimerVencimiento)),
         onSetMontoSegundoVencimiento: valueMontoSegundoVencimiento => dispatch(onSetMontoSegundoVencimiento(valueMontoSegundoVencimiento)),
