@@ -42,6 +42,27 @@ export const onSetExtracto = valueExtracto => {
     }
 }
 
+export const onSetOtroExtracto = data => {
+    return {
+        type: "onSetOtroExtracto",
+        data,
+    }
+}
+
+export const onSetUnidadesFijasMin = data => {
+    return {
+        type: "onSetUnidadesFijasMin",
+        data,
+    }
+}
+
+export const onSetUnidadesFijasMax = data => {
+    return {
+        type: "onSetUnidadesFijasMax",
+        data,
+    }
+}
+
 export const onSetObservaciones = valueObservaciones => {
     return {
         type: "onSetObservaciones",

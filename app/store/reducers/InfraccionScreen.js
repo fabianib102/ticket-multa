@@ -6,6 +6,8 @@ const initialState = {
     inciso: "",
     extracto: "",
     otroExtracto: "",
+    unidadesFijasMin: "",
+    unidadesFijasMax: "",
     observaciones: "",
     montoPrimerVencimiento: "",
     montoSegundoVencimiento: "",
@@ -44,6 +46,21 @@ export const InfraccionScreen = (state = initialState, action) => {
             return {
                 ...state,
                 extracto: action.data,
+            };
+        case 'onSetOtroExtracto':
+            return {
+                ...state,
+                otroExtracto: action.data
+            };
+        case 'onSetUnidadesFijasMin':
+            return {
+                ...state,
+                otroExtracto: action.data
+            };
+        case 'onSetUnidadesFijasMax':
+            return {
+                ...state,
+                otroExtracto: action.data
             };
         case "onSetObservaciones":
             return {
