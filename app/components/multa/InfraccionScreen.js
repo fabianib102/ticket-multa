@@ -192,7 +192,7 @@ function InfraccionScreen(props) {
                     });
                 });
         }
-        if (is.otroExtracto) {
+        if (is.extracto === 'Otro') {
             firebase.firestore().collection('infracciones').add({
                 articulo: is.articulo,
                 codigo: is.codigo,
@@ -231,9 +231,7 @@ function InfraccionScreen(props) {
             },
             vencimientos: {
                 fechaPrimerVencimiento: "",
-                fechaSegundoVencimiento: "",
-                montoPrimerVencimiento: is.montoPrimerVencimiento,
-                montoSegundoVencimiento: is.montoSegundoVencimiento,
+                fechaSegundoVencimiento: ""
             },
             fotos: [],
             estado: "No resuelta",
