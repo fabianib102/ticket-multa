@@ -5,6 +5,7 @@ const initialState = {
     articulo: "",
     inciso: "",
     extracto: "",
+    otroExtracto: "",
     observaciones: "",
     montoPrimerVencimiento: "",
     montoSegundoVencimiento: "",
