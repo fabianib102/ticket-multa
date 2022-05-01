@@ -36,10 +36,7 @@ function VehiculoScreen(props) {
 
 
     useEffect(() => {
-
         let mounted = true;
-
-        console.log("========= PRE useEffect v", vehiculos.length)
         if (vehiculos.length == 0 ) {
             db.collection("vehiculos")
                 .get()
@@ -65,7 +62,6 @@ function VehiculoScreen(props) {
                             modelos: [{ label: 'Otro', value: 'Otro' }]
                         });
                         setVehiculos(ve);
-                        console.log("=========useEffect v", vehiculos.length)
                     } else { null }
                 })
             return () => (mounted = false)
@@ -95,11 +91,6 @@ function VehiculoScreen(props) {
         props.onSetModelo(newValue.value);
         props.onSetOtroModelo('');
     };
-
-    console.log("================================================ PRE BUILD")
-    console.log("=========Vehiculo Props", vs)
-    console.log("=========LENGGGGGG Vehiculos", vehiculos.length)
-    console.log("=========LENGGGGGG carTypes", carTypes.length)
 
     return (
         <View style={styles.viewForm}>
