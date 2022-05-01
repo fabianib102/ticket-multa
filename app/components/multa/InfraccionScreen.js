@@ -14,6 +14,7 @@ import Toast from "react-native-easy-toast";
 import templateTicket from './Ticket';
 import { firebaseApp } from "../../utils/firebase";
 import DropDownPicker from "react-native-dropdown-picker";
+import { omit } from "lodash";
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
@@ -191,6 +192,19 @@ function InfraccionScreen(props) {
                     });
                 });
         }
+        if (is.otroExtracto) {
+            firebase.firestore().collection('infracciones').add({
+                articulo: is.articulo,
+                codigo: is.codigo,
+                extracto: is.otroExtracto,
+                inciso: is.inciso,
+                ley: is.ley,
+                unidadesFijasMax: is.unidadesFijasMax,
+                unidadesFijasMin: is.unidadesFijasMin,
+                // vigenciaFin: is.vigenciaFin,
+                // vigenciaInicio: is.vigenciaInicio
+            });
+        }
         firebase.firestore().collection("multas").add({
             ubicacion: {
                 fecha: date.getUTCDate() + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear(),
@@ -212,12 +226,8 @@ function InfraccionScreen(props) {
                 pais: "Argentina",
             },
             infraccion: {
-                ley: is.ley,
-                codigo: is.codigo,
-                articulo: is.articulo,
-                inciso: is.inciso,
-                extracto: is.extracto,
-                observaciones: is.observaciones,
+                ...omit(is, ['otroExtracto', 'fotos', 'conductorNoEsTitular']),
+                ...(is.otroExtracto && { extracto: is.otroExtracto })
             },
             vencimientos: {
                 fechaPrimerVencimiento: "",
@@ -238,9 +248,8 @@ function InfraccionScreen(props) {
                      console.log(urls);
                      firebase.firestore().collection("multas").doc(response.id).update({
                          fotos: urls,
-                     }).then(response => {
+                     }).then(() => {
                         console.log("TODO ANDUVO SIN ERRORES");
-                        // MOSTRAR UN TOOLTIP, ALERT O LO QUE SEA
                         setCargando(false);
                         toastRef.current.show("Multa Guardada", 1250, () => {
                             props.clearForm();
