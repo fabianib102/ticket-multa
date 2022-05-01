@@ -386,6 +386,7 @@ function InfraccionScreen(props) {
                         <View style={{ width: '50%' }}>
                             <Input
                                 placeholder="Máximo UF"
+                                keyboardType="numeric"
                                 containerStyle={styles.input}
                                 value={is.unidadesFijasMax}
                                 onChange={e => props.onSetUnidadesFijasMax(e.nativeEvent.text)}
