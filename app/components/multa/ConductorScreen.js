@@ -142,7 +142,7 @@ function ConductorScreen(props) {
       />
 
       <View style={styles.row}>
-        <View style={{width: '50%', marginRight: 16}}>
+        <View style={{flex: 1, marginRight: 16}}>
           <Input
             placeholder="Número"
             keyboardType="numeric"
@@ -150,7 +150,7 @@ function ConductorScreen(props) {
             onChange={e => props.onSetNumero(e.nativeEvent.text)}
           />
         </View>
-        <View style={{ width: '50%' }}>
+        <View style={{ flex: 1 }}>
           <Input
             placeholder="Departamento"
             value={cs.departamento}
@@ -160,17 +160,21 @@ function ConductorScreen(props) {
       </View>
 
       <View style={styles.row}>
-        <Input
-          placeholder="Piso"
-          keyboardType="numeric"
-          value={cs.piso}
-          onChange={e => props.onSetPiso(e.nativeEvent.text)}
-        />
-        <Input
-          placeholder="Código postal"
-          value={cs.codigoPostal}
-          onChange={e => props.onSetCodigoPostal(e.nativeEvent.text)}
-        />
+        <View style={{flex: 1, marginRight: 16}}>
+          <Input
+            placeholder="Piso"
+            keyboardType="numeric"
+            value={cs.piso}
+            onChange={e => props.onSetPiso(e.nativeEvent.text)}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Input
+            placeholder="Código postal"
+            value={cs.codigoPostal}
+            onChange={e => props.onSetCodigoPostal(e.nativeEvent.text)}
+          />
+        </View>
       </View>
 
       <View style={styles.buttonContainer}>
