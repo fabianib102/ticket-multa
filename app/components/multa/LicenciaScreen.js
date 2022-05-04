@@ -13,16 +13,16 @@ import {
   onSetUnicaProvincial,
   onSetVencimiento,
 } from "../../store/actions/LicenciaScreen";
-import DropDownPicker from "react-native-dropdown-picker";
 import DatePicker from "react-native-datepicker";
+import StyledDropdown from "../StyledDropdown";
 
 const provinciasAPI = require("../../../assets/provincias.json");
 const localidadesAPI = require("../../../assets/localidades.json");
 
 function LicenciaScreen(props) {
   const { navigation, LicenciaScreen: lic } = props;
-  const [provincias, setProvincias] = useState(provinciasAPI);
-  const [localidades, setLocalidades] = useState(localidadesAPI);
+  const [provincias] = useState(provinciasAPI);
+  const [localidades] = useState(localidadesAPI);
   const [localidad, setLocalidad] = useState([]);
   const [dateOut, setDateOut] = useState(new Date());
 
@@ -33,9 +33,9 @@ function LicenciaScreen(props) {
       return;
     }
 
-    var p = provincias.filter((p) => p.nombre == lic.provincia)[0];
+    var p = provincias.filter(p => p.nombre == lic.provincia)[0];
     setLocalidad(
-      localidades[p.id].map((l) => {
+      localidades[p.id].map(l => {
         return l.nombre;
       })
     );
@@ -49,12 +49,12 @@ function LicenciaScreen(props) {
         keyboardType="numeric"
         containerStyle={styles.input}
         value={lic.numero}
-        onChange={(e) => props.onSetNumeroLic(e.nativeEvent.text)}
+        onChange={e => props.onSetNumeroLic(e.nativeEvent.text)}
       />
 
       <Picker
         selectedValue={lic.clase}
-        onValueChange={(itemValue, itemIndex) => props.onChangeClase(itemValue)}
+        onValueChange={itemValue => props.onChangeClase(itemValue)}
       >
         <Picker.Item label="Clase" value="" />
         <Picker.Item label="A1" value="A1" />
@@ -77,28 +77,14 @@ function LicenciaScreen(props) {
         <Picker.Item label="G3" value="G3" />
       </Picker>
 
-      {/* <Picker
-        selectedValue={lic.provincia}
-        onValueChange={(itemValue, itemIndex) =>
-          props.onChangeProvincia(itemValue)
-        }
-      >
-        <Picker.Item label="Provincia" value="" />
-        <Picker.Item label="Chaco" value="Chaco" />
-        <Picker.Item label="Corrientes" value="Corrientes" />
-        <Picker.Item label="Misiones" value="Misiones" />
-      </Picker> */}
-
       {provincias.length != 0 && (
         <>
-          <DropDownPicker
+          <StyledDropdown
             items={provincias.map((provincia) => ({
               label: provincia.nombre,
               value: provincia.nombre,
             }))}
             placeholder="Provincia"
-            style={styles.dropDownPicker}
-            itemStyle={{ justifyContent: "flex-start" }}
             onChangeItem={(item) => props.onChangeProvincia(item.value)}
             searchable={true}
             searchablePlaceholder="Buscar provincia"
@@ -107,14 +93,12 @@ function LicenciaScreen(props) {
             )}
           />
           {localidad.length != 0 && (
-            <DropDownPicker
+            <StyledDropdown
               items={localidad.map((loc) => ({
                 label: loc,
                 value: loc,
               }))}
               placeholder="Localidad"
-              style={styles.dropDownPicker}
-              itemStyle={{ justifyContent: "flex-start" }}
               onChangeItem={(item) => props.onChangeLocalidad(item.value)}
               searchable={true}
               searchablePlaceholder="Buscar localidad"
@@ -126,18 +110,6 @@ function LicenciaScreen(props) {
         </>
       )}
 
-      {/* <Picker
-        selectedValue={lic.localidad}
-        onValueChange={(itemValue, itemIndex) => props.onChangeLocalidad(itemValue)}
-      >
-        <Picker.Item label="Localidad" value="" />
-        <Picker.Item label="Resistencia" value="Resistencia" />
-        <Picker.Item label="Barranqueras" value="Barranqueras" />
-        <Picker.Item label="Vilelas" value="Vilelas" />
-        <Picker.Item label="Fontana" value="Fontana" />
-        <Picker.Item label="Puerto Tirol" value="Puerto Tirol" />
-      </Picker> */}
-
       <CheckBox
         title="Única Provincial"
         checked={lic.unicaProvincial}
@@ -148,13 +120,6 @@ function LicenciaScreen(props) {
         checked={lic.retenida}
         onPress={() => props.onSetRetenida()}
       />
-
-      {/* <Input
-        placeholder="Vencimiento"
-        containerStyle={styles.input}
-        value={lic.vencimiento}
-        onChange={(e) => props.onSetVencimiento(e.nativeEvent.text)}
-      /> */}
 
       <View>
         <Text h5>Vencimiento</Text>
