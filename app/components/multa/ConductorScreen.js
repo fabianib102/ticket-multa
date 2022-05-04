@@ -19,8 +19,8 @@ import {
   onSetPiso,
   onSetSexo,
 } from "../../store/actions/ConductorScreen";
-import DropDownPicker from "react-native-dropdown-picker";
 import DatePicker from "react-native-datepicker";
+import StyledDropdown from "../StyledDropdown";
 
 const provinciasAPI = require("../../../assets/provincias.json");
 const localidadesAPI = require("../../../assets/localidades.json");
@@ -28,7 +28,7 @@ const localidadesAPI = require("../../../assets/localidades.json");
 function ConductorScreen(props) {
   const { navigation, ConductorScreen: cs } = props;
   const [provincias, setProvincias] = useState(provinciasAPI);
-  const [localidades, setLocalidades] = useState(localidadesAPI);
+  const [localidades] = useState(localidadesAPI);
   const [localidad, setLocalidad] = useState([]);
   const [dateBrith, setDateBrith] = useState(new Date());
 
@@ -47,29 +47,23 @@ function ConductorScreen(props) {
     );
   }, [cs.provincia]);
 
-  const test = (data) => {
-    console.log(data);
-  };
-
   return (
     <View style={styles.viewForm}>
       <Text h4>Conductor</Text>
       <Input
         placeholder="Apellido"
-        containerStyle={styles.input}
         value={cs.apellido}
         onChange={(e) => props.onSetApellido(e.nativeEvent.text)}
       />
       <Input
         placeholder="Nombre"
-        containerStyle={styles.input}
         value={cs.nombre}
         onChange={(e) => props.onSetNombre(e.nativeEvent.text)}
       />
 
       <Picker
         selectedValue={cs.sexo}
-        onValueChange={(itemValue, itemIndex) => props.onSetSexo(itemValue)}
+        onValueChange={itemValue => props.onSetSexo(itemValue)}
       >
         <Picker.Item label="Sexo" value="" />
         <Picker.Item label="Masculino" value="Masculino" />
@@ -78,7 +72,7 @@ function ConductorScreen(props) {
 
       <Picker
         selectedValue={cs.tipoDocumento}
-        onValueChange={(itemValue, itemIndex) =>
+        onValueChange={itemValue =>
           props.onChangeValueTipoDocumento(itemValue)
         }
       >
@@ -92,17 +86,9 @@ function ConductorScreen(props) {
       <Input
         placeholder="Número de documento"
         keyboardType="numeric"
-        containerStyle={styles.inputAddress}
         value={cs.nroDocumento}
-        onChange={(e) => props.onSetNroDocumento(e.nativeEvent.text)}
+        onChange={e => props.onSetNroDocumento(e.nativeEvent.text)}
       />
-
-      {/* <Input
-                placeholder="Fecha de nacimiento"
-                containerStyle={styles.input}
-                value={cs.fechaNacimiento}
-                onChange={(e) => props.onSetFechaNacimiento(e.nativeEvent.text)}
-            /> */}
 
       <Text h5>Fecha de nacimiento</Text>
       <DatePicker
@@ -111,23 +97,21 @@ function ConductorScreen(props) {
         }}
         date={dateBrith}
         format="DD/MM/YYYY"
-        onDateChange={(date) => {
+        onDateChange={date => {
           setDateBrith(date);
           props.onSetFechaNacimiento(date);
         }}
       />
 
       {provincias.length != 0 && (
-        <DropDownPicker
-          items={provincias.map((provincia) => ({
+        <StyledDropdown
+          items={provincias.map(provincia => ({
             label: provincia.nombre,
             value: provincia.nombre,
           }))}
           placeholder="Provincia"
-          style={styles.dropDownPicker}
-          itemStyle={{ justifyContent: "flex-start" }}
-          onChangeItem={(item) => props.onChangeValueProvincia(item.value)}
-          searchable={true}
+          onChangeItem={item => props.onChangeValueProvincia(item.value)}
+          searchable
           searchablePlaceholder="Buscar provincia"
           searchableError={() => (
             <Text>No se encontró la provincia buscada</Text>
@@ -136,16 +120,14 @@ function ConductorScreen(props) {
       )}
 
       {localidad.length != 0 && (
-        <DropDownPicker
-          items={localidad.map((loc) => ({
+        <StyledDropdown
+          items={localidad.map(loc => ({
             label: loc,
             value: loc,
           }))}
           placeholder="Localidad"
-          style={styles.dropDownPicker}
-          itemStyle={{ justifyContent: "flex-start" }}
-          onChangeItem={(item) => props.onChangeValueLocalidad(item.value)}
-          searchable={true}
+          onChangeItem={item => props.onChangeValueLocalidad(item.value)}
+          searchable
           searchablePlaceholder="Buscar localidad"
           searchableError={() => (
             <Text>No se encontró la localidad buscada</Text>
@@ -155,40 +137,39 @@ function ConductorScreen(props) {
 
       <Input
         placeholder="Calle"
-        containerStyle={styles.input}
         value={cs.calle}
-        onChange={(e) => props.onSetCalle(e.nativeEvent.text)}
+        onChange={e => props.onSetCalle(e.nativeEvent.text)}
       />
 
       <View style={styles.row}>
-        <Input
-          placeholder="Número"
-          keyboardType="numeric"
-          containerStyle={styles.inputAddress}
-          value={cs.numero}
-          onChange={(e) => props.onSetNumero(e.nativeEvent.text)}
-        />
-        <Input
-          placeholder="Departamento"
-          containerStyle={styles.inputAddress}
-          value={cs.departamento}
-          onChange={(e) => props.onSetDepartamento(e.nativeEvent.text)}
-        />
+        <View style={{width: '50%', marginRight: 16}}>
+          <Input
+            placeholder="Número"
+            keyboardType="numeric"
+            value={cs.numero}
+            onChange={e => props.onSetNumero(e.nativeEvent.text)}
+          />
+        </View>
+        <View style={{ width: '50%' }}>
+          <Input
+            placeholder="Departamento"
+            value={cs.departamento}
+            onChange={e => props.onSetDepartamento(e.nativeEvent.text)}
+          />
+        </View>
       </View>
 
       <View style={styles.row}>
         <Input
           placeholder="Piso"
           keyboardType="numeric"
-          containerStyle={styles.inputAddress}
           value={cs.piso}
-          onChange={(e) => props.onSetPiso(e.nativeEvent.text)}
+          onChange={e => props.onSetPiso(e.nativeEvent.text)}
         />
         <Input
           placeholder="Código postal"
-          containerStyle={styles.inputAddress}
           value={cs.codigoPostal}
-          onChange={(e) => props.onSetCodigoPostal(e.nativeEvent.text)}
+          onChange={e => props.onSetCodigoPostal(e.nativeEvent.text)}
         />
       </View>
 
