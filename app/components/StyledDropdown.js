@@ -5,7 +5,7 @@ const StyledDropdown = props => (
   <DropDownPicker
     style={{
       backgroundColor: "white",
-      marginVertical: 10,
+      marginBottom: 16,
       borderColor: "#c4c4c4",
       fontSize: 16
     }}
