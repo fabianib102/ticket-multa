@@ -47,7 +47,6 @@ function LicenciaScreen(props) {
       <Input
         placeholder="Número"
         keyboardType="numeric"
-        containerStyle={styles.input}
         value={lic.numero}
         onChange={e => props.onSetNumeroLic(e.nativeEvent.text)}
       />

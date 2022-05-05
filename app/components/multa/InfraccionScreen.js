@@ -303,7 +303,6 @@ function InfraccionScreen(props) {
             
             <Input
                 placeholder="Lugar de constatación"
-                containerStyle={styles.input}
                 value={is.lugar}
                 onChange={e => props.onSetLugar(e.nativeEvent.text)}
             />
@@ -326,7 +325,6 @@ function InfraccionScreen(props) {
                             <Input
                                 placeholder="Ley"
                                 keyboardType="numeric"
-                                containerStyle={styles.input}
                                 value={is.ley}
                                 onChange={e => props.onSetLey(e.nativeEvent.text)}
                             />
@@ -335,7 +333,6 @@ function InfraccionScreen(props) {
                             <Input
                                 placeholder="Código"
                                 keyboardType="numeric"
-                                containerStyle={styles.input}
                                 value={is.codigo}
                                 onChange={e => props.onSetCodigo(e.nativeEvent.text)}
                             />
@@ -346,7 +343,6 @@ function InfraccionScreen(props) {
                             <Input
                                 placeholder="Artículo"
                                 keyboardType="numeric"
-                                containerStyle={styles.input}
                                 value={is.articulo}
                                 onChange={e => props.onSetArticulo(e.nativeEvent.text)}
                             />
@@ -354,7 +350,6 @@ function InfraccionScreen(props) {
                         <View style={{ flex: 1 }}>
                             <Input
                                 placeholder="Inciso"
-                                containerStyle={styles.input}
                                 value={is.inciso}
                                 onChange={e => props.onSetInciso(e.nativeEvent.text)}
                             />
@@ -374,7 +369,6 @@ function InfraccionScreen(props) {
                             <Input
                                 placeholder="Mínimo UF"
                                 keyboardType="numeric"
-                                containerStyle={styles.input}
                                 value={is.unidadesFijasMin}
                                 onChange={e => props.onSetUnidadesFijasMin(e.nativeEvent.text)}
                             />
@@ -383,7 +377,6 @@ function InfraccionScreen(props) {
                             <Input
                                 placeholder="Máximo UF"
                                 keyboardType="numeric"
-                                containerStyle={styles.input}
                                 value={is.unidadesFijasMax}
                                 onChange={e => props.onSetUnidadesFijasMax(e.nativeEvent.text)}
                             />

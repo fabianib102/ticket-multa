@@ -95,7 +95,6 @@ function VehiculoScreen(props) {
                     <Input
                         placeholder="Dominio"
                         autoCapitalize="characters"
-                        containerStyle={styles.input}
                         value={vs.data.dominio}
                         onChange={e => dispatch(onSetDominio(e.nativeEvent.text))}
                     />
@@ -114,7 +113,6 @@ function VehiculoScreen(props) {
                         <Input
                             placeholder="Ingrese la marca"
                             autoCapitalize="words"
-                            containerStyle={styles.input}
                             value={vs.otraMarca}
                             onChange={e => props.onSetOtraMarca(e.nativeEvent.text)}
                         />
@@ -131,7 +129,6 @@ function VehiculoScreen(props) {
                         <Input
                             placeholder="Ingrese el modelo"
                             autoCapitalize="words"
-                            containerStyle={styles.input}
                             value={vs.otroModelo}
                             onChange={e => props.onSetOtroModelo(e.nativeEvent.text)}
                         />
@@ -165,7 +162,6 @@ function VehiculoScreen(props) {
                             <Input
                                 placeholder="Nombre y apellido"
                                 autoCapitalize="words"
-                                containerStyle={styles.input}
                                 value={vs.data.titular}
                                 onChange={e => dispatch(onSetTitular(e.nativeEvent.text))}
                             />
