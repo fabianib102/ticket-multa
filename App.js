@@ -30,14 +30,23 @@ function App() {
         Input: {
             containerStyle: {
                 marginBottom: 16,
+                paddingHorizontal: 0
+            },
+            inputContainerStyle: {
                 borderWidth: 1,
                 borderColor: '#c4c4c4',
                 borderRadius: 4,
-                backgroundColor: 'white'
+                backgroundColor: 'white',
+                paddingHorizontal: 11,
+                color: '#373737'
             },
-            inputContainerStyle: {
-                borderBottomColor: 'rgba(0, 0, 0, 0)'
-            },
+            labelStyle: {
+                fontSize: 12,
+                color: '#6d6d6d',
+                fontWeight: '500',
+                textTransform: 'uppercase',
+                paddingBottom: 4
+            }
         }
     };
 
