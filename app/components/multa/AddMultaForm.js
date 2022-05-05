@@ -51,17 +51,9 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
-  input: {
-    marginBottom: 10,
-  },
   row: {
     flex: 1,
     flexDirection: "row",
-  },
-  inputAddress: {
-    flex: 1,
-    borderColor: "#cccccc",
-    marginBottom: 10,
   },
   container: {
     flex: 1,
@@ -91,13 +83,6 @@ export const styles = StyleSheet.create({
     height: 50,
     width: 100,
     margin: 5,
-  },
-  dropDownPicker: {
-    backgroundColor: "rgba(0, 0, 0, 0)",
-    marginTop: 10,
-    // borderColor: "rgba(0, 0, 0, 0)",
-    // borderRadius: 0,
-    // borderBottomColor: "red"
   },
   btnSend: {
     marginTop: 15
