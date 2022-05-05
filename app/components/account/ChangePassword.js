@@ -1,16 +1,24 @@
-import React, {useState} from "react";
-import {StyleSheet, View, Text} from 'react-native';
-import {Input, Button} from 'react-native-elements';
+import React, { useState } from "react";
+import { StyleSheet, View, Text } from 'react-native';
+import { Input, Button } from 'react-native-elements';
 import { size } from 'lodash';
 import * as firebase from "firebase";
-import {reauthenticate} from '../../utils/api';
+import { reauthenticate } from '../../utils/api';
 
 
 export default function ChangePassword(props){
     const {setShowModal, toastRef} = props;
     const [showPass, setShowPass] = useState(false);
-    const [formData, setFormData] = useState(defaultValue());
-    const [errors, setErrors] = useState({});
+    const [formData, setFormData] = useState({
+        password: "",
+        newPassword: "",
+        repeatNewPassword: ""
+    });
+    const [errors, setErrors] = useState({
+        password: "",
+        newPassword: "",
+        repeatNewPassword: ""
+    });
     const [isLoading, setIsLoading] = useState(false);
 
     const onChange = (e, type) => {
@@ -70,46 +78,44 @@ export default function ChangePassword(props){
         <View style={styles.view}>
             <Input 
                 placeholder="Contraseña actual"
-                containerStyle={styles.input}
-                password={true}
+                password
                 secureTextEntry={!showPass}
                 rightIcon={{
                     type: "material-community",
-                    name: showPass? "eye-off-outline":"eye-outline",
+                    name: showPass ? "eye-off-outline" : "eye-outline",
                     color: "#c2c2c2",
-                    onPress: ()=>setShowPass(!showPass)
+                    onPress: () => setShowPass(!showPass)
                 }}
-                onChange={(e)=>onChange(e, "password")}
+                value={formData.password}
+                onChange={e => onChange(e, "password")}
                 errorMessage={errors.password}
             />
 
             <Input 
                 placeholder="Nueva Contraseña"
-                containerStyle={styles.input}
-                password={true}
+                password
                 secureTextEntry={!showPass}
                 rightIcon={{
                     type: "material-community",
-                    name: showPass? "eye-off-outline":"eye-outline",
+                    name: showPass ? "eye-off-outline" : "eye-outline",
                     color: "#c2c2c2",
-                    onPress: ()=>setShowPass(!showPass)
+                    onPress: () => setShowPass(!showPass)
                 }}
-                onChange={(e)=>onChange(e, "newPassword")}
+                onChange={e => onChange(e, "newPassword")}
                 errorMessage={errors.newPassword}
             />
 
             <Input 
                 placeholder="Repetir Nueva Contraseña"
-                containerStyle={styles.input}
                 password={true}
                 secureTextEntry={!showPass}
                 rightIcon={{
                     type: "material-community",
-                    name: showPass? "eye-off-outline":"eye-outline",
+                    name: showPass ? "eye-off-outline" : "eye-outline",
                     color: "#c2c2c2",
-                    onPress: ()=>setShowPass(!showPass)
+                    onPress: () => setShowPass(!showPass)
                 }}
-                onChange={(e)=>onChange(e, "repeatNewPassword")}
+                onChange={e => onChange(e, "repeatNewPassword")}
                 errorMessage={errors.repeatNewPassword}
             />
 
@@ -124,19 +130,8 @@ export default function ChangePassword(props){
             <Text>{errors.other}</Text>
 
         </View>
-    )
-
+    );
 }
-
-
-function defaultValue(){
-    return {
-        password: "",
-        newPassword: "",
-        repeatNewPassword: ""
-    }
-}
-
 
 const styles = StyleSheet.create({
     view:{
@@ -144,12 +139,9 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10
     },
-    input:{
-        marginBottom: 10
-    },
     btnContainer:{
         marginTop: 20,
-        width: "95%"
+        width: "100%"
     },
     btn:{
         backgroundColor: "#3494d3"
