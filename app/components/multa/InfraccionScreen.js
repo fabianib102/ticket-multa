@@ -14,6 +14,7 @@ import templateTicket from './Ticket';
 import { firebaseApp } from "../../utils/firebase";
 import DropDownPicker from "react-native-dropdown-picker";
 import { omit } from "lodash";
+import StyledDropdown from "../StyledDropdown";
 
 function InfraccionScreen(props) {
     const {navigation, LicenciaScreen: ls, ConductorScreen: cs, VehiculoScreen: vs, InfraccionScreen: is} = props;
@@ -307,14 +308,12 @@ function InfraccionScreen(props) {
                 onChange={e => props.onSetLugar(e.nativeEvent.text)}
             />
 
-            <DropDownPicker
+            <StyledDropdown
                 loading={loadingInfracciones}
                 disabled={loadingInfracciones}
                 items={infracciones}
                 value={is.extracto}
                 placeholder="Infracción"
-                style={styles.dropDownPicker}
-                itemStyle={{ justifyContent: 'flex-start' }}
                 onChangeItem={onInfraccionChange}
                 searchable
                 searchablePlaceholder="Buscar infracción"
@@ -322,8 +321,8 @@ function InfraccionScreen(props) {
             />
             {is.extracto === 'Otro' && (
                 <>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ width: '50%' }}>
+                    <View style={styles.row}>
+                        <View style={{ flex: 1, marginRight: 16 }}>
                             <Input
                                 placeholder="Ley"
                                 keyboardType="numeric"
@@ -332,7 +331,7 @@ function InfraccionScreen(props) {
                                 onChange={e => props.onSetLey(e.nativeEvent.text)}
                             />
                         </View>
-                        <View style={{ width: '50%' }}>
+                        <View style={{ flex: 1 }}>
                             <Input
                                 placeholder="Código"
                                 keyboardType="numeric"
@@ -342,8 +341,8 @@ function InfraccionScreen(props) {
                             />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ width: '50%' }}>
+                    <View style={styles.row}>
+                        <View style={{ flex: 1, marginRight: 16 }}>
                             <Input
                                 placeholder="Artículo"
                                 keyboardType="numeric"
@@ -352,7 +351,7 @@ function InfraccionScreen(props) {
                                 onChange={e => props.onSetArticulo(e.nativeEvent.text)}
                             />
                         </View>
-                        <View style={{ width: '50%' }}>
+                        <View style={{ flex: 1 }}>
                             <Input
                                 placeholder="Inciso"
                                 containerStyle={styles.input}
@@ -370,8 +369,8 @@ function InfraccionScreen(props) {
                         value={is.otroExtracto}
                         onChange={e => props.onSetOtroExtracto(e.nativeEvent.text)}
                     />
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ width: '50%' }}>
+                    <View style={styles.row}>
+                        <View style={{ flex: 1, marginRight: 16 }}>
                             <Input
                                 placeholder="Mínimo UF"
                                 keyboardType="numeric"
@@ -380,7 +379,7 @@ function InfraccionScreen(props) {
                                 onChange={e => props.onSetUnidadesFijasMin(e.nativeEvent.text)}
                             />
                         </View>
-                        <View style={{ width: '50%' }}>
+                        <View style={{ flex: 1 }}>
                             <Input
                                 placeholder="Máximo UF"
                                 keyboardType="numeric"
@@ -406,7 +405,7 @@ function InfraccionScreen(props) {
                 {props.InfraccionScreen.fotos.map(dest => {
                     return (
                         <TouchableNativeFeedback key={dest.uri} onPress={() => props.onDeleteFoto(dest)}>
-                            <Image source={{uri: dest.uri}} style={styles.imageItem} />
+                            <Image source={{ uri: dest.uri }} style={styles.imageItem} />
                         </TouchableNativeFeedback>
                     )
                 })}
