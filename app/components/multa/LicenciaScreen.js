@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
 import { styles } from "./AddMultaForm";
-import { Input, Button, CheckBox, Text } from "react-native-elements";
+import { Input, Button, Text } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import {
   onChangeClase,
@@ -15,6 +15,7 @@ import {
 } from "../../store/actions/LicenciaScreen";
 import DatePicker from "react-native-datepicker";
 import StyledDropdown from "../StyledDropdown";
+import StyledCheckbox from "../StyledCheckbox";
 
 const provinciasAPI = require("../../../assets/provincias.json");
 const localidadesAPI = require("../../../assets/localidades.json");
@@ -45,6 +46,7 @@ function LicenciaScreen(props) {
     <View style={styles.viewForm}>
       <Text h4>Licencia</Text>
       <Input
+        label="Número"
         placeholder="Número"
         keyboardType="numeric"
         value={lic.numero}
@@ -109,12 +111,12 @@ function LicenciaScreen(props) {
         </>
       )}
 
-      <CheckBox
+      <StyledCheckbox
         title="Única Provincial"
         checked={lic.unicaProvincial}
         onPress={() => props.onSetUnicaProvincial()}
       />
-      <CheckBox
+      <StyledCheckbox
         title="Retenida?"
         checked={lic.retenida}
         onPress={() => props.onSetRetenida()}

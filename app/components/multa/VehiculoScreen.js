@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { View, } from "react-native";
-import { Input, Text, Button, CheckBox } from "react-native-elements";
+import { Input, Text, Button } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
-import DropDownPicker from "react-native-dropdown-picker"
 import { styles } from "./AddMultaForm";
 import { onSetVehiculoRetenido, onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular, getVehiculos, onSetOtraMarca, onSetOtroModelo } from "../../store/actions/VehiculoScreen";
 import { setConductorNoEsTitular } from "../../store/actions/InfraccionScreen";
@@ -13,6 +12,7 @@ import carTypes from "../../../assets/carTypes";
 import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
 import StyledDropdown from "../StyledDropdown";
+import StyledCheckbox from "../StyledCheckbox";
 
 
 
@@ -145,13 +145,13 @@ function VehiculoScreen(props) {
                         />
                     )}
 
-                    <CheckBox
+                    <StyledCheckbox
                         title="Vehículo retenido?"
                         checked={vs.data.vehiculoRetenido}
                         onPress={() => dispatch(onSetVehiculoRetenido())}
                     />
 
-                    <CheckBox
+                    <StyledCheckbox
                         title="El conductor NO es el titular"
                         checked={is.conductorNoEsTitular}
                         onPress={() => dispatch(setConductorNoEsTitular(!is.conductorNoEsTitular))}
