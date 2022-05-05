@@ -76,8 +76,8 @@ export default function ChangePassword(props){
 
     return(
         <View style={styles.view}>
-            <Input 
-                placeholder="Contraseña actual"
+            <Input
+                label="Contraseña actual"
                 password
                 secureTextEntry={!showPass}
                 rightIcon={{
@@ -91,8 +91,8 @@ export default function ChangePassword(props){
                 errorMessage={errors.password}
             />
 
-            <Input 
-                placeholder="Nueva Contraseña"
+            <Input
+                label="Nueva Contraseña"
                 password
                 secureTextEntry={!showPass}
                 rightIcon={{
@@ -105,8 +105,8 @@ export default function ChangePassword(props){
                 errorMessage={errors.newPassword}
             />
 
-            <Input 
-                placeholder="Repetir Nueva Contraseña"
+            <Input
+                label="Repetir Nueva Contraseña"
                 password={true}
                 secureTextEntry={!showPass}
                 rightIcon={{
