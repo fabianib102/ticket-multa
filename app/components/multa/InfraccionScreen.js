@@ -24,7 +24,7 @@ function InfraccionScreen(props) {
     const toastRef = useRef();
 
     const date = new Date();
-    const fecha = parseInt(date.getUTCDate() - 1) + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
+    const fecha = parseInt(date.getUTCDate()) + "/" + parseInt(date.getUTCMonth() + 1) + "/" + date.getUTCFullYear();
     const hora = date.toLocaleTimeString();
 
     const template = templateTicket(cs, ls, vs.data, is, fecha, hora);
