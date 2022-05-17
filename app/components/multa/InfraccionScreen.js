@@ -308,11 +308,12 @@ function InfraccionScreen(props) {
             />
 
             <StyledDropdown
+                label="Infracción"
                 loading={loadingInfracciones}
                 disabled={loadingInfracciones}
                 items={infracciones}
                 value={is.extracto}
-                placeholder="Infracción"
+                placeholder={loadingInfracciones ? 'Cargando infracciones...' : 'Seleccione una infracción'}
                 onChangeItem={onInfraccionChange}
                 searchable
                 searchablePlaceholder="Buscar infracción"

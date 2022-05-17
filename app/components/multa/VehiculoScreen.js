@@ -4,7 +4,7 @@ import { View, } from "react-native";
 import { Input, Text, Button, CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import { styles } from "./AddMultaForm";
-import { onSetVehiculoRetenido, onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPais, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular, getVehiculos, onSetOtraMarca, onSetOtroModelo } from "../../store/actions/VehiculoScreen";
+import { onSetVehiculoRetenido, onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular, onSetOtraMarca, onSetOtroModelo } from "../../store/actions/VehiculoScreen";
 import { setConductorNoEsTitular } from "../../store/actions/InfraccionScreen";
 import { useDispatch } from "react-redux";
 import carTypes from "../../../assets/carTypes";
@@ -94,11 +94,12 @@ function VehiculoScreen(props) {
                 onChange={e => dispatch(onSetDominio(e.nativeEvent.text))}
             />
             <StyledDropdown
+                label="Marca"
                 loading={loadingVehiculos}
                 disabled={loadingVehiculos}
                 items={vehiculos}
                 value={vs.data.marca}
-                placeholder="Marca"
+                placeholder={loadingVehiculos ? 'Cargando marcas...' : 'Seleccione una marca'}
                 onChangeItem={onMarcaChange}
                 searchable
                 searchablePlaceholder="Buscar marca"
@@ -114,8 +115,11 @@ function VehiculoScreen(props) {
                 />
             )}
             <StyledDropdown
+                label="Modelo"
+                loading={loadingVehiculos}
+                disabled={loadingVehiculos}
                 items={modelos}
-                placeholder="Modelo"
+                placeholder={loadingVehiculos ? 'Cargando modelos...' : 'Seleccione un modelo'}
                 onChangeItem={onModeloChange}
                 searchable
                 searchablePlaceholder="Buscar modelo"
@@ -133,8 +137,9 @@ function VehiculoScreen(props) {
 
             {carTypes.length != 0 && (
                 <StyledDropdown
+                    label="Tipo"
                     items={carTypes}
-                    placeholder="Tipo"
+                    placeholder="Seleccione un tipo"
                     onChangeItem={item => props.onChangeTipo(item.value)}
                     searchable={true}
                     searchablePlaceholder="Buscar tipo"
@@ -230,12 +235,13 @@ function VehiculoScreen(props) {
                     </View>
 
                     <StyledDropdown
+                        label="Provincia"
                         items={provincias.map(provincia => ({
                             label: provincia.nombre,
                             value: provincia.nombre
                         }))}
                         defaultValue={vs.data.provincia}
-                        placeholder="Provincia"
+                        placeholder="Seleccione una provincia"
                         onChangeItem={item => dispatch(onSetProvincia(item.value))}
                         searchable={true}
                         searchablePlaceholder="Buscar provincia"
@@ -243,12 +249,13 @@ function VehiculoScreen(props) {
                     />
             
                     <StyledDropdown
+                        label="Localidad"
                         items={localidad.map(loc => ({
                             label: loc,
                             value: loc
                         }))}
                         defaultValue={vs.data.localidad}
-                        placeholder="Localidad"
+                        placeholder="Seleccione una localidad"
                         onChangeItem={item => dispatch(onSetLocalidad(item.value))}
                         searchable={true}
                         searchablePlaceholder="Buscar localidad"

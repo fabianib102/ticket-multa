@@ -80,11 +80,12 @@ function LicenciaScreen(props) {
       {provincias.length != 0 && (
         <>
           <StyledDropdown
+            label="Provincia"
             items={provincias.map((provincia) => ({
               label: provincia.nombre,
               value: provincia.nombre,
             }))}
-            placeholder="Provincia"
+            placeholder="Seleccione una provincia"
             onChangeItem={(item) => props.onChangeProvincia(item.value)}
             searchable={true}
             searchablePlaceholder="Buscar provincia"
@@ -94,11 +95,12 @@ function LicenciaScreen(props) {
           />
           {localidad.length != 0 && (
             <StyledDropdown
+              label="Localidad"
               items={localidad.map((loc) => ({
                 label: loc,
                 value: loc,
               }))}
-              placeholder="Localidad"
+              placeholder="Seleccione una localidad"
               onChangeItem={(item) => props.onChangeLocalidad(item.value)}
               searchable={true}
               searchablePlaceholder="Buscar localidad"

@@ -108,11 +108,12 @@ function ConductorScreen(props) {
 
       {provincias.length != 0 && (
         <StyledDropdown
+          label="Provincia"
           items={provincias.map(provincia => ({
             label: provincia.nombre,
             value: provincia.nombre,
           }))}
-          placeholder="Provincia"
+          placeholder="Seleccione una provincia"
           onChangeItem={item => props.onChangeValueProvincia(item.value)}
           searchable
           searchablePlaceholder="Buscar provincia"
@@ -124,11 +125,12 @@ function ConductorScreen(props) {
 
       {localidad.length != 0 && (
         <StyledDropdown
+          label="Localidad"
           items={localidad.map(loc => ({
             label: loc,
             value: loc,
           }))}
-          placeholder="Localidad"
+          placeholder="Seleccione una localidad"
           onChangeItem={item => props.onChangeValueLocalidad(item.value)}
           searchable
           searchablePlaceholder="Buscar localidad"
