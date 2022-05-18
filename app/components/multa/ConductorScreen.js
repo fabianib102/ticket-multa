@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { View } from "react-native";
 import { styles } from "./AddMultaForm";
-import { Input, Button, Text } from "react-native-elements";
+import { Input, Button, Text, Icon } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import {
   onChangeValueLocalidad,
@@ -191,10 +191,13 @@ function ConductorScreen(props) {
         <Button
           title="Anterior"
           onPress={() => navigation.navigate("Licencia")}
+          icon={<Icon name="chevron-left" color="white" />}
         />
         <Button
           title="Siguiente"
           onPress={() => navigation.navigate("Vehículo")}
+          icon={<Icon name="chevron-right" color="white" />}
+          iconRight
         />
       </View>
     </View>

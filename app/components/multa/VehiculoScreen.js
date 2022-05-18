@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { View, } from "react-native";
-import { Input, Text, Button, CheckBox } from "react-native-elements";
+import { Input, Text, Button, CheckBox, Icon } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import { styles } from "./AddMultaForm";
 import { onSetVehiculoRetenido, onChangeTipo, onSetCalle, onSetCodigoPostal, onSetDepartamento, onSetDominio, onSetLocalidad, onSetMarca, onSetModelo, onSetNroDocumento, onSetNumero, onSetPiso, onSetProvincia, onChangeTipoDocumento, onSetTitular, onSetOtraMarca, onSetOtroModelo } from "../../store/actions/VehiculoScreen";
@@ -265,8 +265,17 @@ function VehiculoScreen(props) {
             )}
 
             <View style={styles.buttonContainerVS}>
-                <Button title="Anterior" onPress={() => navigation.navigate('Conductor')} />
-                <Button title="Siguiente" onPress={() => navigation.navigate('Infracción')} />
+                <Button
+                    title="Anterior"
+                    onPress={() => navigation.navigate('Conductor')}
+                    icon={<Icon name="chevron-left" color="white" />}
+                />
+                <Button
+                    title="Siguiente"
+                    onPress={() => navigation.navigate('Infracción')}
+                    icon={<Icon name="chevron-right" color="white" />}
+                    iconRight
+                />
             </View>
         </View>
     );

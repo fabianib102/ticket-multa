@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
 import { styles } from "./AddMultaForm";
-import { Input, Button, Text, CheckBox } from "react-native-elements";
+import { Input, Button, Text, CheckBox, Icon } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import {
   onChangeClase,
@@ -137,10 +137,12 @@ function LicenciaScreen(props) {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Anterior" disabled />
+        <Button title="Anterior" disabled icon={<Icon name="chevron-left" />} />
         <Button
           title="Siguiente"
           onPress={() => navigation.navigate("Conductor")}
+          icon={<Icon name="chevron-right" color="white" />}
+          iconRight
         />
       </View>
     </View>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, Image, TouchableNativeFeedback } from "react-native";
-import { Button, Input, Text } from "react-native-elements";
+import { Button, Icon, Input, Text } from "react-native-elements";
 import firebase from '../../utils/firebase';
 import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
@@ -416,8 +416,17 @@ function InfraccionScreen(props) {
             <Button title="Agregar foto" containerStyle={styles.btnSend} onPress={clickCamara} />
             <Button title="Imprimir multa" containerStyle={styles.btnSend} onPress={() => printPDF(template)} />
             <View style={styles.buttonContainer}>
-                <Button title="Anterior" onPress={() => navigation.navigate('Vehículo')} />
-                <Button title="Guardar" onPress={guardarMulta} />
+                <Button
+                    title="Anterior"
+                    onPress={() => navigation.navigate('Vehículo')}
+                    icon={<Icon name="chevron-left" color="white" />}
+                />
+                <Button
+                    title="Guardar"
+                    onPress={guardarMulta}
+                    icon={<Icon name="save" color="white" />}
+                    iconRight
+                />
             </View>
             <Toast ref={toastRef} position="center" opacity={0.9} />
         </View>
