@@ -51,8 +51,8 @@ export default function FormLogin(props) {
         <View style={styles.FormContainer}>
             <Input
                 label="Email"
-                containerStyle={styles.InputForm}
-                onChange={(e)=>onChange(e, "email")}
+                keyboardType="email-address"
+                onChange={e => onChange(e, "email")}
                 rightIcon={
                     <Icon
                         type={"material-community"}
@@ -63,10 +63,9 @@ export default function FormLogin(props) {
             />
             <Input
                 label="Contraseña"
-                containerStyle={styles.InputForm}
                 password={true}
                 secureTextEntry={!showPass}
-                onChange={(e)=>onChange(e, "password")}
+                onChange={e => onChange(e, "password")}
                 rightIcon={
                     <Icon
                         type={"material-community"}
@@ -86,7 +85,7 @@ export default function FormLogin(props) {
                 title="Recuperar contraseña"
                 containerStyle={styles.btnForm}
                 buttonStyle={styles.btnStyleForm}
-                onPress={()=>navigation.navigate("recover")}
+                onPress={() => navigation.navigate("recover")}
             />
             <Loading isVisible={loading} text={"Iniciando Sesión"}/>
         </View>
@@ -102,24 +101,20 @@ function defaultFormValue() {
 
 
 const styles = StyleSheet.create({
-    FormContainer:{
+    FormContainer: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 30
     },
-    InputForm:{
-        width:"100%",
-        marginTop: 20
-    },
-    btnForm:{
+    btnForm: {
         marginTop: 20,
         width: "100%"
     },
-    btnStyleForm:{
+    btnStyleForm: {
         backgroundColor: "#3494d3"
     },
-    iconRight:{
+    iconRight: {
         color:"#c1c1c1"
     }
 })

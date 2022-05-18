@@ -45,14 +45,15 @@ export default function RecoverPass(props) {
                 style={styles.logo}
             />
             <View style={styles.formContainer}>
-                <Text style={styles.textView}>Ingresar tu email para restablecer la contraseña</Text>
+                <Text style={styles.textView}>Ingrese su email para restablecer la contraseña</Text>
                 <Input
-                    placeholder="Email"
+                    label="Email"
+                    keyboardType="email-address"
                     containerStyle={styles.inputForm}
-                    onChange={(e)=>onChange(e, "email")}
+                    onChange={e => onChange(e, "email")}
                 />
                 <Button
-                    title="Restablece"
+                    title="Restablecer"
                     style={styles.btnRecover}
                     onPress={recuperarPass}
                 />
@@ -76,6 +77,9 @@ const styles = StyleSheet.create({
     },
     formContainer:{
         marginTop: 30,
+        flex: 1,
+        width: '100%',
+        paddingHorizontal: 16
     },
     textView:{
         textAlign: "center"
@@ -86,7 +90,6 @@ const styles = StyleSheet.create({
     },
     btnRecover:{
         marginTop: 20,
-        width: "95%"
+        width: "100%"
     }
-  
   });
