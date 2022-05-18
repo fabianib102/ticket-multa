@@ -1,156 +1,105 @@
-import React, { useEffect, useState } from "react";
-import {StyleSheet, Text, View, FlatList } from "react-native";
-import { firebaseApp } from "../../utils/firebase";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import MultasList from "../../components/multa/MultasList";
-import { Button } from "react-native-elements";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, FlatList, Text, ActivityIndicator, ScrollView, View } from 'react-native';
+import * as firebase from "firebase";
+import 'firebase/firestore';
+import Multa from '../../components/Multa';
+import { useNavigation } from '@react-navigation/native';
+import { Button, Icon } from 'react-native-elements';
 
-const db = firebase.firestore(firebaseApp);
-
-export default function ListMulta(props) {
-  const { navigation } = props;
+const History = () => {
+  const navigation = useNavigation();
   const [user, setUser] = useState(null);
-  const [multas, setMultas] = useState(null);
-  const [totalMultas, setTotalmultas] = useState(0);
-  const [startMultas, setStartMultas] = useState(null);
-  const [idInspector, setId] = useState(null);
-  const actualDate = getActualDate();
-  const arrayMulta = [];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [multas, setMultas] = useState([]);
 
-  /* const refresh = () => {
-    console.log('INTENTO DE REFRESH');
-  } */
+  const onRefresh = uid => {
+    setLoading(true);
+    setError(false);
+    setMultas([]);
 
+    firebase.firestore().collection("multas").where("idInspector", "==", uid || user.uid).get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          const multa = {
+            id: doc.id,
+            dni: doc.data().conductor.nroDocumento,
+            nombre: doc.data().conductor.apellido + " " + doc.data().conductor.nombre,
+            extracto: doc.data().infraccion.extracto,
+            foto: doc.data().fotos[0],
+          };
+          setMultas(currentMultas => [...currentMultas, multa]);
+        });
+        setLoading(false);
+      }).catch(error => {
+        console.log(error);
+        setLoading(false);
+        setError(error);
+      });
+  };
+
+  // trae las multas desde firebase
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((userInfo) => {
+    setLoading(true);
+    setError(false);
+    setMultas([]);
+    firebase.auth().onAuthStateChanged(userInfo => {
       setUser(userInfo);
-      setId(userInfo.uid);
-
-      db.collection("multas")
-      .where("idInspector", "==", userInfo.uid)
-      .limit(10)
-      .get()
-      .then((resp) => {
-        setTotalmultas(resp.docs.length);
-        setStartMultas(resp.docs[resp.docs.length - 1]);
-        resp.forEach((doc) => {
-          const multa = doc.data();
-          // multa.id = doc.id;
-          // arrayMulta.push(multa);
-          //console.log("la multa: .----------------", multa.ubicacion.fecha);
-          if (multa.ubicacion.fecha == actualDate) {
-            multa.id = doc.id;
-            arrayMulta.push(multa);
-          }
-        });
-        setMultas(arrayMulta);
-      });
-
+      onRefresh(userInfo.uid);
     });
-  }, [multas]);
+  }, []);
 
-  /* useEffect(() => {
-
-    db.collection("multas")
-      .where("idInspector", "==", idInspector)
-      .limit(10)
-      .get()
-      .then((resp) => {
-        setTotalmultas(resp.docs.length);
-
-        setStartMultas(resp.docs[resp.docs.length - 1]);
-        resp.forEach((doc) => {
-          const multa = doc.data();
-          // multa.id = doc.id;
-          // arrayMulta.push(multa);
-          //console.log("la multa: .----------------", multa.ubicacion.fecha);
-          if (multa.ubicacion.fecha == actualDate) {
-            multa.id = doc.id;
-            arrayMulta.push(multa);
-          }
-        });
-        setMultas(arrayMulta);
-      });
-  }, []); */
+  // renderiza una multa
+  const renderMulta = ({ item }) => (
+    <Multa
+      id={item.id}
+      dni={item.dni}
+      nombre={item.nombre}
+      extracto={item.extracto}
+      foto={item.foto}
+      onPress={() => navigation.navigate("multa", {id: item.id})}
+    />
+  );
 
   return (
-    <View>
-      {/* <Button title="Refrescar" containerStyle={styles.btnSend} onPress={refresh} /> */}
-      {user ? (
-        totalMultas > 0 ? (
-          // <MultasList multas={multas} />
+    <View style={{ height: '100%' }}>
+      <ScrollView contentContainerStyle={styles.screen}>
+        {!user ? (
+          <Text>Debe iniciar sesión para ver las multas</Text>
+        ) :loading ?
+          <ActivityIndicator size="large" color="#3494d3" />
+        : error ?
+          <Text>Ocurrió un error. Intente nuevamente</Text>
+        :
           <FlatList
+            keyExtractor={item => item.id}
             data={multas}
-            renderItem={(multa) => <Multa multa={multa} />}
-            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderMulta}
+            ListEmptyComponent={<Text>No hay multas realizadas el día de hoy</Text>}
+            style={styles.list}
           />
-        ) : (
-          <Text style={styles.textTicket}>No tienes multas realizadas en el día</Text>
-        )
-      ) : (
-        <Text style={styles.textTicket}>No estas logueado para ver las multas</Text>
-      )}
+        }
+      </ScrollView>
+      <Button
+        title="Refrescar"
+        icon={<Icon name="refresh" color={loading ? 'black' : 'white'} />}
+        disabled={loading}
+        onPress={() => onRefresh()}
+      />
     </View>
   );
-
-}
-
-function Multa(props) {
-  const { multa } = props;
-  const { conductor, vehiculo, estado } = multa.item;
-
-  return (
-    <View style={styles.viewMulta}>
-      <View style={styles.itemMulta}>
-        <Text style={styles.surName}> Infractor: {conductor.apellido}, {conductor.nombre}</Text>
-        <Text style={styles.vehicle}>Vehiculo: {vehiculo.marca}, {vehiculo.modelo}</Text>
-        <Text style={styles.state}>Estado: {estado}</Text>
-      </View>
-    </View>
-  );
-}
-
-function getActualDate() {
-  let today = new Date();
-  let dd = today.getDate();
-  let mm = today.getMonth() + 1;
-  let yyyy = today.getFullYear();
-  return dd + "/" + mm + "/" + yyyy;
 }
 
 const styles = StyleSheet.create({
-  textTicket: {
-    top: 20,
-    textAlign: "center" 
-  },
-  textWarning: {
-    marginTop: 10,
-    marginLeft: 10,
+  screen: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
-  viewMulta: {
-    flexDirection: "row",
-    // margin: 10,
-    marginTop: 5,
-    padding: 10,
-    backgroundColor: "#3b9fe078",
-  },
-  itemMulta:{
-    width: "100%"
-  },
-  surName: {
-    fontWeight: "bold",
-  },
-  vehicle: {
-    paddingTop: 2,
-    color: "black",
-    marginLeft: 10,
-  },
-  state:{
-    fontWeight: "bold",
-    color: "black",
-    marginLeft: 10,
-    alignSelf: 'flex-end'
+  list: {
+    width: "100%",
+    height: "100%",
   }
 });
+
+export default History;
