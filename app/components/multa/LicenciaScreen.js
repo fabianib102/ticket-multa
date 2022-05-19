@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
 import { styles } from "./AddMultaForm";
-import { Input, Button, Text, CheckBox } from "react-native-elements";
+import { Input, Button, Text, CheckBox, Icon } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import {
   onChangeClase,
@@ -80,11 +80,12 @@ function LicenciaScreen(props) {
       {provincias.length != 0 && (
         <>
           <StyledDropdown
+            label="Provincia"
             items={provincias.map((provincia) => ({
               label: provincia.nombre,
               value: provincia.nombre,
             }))}
-            placeholder="Provincia"
+            placeholder="Seleccione una provincia"
             onChangeItem={(item) => props.onChangeProvincia(item.value)}
             searchable={true}
             searchablePlaceholder="Buscar provincia"
@@ -94,11 +95,12 @@ function LicenciaScreen(props) {
           />
           {localidad.length != 0 && (
             <StyledDropdown
+              label="Localidad"
               items={localidad.map((loc) => ({
                 label: loc,
                 value: loc,
               }))}
-              placeholder="Localidad"
+              placeholder="Seleccione una localidad"
               onChangeItem={(item) => props.onChangeLocalidad(item.value)}
               searchable={true}
               searchablePlaceholder="Buscar localidad"
@@ -135,10 +137,12 @@ function LicenciaScreen(props) {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Anterior" disabled />
+        <Button title="Anterior" disabled icon={<Icon name="chevron-left" />} />
         <Button
           title="Siguiente"
           onPress={() => navigation.navigate("Conductor")}
+          icon={<Icon name="chevron-right" color="white" />}
+          iconRight
         />
       </View>
     </View>

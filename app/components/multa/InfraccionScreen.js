@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, Image, TouchableNativeFeedback } from "react-native";
-import { Button, Input, Text } from "react-native-elements";
+import { Button, Icon, Input, Text } from "react-native-elements";
 import firebase from '../../utils/firebase';
 import * as ImagePicker from 'expo-image-picker';
 import { styles } from "./AddMultaForm";
@@ -12,7 +12,6 @@ import * as Sharing from 'expo-sharing';
 import Toast from "react-native-easy-toast";
 import templateTicket from './Ticket';
 import { firebaseApp } from "../../utils/firebase";
-import DropDownPicker from "react-native-dropdown-picker";
 import { omit } from "lodash";
 import StyledDropdown from "../StyledDropdown";
 
@@ -302,17 +301,19 @@ function InfraccionScreen(props) {
             {cargando && <Loading isVisible text="Guardando multa" />}
             
             <Input
+                label="Lugar de constatación"
                 placeholder="Lugar de constatación"
                 value={is.lugar}
                 onChange={e => props.onSetLugar(e.nativeEvent.text)}
             />
 
             <StyledDropdown
+                label="Infracción"
                 loading={loadingInfracciones}
                 disabled={loadingInfracciones}
                 items={infracciones}
                 value={is.extracto}
-                placeholder="Infracción"
+                placeholder={loadingInfracciones ? 'Cargando infracciones...' : 'Seleccione una infracción'}
                 onChangeItem={onInfraccionChange}
                 searchable
                 searchablePlaceholder="Buscar infracción"
@@ -323,6 +324,7 @@ function InfraccionScreen(props) {
                     <View style={styles.row}>
                         <View style={{ flex: 1, marginRight: 16 }}>
                             <Input
+                                label="Ley"
                                 placeholder="Ley"
                                 keyboardType="numeric"
                                 value={is.ley}
@@ -331,6 +333,7 @@ function InfraccionScreen(props) {
                         </View>
                         <View style={{ flex: 1 }}>
                             <Input
+                                label="Código"
                                 placeholder="Código"
                                 keyboardType="numeric"
                                 value={is.codigo}
@@ -341,6 +344,7 @@ function InfraccionScreen(props) {
                     <View style={styles.row}>
                         <View style={{ flex: 1, marginRight: 16 }}>
                             <Input
+                                label="Artículo"
                                 placeholder="Artículo"
                                 keyboardType="numeric"
                                 value={is.articulo}
@@ -349,6 +353,7 @@ function InfraccionScreen(props) {
                         </View>
                         <View style={{ flex: 1 }}>
                             <Input
+                                label="Inciso"
                                 placeholder="Inciso"
                                 value={is.inciso}
                                 onChange={e => props.onSetInciso(e.nativeEvent.text)}
@@ -356,6 +361,7 @@ function InfraccionScreen(props) {
                         </View>
                     </View>
                     <Input
+                        label="Extracto"
                         placeholder="Extracto"
                         inputContainerStyle={styles.textArea}
                         autoCapitalize="characters"
@@ -367,6 +373,7 @@ function InfraccionScreen(props) {
                     <View style={styles.row}>
                         <View style={{ flex: 1, marginRight: 16 }}>
                             <Input
+                                label="Mínimo UF"
                                 placeholder="Mínimo UF"
                                 keyboardType="numeric"
                                 value={is.unidadesFijasMin}
@@ -375,6 +382,7 @@ function InfraccionScreen(props) {
                         </View>
                         <View style={{ flex: 1 }}>
                             <Input
+                                label="Máximo UF"
                                 placeholder="Máximo UF"
                                 keyboardType="numeric"
                                 value={is.unidadesFijasMax}
@@ -386,6 +394,7 @@ function InfraccionScreen(props) {
             )}
 
             <Input
+                label="Observaciones"
                 placeholder="Observaciones"
                 inputContainerStyle={styles.textArea}
                 multiline
@@ -407,8 +416,17 @@ function InfraccionScreen(props) {
             <Button title="Agregar foto" containerStyle={styles.btnSend} onPress={clickCamara} />
             <Button title="Imprimir multa" containerStyle={styles.btnSend} onPress={() => printPDF(template)} />
             <View style={styles.buttonContainer}>
-                <Button title="Anterior" onPress={() => navigation.navigate('Vehículo')} />
-                <Button title="Guardar" onPress={guardarMulta} />
+                <Button
+                    title="Anterior"
+                    onPress={() => navigation.navigate('Vehículo')}
+                    icon={<Icon name="chevron-left" color="white" />}
+                />
+                <Button
+                    title="Guardar"
+                    onPress={guardarMulta}
+                    icon={<Icon name="save" color="white" />}
+                    iconRight
+                />
             </View>
             <Toast ref={toastRef} position="center" opacity={0.9} />
         </View>

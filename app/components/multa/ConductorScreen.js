@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { View } from "react-native";
 import { styles } from "./AddMultaForm";
-import { Input, Button, Text } from "react-native-elements";
+import { Input, Button, Text, Icon } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 import {
   onChangeValueLocalidad,
@@ -51,11 +51,13 @@ function ConductorScreen(props) {
     <View style={styles.viewForm}>
       <Text h4>Conductor</Text>
       <Input
+        label="Apellido"
         placeholder="Apellido"
         value={cs.apellido}
         onChange={(e) => props.onSetApellido(e.nativeEvent.text)}
       />
       <Input
+        label="Nombre"
         placeholder="Nombre"
         value={cs.nombre}
         onChange={(e) => props.onSetNombre(e.nativeEvent.text)}
@@ -84,6 +86,7 @@ function ConductorScreen(props) {
       </Picker>
 
       <Input
+        label="Número de documento"
         placeholder="Número de documento"
         keyboardType="numeric"
         value={cs.nroDocumento}
@@ -105,11 +108,12 @@ function ConductorScreen(props) {
 
       {provincias.length != 0 && (
         <StyledDropdown
+          label="Provincia"
           items={provincias.map(provincia => ({
             label: provincia.nombre,
             value: provincia.nombre,
           }))}
-          placeholder="Provincia"
+          placeholder="Seleccione una provincia"
           onChangeItem={item => props.onChangeValueProvincia(item.value)}
           searchable
           searchablePlaceholder="Buscar provincia"
@@ -121,11 +125,12 @@ function ConductorScreen(props) {
 
       {localidad.length != 0 && (
         <StyledDropdown
+          label="Localidad"
           items={localidad.map(loc => ({
             label: loc,
             value: loc,
           }))}
-          placeholder="Localidad"
+          placeholder="Seleccione una localidad"
           onChangeItem={item => props.onChangeValueLocalidad(item.value)}
           searchable
           searchablePlaceholder="Buscar localidad"
@@ -136,6 +141,7 @@ function ConductorScreen(props) {
       )}
 
       <Input
+        label="Calle"
         placeholder="Calle"
         value={cs.calle}
         onChange={e => props.onSetCalle(e.nativeEvent.text)}
@@ -144,6 +150,7 @@ function ConductorScreen(props) {
       <View style={styles.row}>
         <View style={{flex: 1, marginRight: 16}}>
           <Input
+            label="Número"
             placeholder="Número"
             keyboardType="numeric"
             value={cs.numero}
@@ -152,6 +159,7 @@ function ConductorScreen(props) {
         </View>
         <View style={{ flex: 1 }}>
           <Input
+            label="Departamento"
             placeholder="Departamento"
             value={cs.departamento}
             onChange={e => props.onSetDepartamento(e.nativeEvent.text)}
@@ -162,6 +170,7 @@ function ConductorScreen(props) {
       <View style={styles.row}>
         <View style={{flex: 1, marginRight: 16}}>
           <Input
+            label="Piso"
             placeholder="Piso"
             keyboardType="numeric"
             value={cs.piso}
@@ -170,6 +179,7 @@ function ConductorScreen(props) {
         </View>
         <View style={{ flex: 1 }}>
           <Input
+            label="Código postal"
             placeholder="Código postal"
             value={cs.codigoPostal}
             onChange={e => props.onSetCodigoPostal(e.nativeEvent.text)}
@@ -181,10 +191,13 @@ function ConductorScreen(props) {
         <Button
           title="Anterior"
           onPress={() => navigation.navigate("Licencia")}
+          icon={<Icon name="chevron-left" color="white" />}
         />
         <Button
           title="Siguiente"
           onPress={() => navigation.navigate("Vehículo")}
+          icon={<Icon name="chevron-right" color="white" />}
+          iconRight
         />
       </View>
     </View>
