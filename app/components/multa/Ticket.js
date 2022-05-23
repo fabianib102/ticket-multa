@@ -210,10 +210,10 @@ const templateTicket = (cs, ls, vs, is, fecha, hora) => {
                 </tr>
                 <tr>
                     <td>
-                        Monto (primer vencimiento): ${ is.montoPrimerVencimiento } [UF] 
+                        Monto (primer vencimiento): ${ is.unidadesFijasMin } [UF] 
                     </td>
                     <td>
-                        Monto (segundo vencimiento): ${ is.montoSegundoVencimiento } [UF] 
+                        Monto (segundo vencimiento): ${ is.unidadesFijasMax } [UF] 
                     </td>
                     <td>
                         Observaciones: ${ is.observaciones }
