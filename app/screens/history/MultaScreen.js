@@ -48,13 +48,13 @@ const MultaScreen = props => {
                     <Text style={estilos.titulo}>Número de licencia</Text>
                     <Text>{multa.licencia.numero || '-'}</Text>
                     <Text style={estilos.titulo}>Única provincial</Text>
-                    <Text>{multa.licencia.unicaProvincial || '-'}</Text>
+                    <Text>{multa.licencia.unicaProvincial ? 'Sí' : 'No'}</Text>
                     <Text style={estilos.titulo}>Clase</Text>
                     <Text>{multa.licencia.clase || '-'}</Text>
                     <Text style={estilos.titulo}>Vencimiento</Text>
                     <Text>{multa.licencia.vencimiento || '-'}</Text>
                     <Text style={estilos.titulo}>Licencia retenida</Text>
-                    <Text>{multa.licencia.retenida || '-'}</Text>
+                    <Text>{multa.licencia.retenida ? 'Sí' : 'No'}</Text>
                     <Text style={estilos.titulo}>País</Text>
                     <Text>{multa.licencia.pais || '-'}</Text>
                     <Text style={estilos.titulo}>Provincia</Text>
@@ -145,6 +145,7 @@ const MultaScreen = props => {
                         )}
                         {multa.fotos.map(foto => (
                             <Image
+                                key={foto}
                                 source={{ uri: foto }}
                                 style={estilos.image}
                                 PlaceholderContent={<ActivityIndicator />}
@@ -197,7 +198,9 @@ const estilos = StyleSheet.create({
     imageContainer: {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        marginBottom: -16,
+        marginRight: -16
     },
     image: {
         marginRight: 16,
