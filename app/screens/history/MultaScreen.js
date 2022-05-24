@@ -142,14 +142,10 @@ const MultaScreen = props => {
 
                 </Card>
                 <Card title="Vencimientos">
-                    <Text style={estilos.titulo}>Primer vencimiento</Text>
-                    <Text>{multa.vencimientos.fechaPrimerVencimiento}</Text>
-                    <Text style={estilos.titulo}>Monto</Text>
-                    <Text>${multa.vencimientos.montoPrimerVencimiento}</Text>
-                    <Text style={estilos.titulo}>Segundo vencimiento</Text>
-                    <Text>{multa.vencimientos.fechaSegundoVencimiento}</Text>
-                    <Text style={estilos.titulo}>Monto</Text>
-                    <Text>${multa.vencimientos.montoSegundoVencimiento}</Text>
+                    <Text style={estilos.titulo}>Monto primer vencimiento</Text>
+                    <Text>{multa.infraccion.unidadesFijasMin} [UF]</Text>
+                    <Text style={estilos.titulo}>Monto segundo vencimiento</Text>
+                    <Text>{multa.infraccion.unidadesFijasMax} [UF]</Text>
                 </Card>
                 <Card title="Estado">
                     <Text style={estilos.titulo}>Estado de la multa</Text>
