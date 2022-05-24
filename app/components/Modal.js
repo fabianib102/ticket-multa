@@ -1,6 +1,6 @@
 import React from "react";
-import {StyleSheet, Text, View} from 'react-native';
-import { Button, Overlay } from 'react-native-elements';
+import { StyleSheet } from 'react-native';
+import { Overlay } from 'react-native-elements';
 
 export default function Modal(props){
 
