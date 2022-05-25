@@ -26,7 +26,7 @@ const History = () => {
             dni: doc.data().conductor.nroDocumento,
             nombre: doc.data().conductor.apellido + " " + doc.data().conductor.nombre,
             extracto: doc.data().infraccion.extracto,
-            foto: doc.data().fotos[0],
+            foto: doc.data().fotos[0]
           };
           setMultas(currentMultas => [...currentMultas, multa]);
         });
@@ -56,7 +56,7 @@ const History = () => {
       dni={item.dni}
       nombre={item.nombre}
       extracto={item.extracto}
-      foto={item.foto}
+      imagen={item.foto}
       onPress={() => navigation.navigate("multa", {id: item.id})}
     />
   );

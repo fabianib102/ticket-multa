@@ -5,7 +5,7 @@ const Multa = props => {
   return (
     <ListItem
       key={props.id}
-      leftAvatar={{ uri: props.imagen, rounded: false }}
+      leftAvatar={{ source: { uri: props.imagen }, rounded: false }}
       title={props.nombre + " (DNI " + props.dni + ")"}
       titleProps={{ numberOfLines: 1 }}
       subtitle={props.extracto}
