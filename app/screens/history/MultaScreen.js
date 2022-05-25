@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, ActivityIndicator, View } from "react-native";
+import { StyleSheet, ScrollView, ActivityIndicator, View, Pressable } from "react-native";
 import { Card, Image, Text } from "react-native-elements";
 import * as firebase from "firebase";
 import 'firebase/firestore';
+import Modal from "../../components/Modal";
+import { get } from "lodash";
 
 const MultaScreen = props => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [multa, setMulta] = useState(null);
+    const [inspector, setInspector] = useState(null);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [imageModalUrl, setImageModalUrl] = useState('');
 
     // trae los datos de la multa desde firebase
     useEffect(() => {
         setLoading(true);
         setError(false);
-        const {id} = props.route.params;
+        setMulta(null);
+        setInspector(null);
+        const { id } = props.route.params;
         firebase.firestore().collection("multas").doc(id).get()
-            .then(doc => {
+            .then(async doc => {
                 setMulta(doc.data());
+                if (doc.data().idInspector) {
+                    const anotherDoc = await firebase.firestore().collection("usuarios").doc(doc.data().idInspector).get();
+                    setInspector(anotherDoc.data());
+                }
                 setLoading(false);
                 setError(false);
             }).catch(error => {
@@ -25,7 +36,12 @@ const MultaScreen = props => {
                 setError(error);
             });
     }, [props.route.params.id]);
-    
+
+    const onImagePress = url => {
+        setShowImageModal(true);
+        setImageModalUrl(url);
+    };
+
     let componentToRender;
     if (loading) {
         componentToRender = <ActivityIndicator size="large" color="#3494d3" />;
@@ -144,12 +160,13 @@ const MultaScreen = props => {
                             <Text>No ha adjuntado ninguna fotografía.</Text>
                         )}
                         {multa.fotos.map(foto => (
-                            <Image
-                                key={foto}
-                                source={{ uri: foto }}
-                                style={estilos.image}
-                                PlaceholderContent={<ActivityIndicator />}
-                            />
+                            <Pressable key={foto} onPress={() => onImagePress(foto)}>
+                                <Image
+                                    source={{ uri: foto }}
+                                    style={estilos.image}
+                                    PlaceholderContent={<ActivityIndicator />}
+                                />
+                            </Pressable>
                         ))}
                     </View>
                 </Card>
@@ -171,7 +188,7 @@ const MultaScreen = props => {
                     <Text style={estilos.titulo}>Supervisor</Text>
                     {/* FALTA HACER */}
                     {/* MOSTRAR EL NOMBRE DEL SUPERVISOR EN LUGAR DEL ID */}
-                    <Text>{multa.idSupervisor || '-'}</Text>
+                    <Text>{get(inspector, 'nombre', '')} {get(inspector, 'apellido', '')}</Text>
                 </Card>
             </ScrollView>
         )
@@ -179,6 +196,9 @@ const MultaScreen = props => {
     return (
         <View style={estilos.screen}>
             {componentToRender}
+            <Modal isVisible={showImageModal} setIsVisible={setShowImageModal}>
+                <Image source={{ uri: imageModalUrl }} PlaceholderContent={<ActivityIndicator />} />
+            </Modal>
         </View>
     )
 }
