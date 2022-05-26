@@ -88,7 +88,6 @@ function VehiculoScreen(props) {
             <Text h4>Vehículo</Text>
             <Input
                 label="Dominio"
-                placeholder="Dominio"
                 autoCapitalize="characters"
                 value={vs.data.dominio}
                 onChange={e => dispatch(onSetDominio(e.nativeEvent.text))}
@@ -110,7 +109,6 @@ function VehiculoScreen(props) {
             {vs.data.marca === 'Otro' && (
                 <Input
                     label="Nueva marca"
-                    placeholder="Ingrese la marca"
                     autoCapitalize="words"
                     value={vs.otraMarca}
                     onChange={e => props.onSetOtraMarca(e.nativeEvent.text)}
@@ -132,7 +130,6 @@ function VehiculoScreen(props) {
             {vs.data.modelo === 'Otro' && (
                 <Input
                     label="Nuevo modelo"
-                    placeholder="Ingrese el modelo"
                     autoCapitalize="words"
                     value={vs.otroModelo}
                     onChange={e => props.onSetOtroModelo(e.nativeEvent.text)}
@@ -169,7 +166,6 @@ function VehiculoScreen(props) {
                 <View>
                     <Input
                         label="Nombre y apellido"
-                        placeholder="Nombre y apellido"
                         autoCapitalize="words"
                         value={vs.data.titular}
                         onChange={e => dispatch(onSetTitular(e.nativeEvent.text))}
@@ -188,7 +184,6 @@ function VehiculoScreen(props) {
 
                     <Input
                         label="Número de documento"
-                        placeholder="Número de documento"
                         keyboardType="numeric"
                         value={vs.data.nroDocumento}
                         onChange={e => dispatch(onSetNroDocumento(e.nativeEvent.text))}
@@ -228,7 +223,6 @@ function VehiculoScreen(props) {
 
                     <Input
                         label="Calle"
-                        placeholder="Calle"
                         autoCapitalize="words"
                         value={vs.data.calle}
                         onChange={e => dispatch(onSetCalle(e.nativeEvent.text))}
@@ -238,7 +232,6 @@ function VehiculoScreen(props) {
                         <View style={{ flex: 1, marginRight: 16 }}>
                             <Input
                                 label="Número"
-                                placeholder="Número"
                                 keyboardType="numeric"
                                 value={vs.data.numero}
                                 onChange={e => dispatch(onSetNumero(e.nativeEvent.text))}
@@ -247,7 +240,6 @@ function VehiculoScreen(props) {
                         <View style={{ flex: 1 }}>
                             <Input
                                 label="Departamento"
-                                placeholder="Departamento"
                                 value={vs.data.departamento}
                                 onChange={e => dispatch(onSetDepartamento(e.nativeEvent.text))}
                             />
@@ -258,7 +250,6 @@ function VehiculoScreen(props) {
                         <View style={{ flex: 1, marginRight: 16 }}>
                             <Input
                                 label="Piso"
-                                placeholder="Piso"
                                 value={vs.data.piso}
                                 onChange={e => dispatch(onSetPiso(e.nativeEvent.text))}
                             />
@@ -266,7 +257,6 @@ function VehiculoScreen(props) {
                         <View style={{ flex: 1 }}>
                             <Input
                                 label="Código postal"
-                                placeholder="Código Postal"
                                 value={vs.data.codigoPostal}
                                 onChange={e => dispatch(onSetCodigoPostal(e.nativeEvent.text))}
                             />
