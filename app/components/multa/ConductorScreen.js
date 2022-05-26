@@ -120,6 +120,8 @@ function ConductorScreen(props) {
           searchableError={() => (
             <Text>No se encontró la provincia buscada</Text>
           )}
+          zIndex={2}
+          zIndexInverse={1}
         />
       )}
 
@@ -137,6 +139,8 @@ function ConductorScreen(props) {
           searchableError={() => (
             <Text>No se encontró la localidad buscada</Text>
           )}
+          zIndex={1}
+          zIndexReverse={2}
         />
       )}
 

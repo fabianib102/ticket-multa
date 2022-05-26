@@ -104,6 +104,8 @@ function VehiculoScreen(props) {
                 searchable
                 searchablePlaceholder="Buscar marca"
                 searchableError={() => <Text>No se encontró la marca buscada</Text>}
+                zIndex={3}
+                zIndexInverse={1}
             />
             {vs.data.marca === 'Otro' && (
                 <Input
@@ -124,6 +126,8 @@ function VehiculoScreen(props) {
                 searchable
                 searchablePlaceholder="Buscar modelo"
                 searchableError={() => <Text>No se encontró el modelo buscado</Text>}
+                zIndex={2}
+                zIndexInverse={2}
             />
             {vs.data.modelo === 'Otro' && (
                 <Input
@@ -144,6 +148,8 @@ function VehiculoScreen(props) {
                     searchable={true}
                     searchablePlaceholder="Buscar tipo"
                     searchableError={() => <Text>No se encontró el tipo buscado</Text>}
+                    zIndex={1}
+                    zIndexInverse={3}
                 />
             )}
 
@@ -187,6 +193,39 @@ function VehiculoScreen(props) {
                         value={vs.data.nroDocumento}
                         onChange={e => dispatch(onSetNroDocumento(e.nativeEvent.text))}
                     />
+
+                    <StyledDropdown
+                        label="Provincia"
+                        items={provincias.map(provincia => ({
+                            label: provincia.nombre,
+                            value: provincia.nombre
+                        }))}
+                        defaultValue={vs.data.provincia}
+                        placeholder="Seleccione una provincia"
+                        onChangeItem={item => dispatch(onSetProvincia(item.value))}
+                        searchable={true}
+                        searchablePlaceholder="Buscar provincia"
+                        searchableError={() => <Text>No se encontró la provincia buscada</Text>}
+                        zIndex={2}
+                        zIndexInverse={1}
+                    />
+            
+                    <StyledDropdown
+                        label="Localidad"
+                        items={localidad.map(loc => ({
+                            label: loc,
+                            value: loc
+                        }))}
+                        defaultValue={vs.data.localidad}
+                        placeholder="Seleccione una localidad"
+                        onChangeItem={item => dispatch(onSetLocalidad(item.value))}
+                        searchable={true}
+                        searchablePlaceholder="Buscar localidad"
+                        searchableError={() => <Text>No se encontró la localidad buscada</Text>}
+                        zIndex={1}
+                        zIndexInverse={2}
+                    />
+
                     <Input
                         label="Calle"
                         placeholder="Calle"
@@ -233,34 +272,6 @@ function VehiculoScreen(props) {
                             />
                         </View>
                     </View>
-
-                    <StyledDropdown
-                        label="Provincia"
-                        items={provincias.map(provincia => ({
-                            label: provincia.nombre,
-                            value: provincia.nombre
-                        }))}
-                        defaultValue={vs.data.provincia}
-                        placeholder="Seleccione una provincia"
-                        onChangeItem={item => dispatch(onSetProvincia(item.value))}
-                        searchable={true}
-                        searchablePlaceholder="Buscar provincia"
-                        searchableError={() => <Text>No se encontró la provincia buscada</Text>}
-                    />
-            
-                    <StyledDropdown
-                        label="Localidad"
-                        items={localidad.map(loc => ({
-                            label: loc,
-                            value: loc
-                        }))}
-                        defaultValue={vs.data.localidad}
-                        placeholder="Seleccione una localidad"
-                        onChangeItem={item => dispatch(onSetLocalidad(item.value))}
-                        searchable={true}
-                        searchablePlaceholder="Buscar localidad"
-                        searchableError={() => <Text>No se encontró la localidad buscada</Text>}
-                    />
                 </View>
             )}
 
