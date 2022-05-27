@@ -40,6 +40,10 @@ function App() {
                 paddingHorizontal: 11,
                 color: '#373737'
             },
+            inputStyle: {
+                alignSelf: 'start',
+                height: '100%'
+            },
             labelStyle: {
                 fontSize: 12,
                 color: '#6d6d6d',
