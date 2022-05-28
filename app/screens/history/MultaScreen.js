@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, ActivityIndicator, View, Pressable } from "react-native";
+import { StyleSheet, ScrollView, ActivityIndicator, View, Pressable, Image as ReactNativeImage, useWindowDimensions } from "react-native";
 import { Card, Image, Text } from "react-native-elements";
 import * as firebase from "firebase";
 import 'firebase/firestore';
 import Modal from "../../components/Modal";
 import { get } from "lodash";
+import { ReactNativeZoomableView } from "@openspacelabs/react-native-zoomable-view";
 
 const MultaScreen = props => {
     const [loading, setLoading] = useState(true);
@@ -13,6 +14,7 @@ const MultaScreen = props => {
     const [inspector, setInspector] = useState(null);
     const [showImageModal, setShowImageModal] = useState(false);
     const [imageModalUrl, setImageModalUrl] = useState('');
+    const window = useWindowDimensions();
 
     // trae los datos de la multa desde firebase
     useEffect(() => {
@@ -38,8 +40,13 @@ const MultaScreen = props => {
     }, [props.route.params.id]);
 
     const onImagePress = url => {
-        setShowImageModal(true);
         setImageModalUrl(url);
+        setShowImageModal(true);
+    };
+
+    const onImageClose = () => {
+        setShowImageModal(false);
+        setImageModalUrl('');
     };
 
     let componentToRender;
@@ -155,7 +162,7 @@ const MultaScreen = props => {
                     <Text>{multa.infraccion.observaciones || '-'}</Text>
                 </Card>
                 <Card title="Pruebas fotográficas">
-                    <View style={estilos.imageContainer}>
+                    <View style={estilos.inlineImagesContainer}>
                         {multa.fotos.length === 0 && (
                             <Text>No ha adjuntado ninguna fotografía.</Text>
                         )}
@@ -163,7 +170,7 @@ const MultaScreen = props => {
                             <Pressable key={foto} onPress={() => onImagePress(foto)}>
                                 <Image
                                     source={{ uri: foto }}
-                                    style={estilos.image}
+                                    style={estilos.inlineImage}
                                     PlaceholderContent={<ActivityIndicator />}
                                 />
                             </Pressable>
@@ -187,16 +194,29 @@ const MultaScreen = props => {
                     <Text>{get(inspector, 'nombre', '')} {get(inspector, 'apellido', '')}</Text>
                 </Card>
             </ScrollView>
-        )
+        );
     }
+
     return (
         <View style={estilos.screen}>
-            {componentToRender}
-            <Modal isVisible={showImageModal} setIsVisible={setShowImageModal}>
-                <Image source={{ uri: imageModalUrl }} PlaceholderContent={<ActivityIndicator />} />
-            </Modal>
+            {showImageModal ? (
+                <View style={{ width: '100%', height: '100%' }}>
+                    <Pressable onPress={onImageClose}>
+                        <Text>Cerrar</Text>
+                    </Pressable>
+                    <ReactNativeZoomableView
+                        minZoom={1}
+                        maxZoom={5}
+                        contentWidth={window.width}
+                        contentHeight={window.height}
+                        style={{ backgroundColor: 'red' }}
+                    >
+                        <ReactNativeImage style={estilos.fullScreenImage} source={{ uri: imageModalUrl }} />
+                    </ReactNativeZoomableView>
+                </View>
+            ) : componentToRender}
         </View>
-    )
+    );
 }
 
 const estilos = StyleSheet.create({
@@ -211,18 +231,24 @@ const estilos = StyleSheet.create({
     titulo: {
         fontWeight: "bold",
     },
-    imageContainer: {
+    inlineImagesContainer: {
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginBottom: -16,
         marginRight: -16
     },
-    image: {
+    inlineImage: {
         marginRight: 16,
         marginBottom: 16,
         width: 100,
         height: 100
+    },
+    fullScreenImageContainer: {},
+    fullScreenImage: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain'
     }
 });
 
