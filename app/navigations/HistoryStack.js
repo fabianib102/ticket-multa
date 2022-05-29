@@ -17,7 +17,7 @@ export default function HistoryStack(){
             <Stack.Screen
                 name="multa"
                 component={MultaScreen}
-                options={{ title: "Multa" }}
+                options={{ title: "Multa", headerBackTitle: 'Atrás' }}
             />
         </Stack.Navigator>
     )
