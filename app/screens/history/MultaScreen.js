@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, ActivityIndicator, View, Pressable, Image as ReactNativeImage, useWindowDimensions } from "react-native";
-import { Card, Image, Text } from "react-native-elements";
+import { Card, Icon, Image, Overlay, Text } from "react-native-elements";
 import * as firebase from "firebase";
 import 'firebase/firestore';
 import Modal from "../../components/Modal";
@@ -199,22 +199,26 @@ const MultaScreen = props => {
 
     return (
         <View style={estilos.screen}>
-            {showImageModal ? (
-                <View style={{ width: '100%', height: '100%' }}>
-                    <Pressable onPress={onImageClose}>
-                        <Text>Cerrar</Text>
-                    </Pressable>
-                    <ReactNativeZoomableView
-                        minZoom={1}
-                        maxZoom={5}
-                        contentWidth={window.width}
-                        contentHeight={window.height}
-                        style={{ backgroundColor: 'red' }}
-                    >
-                        <ReactNativeImage style={estilos.fullScreenImage} source={{ uri: imageModalUrl }} />
-                    </ReactNativeZoomableView>
-                </View>
-            ) : componentToRender}
+            {componentToRender}
+            <Overlay
+                isVisible={showImageModal}
+                windowBackgroundColor="rgba(0, 0, 0, 0.9)"
+                overlayBackgroundColor="transparent"
+                width="100%"
+            >
+                <Pressable style={estilos.fullScreenImageClose} onPress={onImageClose}>
+                    <Icon name="close" color="white" />
+                    <Text style={estilos.fullScreenImageCloseText}>Cerrar</Text>
+                </Pressable>
+                <ReactNativeZoomableView
+                    minZoom={1}
+                    maxZoom={5}
+                    contentWidth={window.width}
+                    contentHeight={window.height}
+                >
+                    <ReactNativeImage style={estilos.fullScreenImage} source={{ uri: imageModalUrl }} />
+                </ReactNativeZoomableView>
+            </Overlay>
         </View>
     );
 }
@@ -244,11 +248,21 @@ const estilos = StyleSheet.create({
         width: 100,
         height: 100
     },
-    fullScreenImageContainer: {},
     fullScreenImage: {
         width: '100%',
         height: '100%',
         resizeMode: 'contain'
+    },
+    fullScreenImageClose: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 8
+    },
+    fullScreenImageCloseText: {
+        color: 'white',
+        marginLeft: 8,
+        fontSize: 16
     }
 });
 
