@@ -41,7 +41,7 @@ function App() {
                 color: '#373737'
             },
             inputStyle: {
-                alignSelf: 'start',
+                // alignSelf: 'start',
                 height: '100%'
             },
             labelStyle: {
